@@ -1,7 +1,13 @@
-var app = (function() {
-  var initialize = function() {
-    // Create and initialize game objects here.
+var app = {
+  initialize: function() {
+    this.bindEvents();
+  },
 
+  bindEvents: function() {
+    document.addEventListener('deviceready', this.onDeviceReady);
+  },
+
+  onDeviceReady: function() {
     // Dummy content (just draw a red screen):
     var canvas = document.getElementById('screen'),
         context = canvas.getContext('2d');
@@ -12,8 +18,4 @@ var app = (function() {
     context.fillStyle = 'red';
     context.fillRect(0, 0, canvas.width, canvas.height);
   }
-
-  return {
-    initialize: initialize
-  };
-})();
+};
