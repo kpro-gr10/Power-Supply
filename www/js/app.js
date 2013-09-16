@@ -15,7 +15,9 @@ var app = {
     canvas.width = window.screen.availWidth;
     canvas.height = window.screen.availHeight;
 
-    context.fillStyle = 'red';
-    context.fillRect(0, 0, canvas.width, canvas.height);
+    var map = new Map();
+
+    var screen=new Screen({model:map});
+    screen.render(context, canvas.width, canvas.height);
   }
 };
