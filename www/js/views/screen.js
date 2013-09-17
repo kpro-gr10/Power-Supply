@@ -1,23 +1,23 @@
 var Screen = Backbone.View.extend({
 
   // Render the map to the context
-  render: function(context, width, height) {
+  render: function(context, offset) {
 
-    // Dummy code
+    var bg=this.model.get("background");
+    var bgWidth=bg.width;
+    var bgHeight=bg.height;
 
-    var bg=imgLib.background;
-    var wBg=bg.width;
-    var hBg=bg.height;
+    var width=this.model.get("viewWidth");
+    var height=this.model.get("viewHeight");
 
-    if(width%wBg!=0) {
-        width+=wBg;
-    }
-    if(height%hBg!=0) {
-        height+=hBg;
-    }
+    var xPos=this.model.get("viewXPosition");
+    var yPos=this.model.get("viewYPosition");
 
-    for(var i=0; i<height; i+=hBg) {
-        for(var j=0; j<width; j+=wBg) {
+    var xOffset=xPos%bgWidth;
+    var yOffset=yPos%bgHeight;
+
+    for(var i=-yOffset; i<height; i+=bgHeight) {
+        for(var j=-xOffset; j<width; j+=bgWidth) {
             context.drawImage(bg, j, i);
         }
     }

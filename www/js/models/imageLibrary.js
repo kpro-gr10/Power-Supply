@@ -34,8 +34,12 @@ var imgLib = new function() {
         return img;
     }
 
+    imagesToLoad+=1;
+
     // Load background image
     this.background=this.loadImage("res/sprites/background_temp.png");
+
+    imagesLoaded+=1;
 
 }
 console.log(imgLib);
