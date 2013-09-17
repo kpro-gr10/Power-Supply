@@ -33,6 +33,7 @@ var app = {
     canvas.addEventListener("touchmove", map, false); // When the user moves the finger
 
     var frameCount=0;
+    var now=new Date().getTime();
     // Game loop
     function renderFunc() {
         setTimeout(renderFunc, 1000 / GAME_FPS);
@@ -44,6 +45,14 @@ var app = {
             context.fillRect(0, 0, canvas.width, canvas.height);
         }
         frameCount+=1;
+        var temp=new Date().getTime();
+        if(temp-now>1000) {
+            if(DEBUG) {
+                console.log("FPS: "+frameCount);
+            }
+            now=temp;
+            frameCount=0;
+        }
     }
     
     renderFunc();
