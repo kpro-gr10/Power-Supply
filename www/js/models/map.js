@@ -52,7 +52,7 @@ var Map = Backbone.Model.extend({
     viewX += dx;
     viewY += dy;
 
-    // Make sure the new values are vallid
+    // Make sure the new values are valid
     if(viewX < 0) {viewX = 0;}
     else if(viewX >= (mapWidth - viewWidth)) {viewX = mapWidth-viewWidth;}
     if(viewY < 0) {viewY = 0;}
