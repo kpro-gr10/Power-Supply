@@ -9,8 +9,6 @@
  * much during execution.
  */
 
-console.log("Test log");
-
 var imagesLoaded=0;
 var imagesToLoad=0;
 
@@ -29,7 +27,7 @@ var imgLib = new function() {
         imagesToLoad+=1;
         img.onload=function() {
             imagesLoaded+=1;
-            console.log("Image: " + src + " loaded.");
+            if(DEBUG) {console.log("Image: " + src + " loaded.");}
         }
         return img;
     }
@@ -42,4 +40,3 @@ var imgLib = new function() {
     imagesLoaded+=1;
 
 }
-console.log(imgLib);
