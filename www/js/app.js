@@ -26,32 +26,32 @@ var app = {
                     });
 
     // Initialize game view
-    var screen=new Screen({model:map});
+    var screen = new Screen({model: map});
 
     // Add Event Listeners
     canvas.addEventListener("touchstart", map, false); // When the user touches the screen
     canvas.addEventListener("touchmove", map, false); // When the user moves the finger
 
-    var frameCount=0;
-    var now=new Date().getTime();
+    var frameCount = 0;
+    var now = Date.now();
     // Game loop
     function renderFunc() {
         setTimeout(renderFunc, 1000 / GAME_FPS);
-        if(isAllImagesLoaded()) {
+        if (isAllImagesLoaded()) {
             screen.render(context, frameCount);
         } else {
             // Splash screen
             context.fillStyle = 'blue';
             context.fillRect(0, 0, canvas.width, canvas.height);
         }
-        frameCount+=1;
-        var temp=new Date().getTime();
-        if(temp-now>1000) {
-            if(DEBUG) {
-                console.log("FPS: "+frameCount);
+        frameCount += 1;
+        var temp = Date.now();
+        if (temp - now > 1000) {
+            if (DEBUG) {
+                console.log("FPS: " + frameCount);
             }
-            now=temp;
-            frameCount=0;
+            now = temp;
+            frameCount = 0;
         }
     }
     
