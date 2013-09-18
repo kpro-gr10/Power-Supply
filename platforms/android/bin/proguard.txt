@@ -1,3 +1,0 @@
-# view AndroidManifest.xml #generated:6
--keep class no.helgelandskraft.power_supply.HelloWorld { <init>(...); }
-
