@@ -111,11 +111,14 @@
 /home/martin/kpro/Power-Supply/platforms/android/assets/www/js/models \
 /home/martin/kpro/Power-Supply/platforms/android/assets/www/js/views \
 /home/martin/kpro/Power-Supply/platforms/android/assets/www/js/lib \
+/home/martin/kpro/Power-Supply/platforms/android/assets/www/js/constants.js \
+/home/martin/kpro/Power-Supply/platforms/android/assets/www/js/models/imageLibrary.js \
 /home/martin/kpro/Power-Supply/platforms/android/assets/www/js/models/map.js \
 /home/martin/kpro/Power-Supply/platforms/android/assets/www/js/models/entity.js \
 /home/martin/kpro/Power-Supply/platforms/android/assets/www/js/views/screen.js \
 /home/martin/kpro/Power-Supply/platforms/android/assets/www/js/lib/underscore-min.js \
 /home/martin/kpro/Power-Supply/platforms/android/assets/www/js/lib/backbone-min.js \
+/home/martin/kpro/Power-Supply/platforms/android/assets/www/js/lib/jquery-1.10.2.js \
 /home/martin/kpro/Power-Supply/platforms/android/assets/www/js/lib/backbone.js \
 /home/martin/kpro/Power-Supply/platforms/android/assets/www/js/lib/underscore.js \
 /home/martin/kpro/Power-Supply/platforms/android/bin/AndroidManifest.xml \
