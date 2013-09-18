@@ -36,7 +36,10 @@ var app = {
     var now = Date.now();
     // Game loop
     function renderFunc() {
-        setTimeout(renderFunc, 1000 / GAME_FPS);
+        setTimeout(function() {
+          requestAnimationFrame(renderFunc);
+        }, 1000 / GAME_FPS);
+
         if (isAllImagesLoaded()) {
             screen.render(context, frameCount);
         } else {
