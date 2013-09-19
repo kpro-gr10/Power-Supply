@@ -1,25 +1,36 @@
 var Screen = Backbone.View.extend({
 
+  initialize: function() {
+    this.listenTo(this.model, "change", this.render);
+  },
+
+  rendering: false,
+
   // Render the map to the context
-  render: function(context) {
+  render: function() {
+    if(!this.rendering) {
+        this.rendering=true;
+        var context=this.el.getContext("2d");
 
-    var bg=this.model.get("background");
-    var bgWidth=bg.width;
-    var bgHeight=bg.height;
+        var bg=this.model.get("background");
+        var bgWidth=bg.width;
+        var bgHeight=bg.height;
 
-    var width=this.model.get("viewWidth");
-    var height=this.model.get("viewHeight");
+        var width=this.model.get("viewWidth");
+        var height=this.model.get("viewHeight");
 
-    var xPos=this.model.get("viewXPosition");
-    var yPos=this.model.get("viewYPosition");
+        var xPos=this.model.get("viewXPosition");
+        var yPos=this.model.get("viewYPosition");
 
-    var xOffset=xPos%bgWidth;
-    var yOffset=yPos%bgHeight;
+        var xOffset=xPos%bgWidth;
+        var yOffset=yPos%bgHeight;
 
-    for(var i=-yOffset; i<height; i+=bgHeight) {
-        for(var j=-xOffset; j<width; j+=bgWidth) {
-            context.drawImage(bg, j, i);
+        for(var i=-yOffset; i<height; i+=bgHeight) {
+            for(var j=-xOffset; j<width; j+=bgWidth) {
+                context.drawImage(bg, j, i);
+            }
         }
+        this.rendering=false;
     }
   },
 
@@ -56,7 +67,6 @@ var Screen = Backbone.View.extend({
     viewY += dy;
 
     // Make sure the new values are valid. Don't allow scrolling outside the map.
-    // Shouldn't this be done by the model?
     if(viewX < 0) {viewX = 0;}
     else if(viewX >= (mapWidth - viewWidth)) {viewX = mapWidth-viewWidth;}
     if(viewY < 0) {viewY = 0;}
