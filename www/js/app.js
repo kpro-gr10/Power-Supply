@@ -1,3 +1,18 @@
+// Make sure that the function requestAnimationFrame is supported by the browser / webview.
+// Create one if it is not.
+window.requestAnimFrame = function(){
+    return (
+        window.requestAnimationFrame       || 
+        window.webkitRequestAnimationFrame || 
+        window.mozRequestAnimationFrame    || 
+        window.oRequestAnimationFrame      || 
+        window.msRequestAnimationFrame     || 
+        function(/* function */ callback){
+            window.setTimeout(callback, 1000 / 60);
+        }
+    );
+}();
+
 var app = {
   initialize: function() {
     this.bindEvents();
@@ -25,36 +40,43 @@ var app = {
                     height: 5000
                     });
 
-    // Initialize game view
+    // Initialize game view / controller
     var screen = new Screen({model: map});
 
     // Add Event Listeners
-    canvas.addEventListener("touchstart", map, false); // When the user touches the screen
-    canvas.addEventListener("touchmove", map, false); // When the user moves the finger
+    canvas.addEventListener("touchstart", screen, false); // When the user touches the screen
+    canvas.addEventListener("touchmove", screen, false); // When the user moves the finger
 
+    // Debug variables
     var frameCount = 0;
     var now = Date.now();
+    
     // Game loop
     function renderFunc() {
+        
+        // Prepare next render
         setTimeout(function() {
-          requestAnimationFrame(renderFunc);
+          window.requestAnimFrame(renderFunc);
         }, 1000 / GAME_FPS);
 
         if (isAllImagesLoaded()) {
-            screen.render(context, frameCount);
+            // Render the game
+            screen.render(context);
         } else {
             // Splash screen
             context.fillStyle = 'blue';
             context.fillRect(0, 0, canvas.width, canvas.height);
         }
-        frameCount += 1;
-        var temp = Date.now();
-        if (temp - now > 1000) {
-            if (DEBUG) {
+        
+        // Print debug information
+        if(DEBUG) {
+            frameCount += 1;
+            var temp = Date.now();
+            if (temp - now > 1000) {
                 console.log("FPS: " + frameCount);
+                now = temp;
+                frameCount = 0;
             }
-            now = temp;
-            frameCount = 0;
         }
     }
     
