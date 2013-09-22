@@ -20,6 +20,10 @@ var Map = Backbone.Model.extend({
 
     // The buildings placed on the map:
     "buildings": new Backbone.Collection
+  },
+
+  initialize: function() {
+    this.buildings.add(new Building);
   }
 
 });
