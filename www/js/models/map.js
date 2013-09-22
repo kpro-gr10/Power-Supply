@@ -19,7 +19,7 @@ var Map = Backbone.Model.extend({
     "background": undefined,
 
     // The buildings placed on the map:
-    "buildings": undefined
+    "buildings": new Backbone.Collection
   }
 
 });
