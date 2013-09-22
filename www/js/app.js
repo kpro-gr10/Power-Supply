@@ -30,8 +30,8 @@ var app = {
                     viewWidth: canvas.width, 
                     viewHeight: canvas.height,
                     background: imgLib.background,
-                    width: 1000,
-                    height: 1000
+                    width: 2000,
+                    height: 2000
                     });
 
     var level = new Level({
