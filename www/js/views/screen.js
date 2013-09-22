@@ -2,6 +2,7 @@ var Screen = Backbone.View.extend({
 
   initialize: function() {
     this.listenTo(this.model, "change", function() {this.needsRepaint=true;});
+    this.listenTo(this.model.get("buildings"), "all", function() {this.needsRepaint=true;});
   },
 
   needsRepaint: true,
