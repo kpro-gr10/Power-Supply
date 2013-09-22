@@ -23,7 +23,7 @@ var Map = Backbone.Model.extend({
   },
 
   initialize: function() {
-    this.buildings.add(new Building);
+    this.get("buildings").add(new Building);
   }
 
 });
