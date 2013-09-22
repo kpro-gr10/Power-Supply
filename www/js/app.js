@@ -1,3 +1,12 @@
+window.requestAnimFrame = (function(){
+  return  window.requestAnimationFrame       ||
+          window.webkitRequestAnimationFrame ||
+          window.mozRequestAnimationFrame    ||
+          function( callback ){
+            window.setTimeout(callback, 1000 / GAME_FPS);
+          };
+})();
+
 var app = {
   initialize: function() {
     this.bindEvents();
@@ -12,7 +21,7 @@ var app = {
     var canvas = document.getElementById('screen'),
         context = canvas.getContext('2d');
 
-    // Set canvas size. (This also reallocates memmory to the pixel buffer)
+    // Set canvas size. (This also reallocates memory to the pixel buffer)
     canvas.width = window.screen.availWidth;
     canvas.height = window.screen.availHeight;
 
@@ -32,22 +41,29 @@ var app = {
     canvas.addEventListener("touchstart", screen, false); // When the user touches the screen
     canvas.addEventListener("touchmove", screen, false); // When the user moves the finger
 
-    if(DEBUG) {
-      var frameCount = 0;
-      var now = Date.now();
-
-      function measureFPS() {
-        setTimeout(measureFPS, 1000 / GAME_FPS);
-
-        frameCount += 1;
-        var temp = Date.now();
-        if (temp - now > 1000) {
-          console.log("FPS: " + frameCount);
-          now += 1000;
-          frameCount = 0;
+    // Debug variables
+    var frameCount = 0;
+    var now = Date.now();
+    
+    // Game loop
+    function gameLoop() {
+      requestAnimFrame(gameLoop);
+      if(imgLib.isAllImagesLoaded()) {
+        if(DEBUG) {
+          frameCount+=1
+          var temp=Date.now();
+          if(temp - now > 1000) {
+            console.log("FPS: " + frameCount);
+            now += 1000;
+            frameCount=0;
+          }
         }
+        screen.render();
+        // level.update(dt); <<--- this is where the level should be updated, when level gets implemented
+      } else {
+        // Splash screen, all images not loaded yet
       }
-      measureFPS();
     }
+    gameLoop();
   }
 };

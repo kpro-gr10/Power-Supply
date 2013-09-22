@@ -9,10 +9,10 @@
  * much during execution.
  */
 
-var imgLib = new function() {
+var imagesLoaded=0;
+var imagesToLoad=0;
 
-    this.imagesLoaded=0;
-    this.imagesToLoad=0;
+var imgLib = new function() {
 
     this.isAllImagesLoaded = function() {
         return imagesLoaded === imagesToLoad;
@@ -24,19 +24,18 @@ var imgLib = new function() {
     this.loadImage = function(src) {
         var img=new Image();
         img.src=src;
-        this.imagesToLoad+=1;
+        imagesToLoad+=1;
         img.onload=function() {
-            this.imagesLoaded+=1;
+            imagesLoaded+=1;
             if(DEBUG) {console.log("Image: " + src + " loaded.");}
         }
         return img;
     }
-
-    this.imagesToLoad+=1;
-
+    
+    imagesToLoad += 1;
+    
     // Load background image
     this.background=this.loadImage("res/sprites/background_temp.png");
-
-    this.imagesLoaded+=1;
-
+    
+    imagesLoaded += 1;
 }

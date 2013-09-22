@@ -1,36 +1,48 @@
 var Screen = Backbone.View.extend({
 
   initialize: function() {
-    this.listenTo(this.model, "change", this.render);
+    this.listenTo(this.model, "change", function() {this.needsRepaint=true;});
   },
 
-  rendering: false,
+  needsRepaint: true,
 
   // Render the map to the context
   render: function() {
-    if(!this.rendering) {
-        this.rendering=true;
-        var context=this.el.getContext("2d");
+    if(this.needsRepaint) {
+      var context=this.el.getContext("2d");
 
-        var bg=this.model.get("background");
-        var bgWidth=bg.width;
-        var bgHeight=bg.height;
+      var bg=this.model.get("background");
+      var bgWidth=bg.width;
+      var bgHeight=bg.height;
 
-        var width=this.model.get("viewWidth");
-        var height=this.model.get("viewHeight");
+      var width=this.model.get("viewWidth");
+      var height=this.model.get("viewHeight");
 
-        var xPos=this.model.get("viewXPosition");
-        var yPos=this.model.get("viewYPosition");
+      var xPos=this.model.get("viewXPosition");
+      var yPos=this.model.get("viewYPosition");
 
-        var xOffset=xPos%bgWidth;
-        var yOffset=yPos%bgHeight;
+      var xOffset=xPos%bgWidth;
+      var yOffset=yPos%bgHeight;
 
-        for(var i=-yOffset; i<height; i+=bgHeight) {
-            for(var j=-xOffset; j<width; j+=bgWidth) {
-                context.drawImage(bg, j, i);
-            }
+      for(var i=-yOffset; i<height; i+=bgHeight) {
+        for(var j=-xOffset; j<width; j+=bgWidth) {
+          context.drawImage(bg, j, i);
         }
-        this.rendering=false;
+      }
+      
+      var buildings = this.model.get("buildings");
+      for(var i=0; i<buildings.length; i++) {
+        var building = buildings.at(i);
+        var bImg=building.get("sprite");
+        var bX=building.get("x") - xPos;
+        var bY=building.get("y") - yPos;
+        var bW=bImg.width;
+        var bH=bImg.height;
+        if (bX+bW > 0 && bY+bH > 0 && bX < width && bY < height) {
+          context.drawImage(bImg, bX, bY);
+        }
+      }
+    this.needsRepaint=false;
     }
   },
 
@@ -42,7 +54,7 @@ var Screen = Backbone.View.extend({
   touchStart: function(event) {
     event.preventDefault();
     
-    // Store the touch object for the coming moves
+    // Store the touch object for the coming events
     this.prevTouchObject = event.touches[0];
   },
 
