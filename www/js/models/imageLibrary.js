@@ -36,6 +36,7 @@ var imgLib = new function() {
     
     // Load background image
     this.background=this.loadImage("res/sprites/background_temp.png");
+    this.building=this.loadImage("res/sprites/house_temp.png");
     
     imagesLoaded += 1;
 }
