@@ -34,6 +34,10 @@ var app = {
                     height: 5000
                     });
 
+    var level = new Level({
+                    map: map
+    });
+
     // Initialize game view / controller
     var screen = new Screen({model: map, el: canvas});
 
@@ -43,23 +47,19 @@ var app = {
 
     // Debug variables
     var frameCount = 0;
-    var now = Date.now();
+    var prev = Date.now();
+    var now = prev;
     
     // Game loop
     function gameLoop() {
       requestAnimFrame(gameLoop);
       if(imgLib.isAllImagesLoaded()) {
-        if(DEBUG) {
-          frameCount+=1
-          var temp=Date.now();
-          if(temp - now > 1000) {
-            console.log("FPS: " + frameCount);
-            now += 1000;
-            frameCount=0;
-          }
-        }
+        now=Date.now();
+        var dt=now-prev;
+        prev=now;
+        
         screen.render();
-        // level.update(dt); <<--- this is where the level should be updated, when level gets implemented
+        level.update(dt); //<<--- this is where the level should be updated, when level gets implemented
       } else {
         // Splash screen, all images not loaded yet
       }
