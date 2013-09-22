@@ -22,8 +22,8 @@ var app = {
         context = canvas.getContext('2d');
 
     // Set canvas size. (This also reallocates memory to the pixel buffer)
-    canvas.width = window.screen.availWidth;
-    canvas.height = window.screen.availHeight;
+    // canvas.width = window.screen.availWidth;
+    // canvas.height = window.screen.availHeight;
 
     // Initialize game models
     var map = new Map({
