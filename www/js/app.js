@@ -53,6 +53,7 @@ var app = {
     // Add Event Listeners
     canvas.addEventListener("touchstart", screen, false); // When the user touches the screen
     canvas.addEventListener("touchmove", screen, false); // When the user moves the finger
+    canvas.addEventListener("touchend", screen, false);
 
     // Debug variables
     var frameCount = 0;
