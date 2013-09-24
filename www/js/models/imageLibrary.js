@@ -35,8 +35,14 @@ var imgLib = new function() {
     imagesToLoad += 1;
     
     // Load background image
-    this.background=this.loadImage("res/sprites/background_temp.png");
-    this.building=this.loadImage("res/sprites/house_temp.png");
+    this.background=this.loadImage("res/sprites/background_grass.png");
+    this.factory1=this.loadImage("res/sprites/factory_1_128.png");
+    this.factory2=this.loadImage("res/sprites/factory_2_128.png");
+    this.company1=this.loadImage("res/sprites/company_1_128.png");
+    this.house1=this.loadImage("res/sprites/house_1_128.png");
+    this.house1=this.loadImage("res/sprites/house_2_128.png");
+    this.house1=this.loadImage("res/sprites/house_3_128.png");
+    this.house1=this.loadImage("res/sprites/house_4_128.png");
     
     imagesLoaded += 1;
 }
