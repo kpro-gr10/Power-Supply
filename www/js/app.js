@@ -17,13 +17,22 @@ var app = {
   },
 
   onDeviceReady: function() {
-    // Get draw context
+    // Get the screen draw context
     var canvas = document.getElementById('screen'),
         context = canvas.getContext('2d');
 
+    // Get the user interface draw context
+    var hud = document.getElementById("hud");
+    hud.width=window.screen.availWidth;
+    hud.height=HUD_HEIGHT;
+
+    hudContext = hud.getContext("2d");
+    hudContext.fillStyle="blue";
+    hudContext.fillRect(0, 0, hud.width, hud.height);
+
     // Set canvas size. (This also reallocates memory to the pixel buffer)
-    // canvas.width = window.screen.availWidth;
-    // canvas.height = window.screen.availHeight;
+    canvas.width = window.screen.availWidth;
+    canvas.height = window.screen.availHeight - hud.height;
 
     // Initialize game models
     var map = new Map({

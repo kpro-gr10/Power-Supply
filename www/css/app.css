@@ -4,3 +4,15 @@ body {
     margin: 0;
     padding: 0;
 }
+
+canvas.screen {
+	margin: 0;
+    padding: 0;
+}
+
+canvas.hud {
+	margin: 0;
+    padding: 0;
+    position:relative;
+    top:-4px;
+}
