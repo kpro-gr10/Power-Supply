@@ -47,16 +47,38 @@ var Screen = Backbone.View.extend({
     }
   },
 
-  // Stores the previous touch object that
-  // the screen captured.
-  prevTouchObject: undefined,
+  // Stores the previous touch object captured by the 'touchstart' handler.
+  prevTouchStart: undefined,
 
-  // Event handlers
+  // Stores the previous touch object captured by the 'touchend' handler.
+  prevTouchEnd: undefined,
+
+  // Stores the time of the previous 'touchend' event.
+  prevTouchEndTime: -Infinity,
+
   touchStart: function(event) {
     event.preventDefault();
     
     // Store the touch object for the coming events
-    this.prevTouchObject = event.touches[0];
+    this.prevTouchStart = event.touches[0];
+  },
+
+  touchEnd: function(event) {
+    event.preventDefault();
+
+    var doubleTapInterval = 500, // in milliseconds
+        doubleTapArea = 40,      // in pixels
+        touch = event.touches[0];
+
+    if (Date.now() - this.prevTouchEndTime < doubleTapInterval &&
+        Math.abs(touch.screenX - this.prevTouchEnd.screenX) <= doubleTapArea &&
+        Math.abs(touch.screenY - this.prevTouchEnd.screenY) <= doubleTapArea) {
+      // Delegate to a dedicated double tap handler.
+      this.doubleTap(event);
+    }
+
+    this.prevTouchEnd = event.touches[0];
+    this.prevTouchEndTime = Date.now();
   },
 
   touchMove: function(event) {
@@ -64,8 +86,8 @@ var Screen = Backbone.View.extend({
     var touchObject = event.touches[0];
     
     // Calculate change
-    var dx = this.prevTouchObject.screenX - touchObject.screenX;
-    var dy = this.prevTouchObject.screenY - touchObject.screenY;
+    var dx = this.prevTouchStart.screenX - touchObject.screenX;
+    var dy = this.prevTouchStart.screenY - touchObject.screenY;
     
     // Get current values
     var viewX = this.model.get("viewXPosition");
@@ -90,16 +112,21 @@ var Screen = Backbone.View.extend({
     this.model.set("viewYPosition", viewY);
     
     // Store the new touch object for the next move
-    this.prevTouchObject=touchObject;
+    this.prevTouchStart=touchObject;
+  },
+
+  doubleTap: function(event) {
+    console.log("doubletap!");
   },
 
   // Receive events
   handleEvent: function(event) {
-    if(event.type==="touchstart") {
+    if (event.type === "touchstart") {
       this.touchStart(event);
-    } 
-    else if (event.type==="touchmove") {
+    } else if (event.type === "touchmove") {
       this.touchMove(event);
+    } else if (event.type === "touchend") {
+      this.touchEnd(event);
     }
   }
 
