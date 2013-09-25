@@ -68,7 +68,7 @@ var Screen = Backbone.View.extend({
 
     var doubleTapInterval = 500, // in milliseconds
         doubleTapArea = 40,      // in pixels
-        touch = event.touches[0];
+        touch = event.changedTouches[0];
 
     if (Date.now() - this.prevTouchEndTime < doubleTapInterval &&
         Math.abs(touch.screenX - this.prevTouchEnd.screenX) <= doubleTapArea &&
@@ -77,7 +77,7 @@ var Screen = Backbone.View.extend({
       this.doubleTap(event);
     }
 
-    this.prevTouchEnd = event.touches[0];
+    this.prevTouchEnd = event.changedTouches[0];
     this.prevTouchEndTime = Date.now();
   },
 
