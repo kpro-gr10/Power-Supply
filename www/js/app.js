@@ -43,9 +43,7 @@ var app = {
                     height: 2000
                     });
 
-    var level = new Level({
-                    map: map
-    });
+    var level = new Level({map: map});
 
     //Initialize main menu
     var menu = new Menu();

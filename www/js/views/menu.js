@@ -1,6 +1,5 @@
 var Menu = Backbone.View.extend({
 	el:$("div#menu"),
-
 	events: {
     	"click button#start_game" : "startGame",
     	"click button#instructions": "instructions",
@@ -13,7 +12,6 @@ var Menu = Backbone.View.extend({
 	startGame: function(){
 		$('div#game').css('display', 'inline');
 		$('div#menu').css('display', 'none');
-		app.gameLoop();
     },
 
     instructions: function(){
