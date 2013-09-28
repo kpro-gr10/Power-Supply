@@ -74,6 +74,6 @@ var app = {
         // Splash screen, all images not loaded yet
       }
     }
-    gameLoop();
+    //gameLoop();
   }
 };
