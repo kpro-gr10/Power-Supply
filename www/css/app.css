@@ -5,14 +5,10 @@ body {
     padding: 0;
 }
 
-canvas.screen {
-	margin: 0;
+p {
     padding: 0;
-}
-
-canvas.hud {
-	margin: 0;
-    padding: 0;
-    position:relative;
-    top:-4px;
+    margin-bottom: 80px;
+    margin-top: 8px;
+    margin-left: 20px;
+    font-size: 200%;
 }

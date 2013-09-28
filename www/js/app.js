@@ -21,18 +21,9 @@ var app = {
     var canvas = document.getElementById('screen'),
         context = canvas.getContext('2d');
 
-    // Get the user interface draw context
-    var hud = document.getElementById("hud");
-    hud.width=window.screen.availWidth;
-    hud.height=HUD_HEIGHT;
-
-    hudContext = hud.getContext("2d");
-    hudContext.fillStyle="blue";
-    hudContext.fillRect(0, 0, hud.width, hud.height);
-
     // Set canvas size. (This also reallocates memory to the pixel buffer)
     canvas.width = window.screen.availWidth;
-    canvas.height = window.screen.availHeight - hud.height;
+    canvas.height = window.screen.availHeight - HIDDEN_HUD_HEIGHT;
 
     // Initialize game models
     var map = new Map({
@@ -43,12 +34,16 @@ var app = {
                     height: 2000
                     });
 
+    var player = new Player;
+
     var level = new Level({
-                    map: map
+                    map: map,
+                    player: player
     });
 
     // Initialize game view / controller
     var screen = new Screen({model: map, el: canvas});
+    var hud = new Hud({model: level, el: document.getElementById("money")});    
 
     // Add Event Listeners
     canvas.addEventListener("touchstart", screen, false); // When the user touches the screen

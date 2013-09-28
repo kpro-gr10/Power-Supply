@@ -26,9 +26,22 @@
         <title>Hello World</title>
     </head>
     <body>
-        <div class="app">
-          <canvas id="screen" class="screen"></canvas>
-          <canvas id="hud" class="hud"></canvas>
+        <div id="app">        
+          <canvas id="screen"></canvas>
+
+          <div id="lower hud">
+            <p id="money">Kr: 0</p>
+
+            <div align="center">
+              <button id="build powerplant">
+                <img src="res/sprites/factory_1_128.png"></img><br>Build Powerplant
+              </button>
+
+              <button id="build powerline">
+                <img src="res/sprites/factory_2_128.png"></img><br>Build Powerline
+              </button>
+            </div>
+          </div>
         </div>
 
         <!-- Third party code -->
@@ -40,10 +53,12 @@
         <!-- Our code -->
         <script type="text/javascript" src="js/constants.js"></script>
         <script type="text/javascript" src="js/models/imageLibrary.js"></script>
+        <script type="text/javascript" src="js/models/player.js"></script>
         <script type="text/javascript" src="js/models/map.js"></script>
         <script type="text/javascript" src="js/models/building.js"></script>
         <script type="text/javascript" src="js/models/level.js"></script>        
         <script type="text/javascript" src="js/views/screen.js"></script>
+        <script type="text/javascript" src="js/views/hud.js"></script>
         <script type="text/javascript" src="js/app.js"></script>
         <script type="text/javascript">
             app.initialize();

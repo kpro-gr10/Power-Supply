@@ -3,11 +3,15 @@ var Level = Backbone.Model.extend({
 	defaults: {
 		map: undefined,
 		player: undefined,
+		playtime: 0,
 		frequency: 5000,
 		lastTime: 0
 	},
 
 	update: function (dt){
+		var playtime=this.get("playtime");
+		this.set("playtime", playtime+(dt/1000));
+
 		var last = this.get("lastTime") + dt;
 		var freq=this.get("frequency");
 		if(last>freq){
