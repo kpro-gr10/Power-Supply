@@ -47,6 +47,9 @@ var app = {
                     map: map
     });
 
+    //Initialize main menu
+    var menu = new Menu();
+
     // Initialize game view / controller
     var screen = new Screen({model: map, el: canvas});
 
@@ -74,6 +77,5 @@ var app = {
         // Splash screen, all images not loaded yet
       }
     }
-    //gameLoop();
   }
 };

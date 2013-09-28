@@ -21,29 +21,33 @@ div#game{
     display: none;
 }
 
-ul#menu{
+div#menu ul{
     list-style-type: none; 
     display: inline-block; 
     padding: 0;
+    width: 100%;
 }
-li#menu{
-    padding-bottom: 5%;
+div#menu li{
+    margin-bottom: 2%;
 }
-button#menu{
+div#menu button{
     width: 60%; 
-    height: 60%; 
-    border-radius: 30%;
+    font-size: 300%;
+    border-radius: 10%;
 }
 
 div#menu{
-    visibility: visible;
-    background-color: black;  
-    text-align:center;
     width: 100%;
     height: 100%;
+    display: inline;
+    background-color: black;  
+    text-align:center;
+    position: absolute;
 }
 
 img#logo{
+    padding-top: 20%;
+    padding-bottom: 10%;
     display: block; 
     margin-left: auto;
     margin-right: auto;
