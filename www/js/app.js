@@ -45,7 +45,8 @@ var app = {
     
     // Initialize game view / controller
     var screen = new Screen({model: map, el: canvas});
-    var hud = new Hud({model: level, el: document.getElementById("money")});    
+    var hudBtns = new HudButtons({model: level, el: $('#hudButtons')});
+    var hudMny = new HudMoney({model: player, el: $('#money')});
 
     // Add Event Listeners
     canvas.addEventListener("touchstart", screen, false); // When the user touches the screen
@@ -65,7 +66,7 @@ var app = {
         var dt=now-prev;
         prev=now;
         screen.render();
-        level.update(dt); //<<--- this is where the level should be updated, when level gets implemented
+        level.update(dt);
       } else {
         // Splash screen, all images not loaded yet
       }
