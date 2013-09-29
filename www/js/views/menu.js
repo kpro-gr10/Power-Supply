@@ -4,7 +4,7 @@ var Menu = Backbone.View.extend({
 	events: {
     	"click button#start_game" : "startGame",
     	"click button#instructions": "instructions",
-    	"click button#highscore": "highscore" 
+    	"click button#highscore": "highscore", 
     },
 
     initialize: function(){     
@@ -16,10 +16,12 @@ var Menu = Backbone.View.extend({
     },
 
     instructions: function(){
-    	alert("instructions");
+    	$('div#menu').css('display', 'none');
+        $('div#instructions').css('display', 'inline');
     },
 
     highscore: function(){
-    	alert("highscore");
-    }
+    	$('div#menu').css('display', 'none');
+        $('div#highscore').css('display', 'inline');
+    },
 });

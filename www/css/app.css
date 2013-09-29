@@ -13,7 +13,24 @@ p {
     font-size: 200%;
 }
 
+div#menu{
+    width: 100%;
+    height: 100%;
+    display: inline;
+    background-color: black;  
+    text-align:center;
+    position: absolute;
+}
+
 div#game{
+    display: none;
+}
+
+div#instructions{
+    display: none;
+}
+
+div#highscore{
     display: none;
 }
 
@@ -32,15 +49,6 @@ div#menu button{
     border-radius: 10%;
 }
 
-div#menu{
-    width: 100%;
-    height: 100%;
-    display: inline;
-    background-color: black;  
-    text-align:center;
-    position: absolute;
-}
-
 img#logo{
     padding-top: 20%;
     padding-bottom: 10%;
@@ -49,3 +57,4 @@ img#logo{
     margin-right: auto;
     width: 90%;
 }
+
