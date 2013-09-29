@@ -40,7 +40,9 @@ var app = {
                     map: map,
                     player: player
     });
-
+    //Initialize main menu
+    var menu = new Menu();
+    
     // Initialize game view / controller
     var screen = new Screen({model: map, el: canvas});
     var hud = new Hud({model: level, el: document.getElementById("money")});    
@@ -62,13 +64,23 @@ var app = {
         now=Date.now();
         var dt=now-prev;
         prev=now;
-        
         screen.render();
         level.update(dt); //<<--- this is where the level should be updated, when level gets implemented
       } else {
         // Splash screen, all images not loaded yet
       }
     }
-    gameLoop();
+    function startMenu(){
+      $('#start_game').click(function(){
+        gameLoop();
+      });
+      $('#instructions').click(function(){
+        alert("this is instructions");
+      });
+      $('#highscore').click(function(){
+        alert("this is the highscore");
+      });
+    }
+    startMenu();
   }
 };
