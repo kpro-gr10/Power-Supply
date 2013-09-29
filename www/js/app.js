@@ -76,12 +76,29 @@ var app = {
         gameLoop();
       });
       $('#instructions').click(function(){
-        alert("this is instructions");
+        
       });
       $('#highscore').click(function(){
-        alert("this is the highscore");
+        
       });
     }
     startMenu();
+
+    document.addEventListener("backbutton", onBackButton, false);
+
+    function  onBackButton(){
+      if ($('div#instructions').css('display') == 'inline'){
+        $('div#instructions').css('display', 'none');
+        $('div#menu').css('display', 'inline');
+      }
+      else if($('div#highscore').css('display') == 'inline'){
+        $('div#highscore').css('display', 'none');
+        $('div#menu').css('display', 'inline');
+      }
+      else if($('div#game').css('display') == 'inline'){
+        $('div#game').css('display', 'none');
+        $('div#menu').css('display', 'inline');
+      }
+    }
   }
 };
