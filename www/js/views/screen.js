@@ -1,51 +1,112 @@
 var Screen = Backbone.View.extend({
 
   initialize: function() {
-    this.listenTo(this.model.get("map"), "change", function() {this.needsRepaint=true;});
-    this.listenTo(this.model.get("map").get("buildings"), "all", function() {this.needsRepaint=true;});
+    this.listenTo(this.model.get("map"), "change", function() {
+      this.needsRepaint = true;
+    });
+    this.listenTo(this.model.get("map").get("buildings"), "all", function() {
+      this.needsRepaint = true;
+    });
+    this.on("doubletap", this.doubleTap);
   },
 
   needsRepaint: true,
 
-  // Render the map to the context
+  // Keep track of the previous 'zoomed' state so that we don't
+  // scale the map up or down more than once.
+  //
+  // When the game begins, the map should be in a zoomed state.
+  prevZoomed: true,
+
   render: function() {
-    if(this.needsRepaint) {
-      var context=this.el.getContext("2d");
+    // If there's nothing to do, don't do anything.
+    if (!this.needsRepaint)
+      return;
 
-      var map = this.model.get("map");
+    var context = this.el.getContext("2d");
 
-      var bg=map.get("background");
-      var bgWidth=bg.width;
-      var bgHeight=bg.height;
+    if (this.model.get("map").get("zoomed"))
+      this.renderZoomedView(context);
+    else
+      this.renderOverview(context);
 
-      var viewWidth=map.get("viewWidth");
-      var viewHeight=map.get("viewHeight");
+    this.needsRepaint = false;
+  },
 
-      var xPos=map.get("viewXPosition");
-      var yPos=map.get("viewYPosition");
+  // Render the up-close working view of the map.
+  renderZoomedView: function(context) {
+    var map = this.model.get("map"),
+        bg = map.get("background"),
+        bgWidth = bg.width,
+        bgHeight = bg.height,
+        width = map.get("viewWidth"),
+        height = map.get("viewHeight"),
+        xPos = map.get("viewXPosition"),
+        yPos = map.get("viewYPosition"),
+        xOffset = xPos % bgWidth,
+        yOffset = yPos % bgHeight;
 
-      var xOffset=xPos%bgWidth;
-      var yOffset=yPos%bgHeight;
+    if (!this.prevZoomed) {
+      var xScale = map.get("width") / map.get("viewWidth"),
+          yScale = map.get("height") / map.get("viewHeight");
 
-      for(var i=-yOffset; i<viewHeight; i+=bgHeight) {
-        for(var j=-xOffset; j<viewWidth; j+=bgWidth) {
-          context.drawImage(bg, j, i);
-        }
+      context.scale(xScale, yScale);
+      this.prevZoomed = true;
+    }
+
+    for (var y = -yOffset; y < height; y += bgHeight) {
+      for (var x = -xOffset; x < width; x += bgWidth) {
+        context.drawImage(bg, x, y);
       }
-      
-      var buildings = map.get("buildings");
-      for(var i=0; i<buildings.length; i++) {
-        var building = buildings.at(i);
-        var bImg=building.get("sprite");
-        var bX=building.get("x") - xPos;
-        var bY=building.get("y") - yPos;
-        var bW=bImg.width;
-        var bH=bImg.height;
-        if (bX+bW > 0 && bY+bH > 0 && bX < viewWidth && bY < viewHeight) {
-          context.drawImage(bImg, bX, bY);
-        }
+    }
+
+    var buildings = map.get("buildings");
+    for (var i = 0; i < buildings.length; i++) {
+      var building  =  buildings.at(i);
+      var bImg = building.get("sprite");
+      var bX = building.get("x") - xPos;
+      var bY = building.get("y") - yPos;
+      var bW = bImg.width;
+      var bH = bImg.height;
+      if (bX+bW > 0 && bY+bH > 0 && bX < width && bY < height) {
+        context.drawImage(bImg, bX, bY);
       }
-    this.needsRepaint=false;
+    }
+  },
+
+  // Render the zoomed-out overview of the map.
+  renderOverview: function(context) {
+    var map = this.model.get("map"),
+        bg = map.get("background"),
+        width = map.get("width"),
+        height = map.get("height");
+
+    if (this.prevZoomed) {
+      var xScale = map.get("viewWidth") / map.get("width"),
+          yScale = map.get("viewHeight") / map.get("height");
+
+      context.scale(xScale, yScale);
+      this.prevZoomed = false;
+    }
+
+    for (var y = 0; y < height; y += bg.height) {
+      for (var x = 0; x < width; x += bg.width) {
+        context.drawImage(bg, x, y);
+      }
+    }
+
+    var buildings = map.get("buildings");
+    for (var i = 0; i < buildings.length; i++) {
+      var building = buildings.at(i),
+          bImg = building.get("sprite"),
+          bX = building.get("x"),
+          bY = building.get("y"),
+          bW = bImg.width,
+          bH = bImg.height;
+
+      if (bX+bW > 0 && bY+bH > 0 && bX < width && bY < height) {
+        context.drawImage(bImg, bX, bY);
+      }
     }
   },
 
@@ -76,7 +137,7 @@ var Screen = Backbone.View.extend({
         Math.abs(touch.screenX - this.prevTouchEnd.screenX) <= doubleTapArea &&
         Math.abs(touch.screenY - this.prevTouchEnd.screenY) <= doubleTapArea) {
       // Delegate to a dedicated double tap handler.
-      this.doubleTap(event);
+      this.trigger("doubletap", event);
     }
 
     this.prevTouchEnd = event.changedTouches[0];
@@ -119,17 +180,18 @@ var Screen = Backbone.View.extend({
   },
 
   doubleTap: function(event) {
-    console.log("doubletap!");
+    // Toggle the 'zoomed' state of the map.
+    var map = this.model.get("map");
+    map.set({zoomed: !map.get("zoomed")});
   },
 
   // Receive events
   handleEvent: function(event) {
-    if (event.type === "touchstart") {
+    if (event.type === "touchstart")
       this.touchStart(event);
-    } else if (event.type === "touchmove") {
+    else if (event.type === "touchmove")
       this.touchMove(event);
-    } else if (event.type === "touchend") {
+    else if (event.type === "touchend")
       this.touchEnd(event);
-    }
   }
 });

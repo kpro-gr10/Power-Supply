@@ -25,5 +25,4 @@ var Map = Backbone.Model.extend({
   initialize: function() {
     this.get("buildings").add(new Building);
   }
-
 });

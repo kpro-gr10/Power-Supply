@@ -15,7 +15,7 @@ var app = {
 
   // Set by initGame.
   gameLevel: undefined,
-  gameScreen: undefined
+  gameScreen: undefined,
 
   // Set to true by calling startGame, set to false by calling stopGame.
   gameRunning: false,
