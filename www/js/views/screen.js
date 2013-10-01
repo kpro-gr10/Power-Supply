@@ -1,8 +1,8 @@
 var Screen = Backbone.View.extend({
 
   initialize: function() {
-    this.listenTo(this.model, "change", function() {this.needsRepaint=true;});
-    this.listenTo(this.model.get("buildings"), "all", function() {this.needsRepaint=true;});
+    this.listenTo(this.model.get("map"), "change", function() {this.needsRepaint=true;});
+    this.listenTo(this.model.get("map").get("buildings"), "all", function() {this.needsRepaint=true;});
   },
 
   needsRepaint: true,
@@ -12,26 +12,28 @@ var Screen = Backbone.View.extend({
     if(this.needsRepaint) {
       var context=this.el.getContext("2d");
 
-      var bg=this.model.get("background");
+      var map = this.model.get("map");
+
+      var bg=map.get("background");
       var bgWidth=bg.width;
       var bgHeight=bg.height;
 
-      var width=this.model.get("viewWidth");
-      var height=this.model.get("viewHeight");
+      var viewWidth=map.get("viewWidth");
+      var viewHeight=map.get("viewHeight");
 
-      var xPos=this.model.get("viewXPosition");
-      var yPos=this.model.get("viewYPosition");
+      var xPos=map.get("viewXPosition");
+      var yPos=map.get("viewYPosition");
 
       var xOffset=xPos%bgWidth;
       var yOffset=yPos%bgHeight;
 
-      for(var i=-yOffset; i<height; i+=bgHeight) {
-        for(var j=-xOffset; j<width; j+=bgWidth) {
+      for(var i=-yOffset; i<viewHeight; i+=bgHeight) {
+        for(var j=-xOffset; j<viewWidth; j+=bgWidth) {
           context.drawImage(bg, j, i);
         }
       }
       
-      var buildings = this.model.get("buildings");
+      var buildings = map.get("buildings");
       for(var i=0; i<buildings.length; i++) {
         var building = buildings.at(i);
         var bImg=building.get("sprite");
@@ -39,7 +41,7 @@ var Screen = Backbone.View.extend({
         var bY=building.get("y") - yPos;
         var bW=bImg.width;
         var bH=bImg.height;
-        if (bX+bW > 0 && bY+bH > 0 && bX < width && bY < height) {
+        if (bX+bW > 0 && bY+bH > 0 && bX < viewWidth && bY < viewHeight) {
           context.drawImage(bImg, bX, bY);
         }
       }
@@ -83,6 +85,7 @@ var Screen = Backbone.View.extend({
 
   touchMove: function(event) {
     event.preventDefault();
+    var map = this.model.get("map");
     var touchObject = event.touches[0];
     
     // Calculate change
@@ -90,12 +93,12 @@ var Screen = Backbone.View.extend({
     var dy = this.prevTouchStart.screenY - touchObject.screenY;
     
     // Get current values
-    var viewX = this.model.get("viewXPosition");
-    var viewY = this.model.get("viewYPosition");
-    var viewWidth = this.model.get("viewWidth");
-    var viewHeight = this.model.get("viewHeight");
-    var mapWidth = this.model.get("width");
-    var mapHeight = this.model.get("height");
+    var viewX = map.get("viewXPosition");
+    var viewY = map.get("viewYPosition");
+    var viewWidth = map.get("viewWidth");
+    var viewHeight = map.get("viewHeight");
+    var mapWidth = map.get("width");
+    var mapHeight = map.get("height");
 
     // Update current values
     viewX += dx;
@@ -108,8 +111,8 @@ var Screen = Backbone.View.extend({
     else if(viewY >= (mapHeight - viewHeight)) {viewY = mapHeight-viewHeight;}
 
     // Set model values
-    this.model.set("viewXPosition", viewX);
-    this.model.set("viewYPosition", viewY);
+    map.set("viewXPosition", viewX);
+    map.set("viewYPosition", viewY);
     
     // Store the new touch object for the next move
     this.prevTouchStart=touchObject;
@@ -129,5 +132,4 @@ var Screen = Backbone.View.extend({
       this.touchEnd(event);
     }
   }
-
 });
