@@ -136,8 +136,13 @@ var Screen = Backbone.View.extend({
     if (Date.now() - this.prevTouchEndTime < doubleTapInterval &&
         Math.abs(touch.screenX - this.prevTouchEnd.screenX) <= doubleTapArea &&
         Math.abs(touch.screenY - this.prevTouchEnd.screenY) <= doubleTapArea) {
+      // Prevent triple taps registering as two double taps.
+      this.prevTouchEndTime = -Infinity;
+
       // Delegate to a dedicated double tap handler.
       this.trigger("doubletap", event);
+
+      return;
     }
 
     this.prevTouchEnd = event.changedTouches[0];
