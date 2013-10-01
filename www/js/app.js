@@ -8,72 +8,90 @@ window.requestAnimFrame = (function(){
 })();
 
 var app = {
+
+  /*
+   * Game variables
+   */
+
+  // Set by initGame.
+  gameLevel: undefined,
+  gameScreen: undefined
+
+  // Set to true by calling startGame, set to false by calling stopGame.
+  gameRunning: false,
+
   initialize: function() {
     this.bindEvents();
+
+    // initialize the game canvas
+    var canvas = document.getElementById('screen');
+    canvas.width = window.screen.availWidth;
+    canvas.height = window.screen.availHeight - HIDDEN_HUD_HEIGHT;
   },
 
   bindEvents: function() {
     document.addEventListener('deviceready', this.onDeviceReady);
   },
 
-  onDeviceReady: function() {
-    // Get the screen draw context
-    var canvas = document.getElementById('screen'),
-        context = canvas.getContext('2d');
-
-    // Set canvas size. (This also reallocates memory to the pixel buffer)
-    canvas.width = window.screen.availWidth;
-    canvas.height = window.screen.availHeight - HIDDEN_HUD_HEIGHT;
-
-    // Initialize game models
-    var map = new Map({
-                    viewWidth: canvas.width, 
-                    viewHeight: canvas.height,
-                    background: imgLib.background,
-                    width: 2000,
-                    height: 2000
-                    });
-
+  initGame: function(levelId) {
+    if(DEBUG) {console.log("Started initializing game..");}
+    var canvas = document.getElementById('screen');
+    // Load and initialize game models
     var player = new Player;
-
-    var level = new Level({
-                    map: map,
-                    player: player
+    var map = new Map({
+      viewWidth: canvas.width, 
+      viewHeight: canvas.height,
+      background: imgLib.background,
+      width: 2000,
+      height: 2000
     });
-    //Initialize main menu
-    var menu = new Menu();
-    
+    this.gameLevel = new Level({map: map, player: player});
+
     // Initialize game view / controller
-    var screen = new Screen({model: map, el: canvas});
-    var hudBtns = new HudButtons({model: level, el: $('#hudButtons')});
-    var hudMny = new HudMoney({model: player, el: $('#money')});
+    this.gameScreen = new Screen({model: this.gameLevel, el: $('#screen')});
+    var hudBtns = new HudButtons({model: this.gameLevel, el: $('#hudButtons')});
+    var hudMny = new HudMoney({model: this.gameLevel, el: $('#money')});
 
-    // Add Event Listeners
-    canvas.addEventListener("touchstart", screen, false); // When the user touches the screen
-    canvas.addEventListener("touchmove", screen, false); // When the user moves the finger
-    canvas.addEventListener("touchend", screen, false);
+    canvas.addEventListener("touchstart", this.gameScreen, false);
+    canvas.addEventListener("touchmove", this.gameScreen, false);
+    canvas.addEventListener("touchend", this.gameScreen, false);
+  },
 
-    // Debug variables
-    var frameCount = 0;
+  startGame: function() {
+    if(DEBUG) {console.log("Starting game..");}
+    // Game loop
     var prev = Date.now();
     var now = prev;
-    
-    // Game loop
     function gameLoop() {
-      requestAnimFrame(gameLoop);
-      if(imgLib.isAllImagesLoaded()) {
+      if (app.gameRunning) {
+        requestAnimFrame(gameLoop);
+
         now=Date.now();
         var dt=now-prev;
         prev=now;
-        screen.render();
-        level.update(dt);
-      } else {
-        // Splash screen, all images not loaded yet
+
+        app.gameScreen.render();
+        app.gameLevel.update(dt);
       }
     }
+
+    this.gameRunning = true;
+    gameLoop();
+  },
+
+  stopGame: function() {
+    if(DEBUG) {console.log("Stopping game..");}
+    this.gameRunning = false;
+  },
+
+  onDeviceReady: function() {
+    //Initialize main menu
+    var menu = new Menu();
+
     function startMenu(){
       $('#start_game').click(function(){
-        gameLoop();
+        app.initGame(0);
+        app.startGame();
       });
       $('#instructions').click(function(){
         
@@ -96,6 +114,7 @@ var app = {
         $('div#menu').css('display', 'inline');
       }
       else if($('div#game').css('display') == 'inline'){
+        app.stopGame();
         $('div#game').css('display', 'none');
         $('div#menu').css('display', 'inline');
       }
