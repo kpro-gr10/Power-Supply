@@ -3,7 +3,8 @@ var Level = Backbone.Model.extend({
 	defaults: {
 		map: undefined,
 		player: undefined,
-		playtime: 0,
+		playtime: 0, // In seconds
+		state: GameState.Normal,
 		frequency: 5000,
 		lastTime: 0
 	},
@@ -18,7 +19,7 @@ var Level = Backbone.Model.extend({
 			var map = this.get("map");
 			var xr = Math.floor(Math.random()*map.get("width"));
 			var yr = Math.floor(Math.random()*map.get("height"));
-			console.log(xr + " " + yr);
+			console.log("New building at: " + xr + ", " + yr);
 
 
 			map.get("buildings").add(new Building({
