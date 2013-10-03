@@ -31,12 +31,14 @@ var HudButtons = Backbone.View.extend({
 
 	buildPowerPlant: function() {
 		scrollToTop();
-		console.log("build power plant");
+		if(DEBUG) {console.log("build power plant");}
+		this.model.set("state", GameState.BuildPP);
 	},
 
 	buildPowerLine: function() {
 		scrollToTop();
-		console.log("build power line");
+		if(DEBUG) {console.log("build power line");}
+		this.model.set("state", GameState.BuildPL);
 	}
 
 });
