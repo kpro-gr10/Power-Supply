@@ -31,5 +31,14 @@ var Level = Backbone.Model.extend({
 		} else {
 			this.set("lastTime", last);
 		}
+	},
+
+	buildPowerPlantAt: function(sx, sy) {
+		if(DEBUG) {console.log("Build Powerplant at: " + (this.get("map").get("viewXPosition")+sx) + ", " + (this.get("map").get("viewYPosition")+sy));}
+    	this.get("map").get("buildings").add(new Powerplant({
+        	x: this.get("map").get("viewXPosition")+sx,
+        	y: this.get("map").get("viewYPosition")+sy
+    	}));
+    	this.set("state", GameState.Normal);
 	}
 });

@@ -143,6 +143,9 @@ var Screen = Backbone.View.extend({
       this.trigger("doubletap", event);
 
       return;
+    } else if (this.model.get("state") === GameState.BuildPP) {
+      // TODO: Ask if the player really wants to build here
+      this.model.buildPowerPlantAt(touch.screenX, touch.screenY);
     }
 
     this.prevTouchEnd = event.changedTouches[0];

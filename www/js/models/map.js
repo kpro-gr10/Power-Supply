@@ -22,8 +22,8 @@ var Map = Backbone.Model.extend({
     "buildings": new Backbone.Collection
   },
 
-  initialize: function() {
-    this.get("buildings").add(new Building);
+  update: function(dt) {
+
   },
 
   translateView: function(dx, dy) {
