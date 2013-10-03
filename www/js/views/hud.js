@@ -20,7 +20,7 @@ function scrollToTop() {
 	if(newX>0 || newY>0) {
 		setTimeout(scrollToTop, 30);
 	}
-};
+}
 
 var HudButtons = Backbone.View.extend({
 
