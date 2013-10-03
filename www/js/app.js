@@ -34,7 +34,7 @@ var app = {
   },
 
   initGame: function(levelId) {
-    if(DEBUG) {console.log("Started initializing game..");}
+    if(DEBUG) {console.log("Initializing game..");}
     var canvas = document.getElementById('screen');
     // Load and initialize game models
     var player = new Player;
