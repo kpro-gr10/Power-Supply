@@ -157,28 +157,9 @@ var Screen = Backbone.View.extend({
     // Calculate change
     var dx = this.prevTouchStart.screenX - touchObject.screenX;
     var dy = this.prevTouchStart.screenY - touchObject.screenY;
-    
-    // Get current values
-    var viewX = map.get("viewXPosition");
-    var viewY = map.get("viewYPosition");
-    var viewWidth = map.get("viewWidth");
-    var viewHeight = map.get("viewHeight");
-    var mapWidth = map.get("width");
-    var mapHeight = map.get("height");
 
-    // Update current values
-    viewX += dx;
-    viewY += dy;
-
-    // Make sure the new values are valid. Don't allow scrolling outside the map.
-    if(viewX < 0) {viewX = 0;}
-    else if(viewX >= (mapWidth - viewWidth)) {viewX = mapWidth-viewWidth;}
-    if(viewY < 0) {viewY = 0;}
-    else if(viewY >= (mapHeight - viewHeight)) {viewY = mapHeight-viewHeight;}
-
-    // Set model values
-    map.set("viewXPosition", viewX);
-    map.set("viewYPosition", viewY);
+    // Update model
+    map.translateView(dx, dy);
     
     // Store the new touch object for the next move
     this.prevTouchStart=touchObject;
