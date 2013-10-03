@@ -3,6 +3,10 @@ var Building = Backbone.Model.extend({
 		sprite: imgLib.company1,
 		x: 0, 
 		y: 0
+	},
+
+	update: function(dt) {
+
 	}
 
 });

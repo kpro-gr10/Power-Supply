@@ -1,6 +1,6 @@
-var Powerplant = Backbone.Model.extend({
+var Powerplant = Building.extend({
 	defaults: {
-		
+		sprite: imgLib.factory1
 	}
 
 )};
