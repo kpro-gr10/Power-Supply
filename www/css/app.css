@@ -26,6 +26,22 @@ div#game{
     display: none;
 }
 
+div#game img#coin {
+    float: left;
+}
+
+div#game p#money {
+    float: left;
+
+    /* Match the size of the coin icon. The image is 64px by 64px,
+       but the actual coin is approximately 48px in height. */
+    font-size: 48px;
+}
+
+div#game div#hudButtons {
+    clear: both;
+}
+
 div#instructions{
     display: none;
 }
@@ -40,9 +56,11 @@ div#menu ul{
     padding: 0;
     width: 100%;
 }
+
 div#menu li{
     margin-bottom: 2%;
 }
+
 div#menu button{
     width: 60%; 
     font-size: 300%;

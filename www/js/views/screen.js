@@ -173,8 +173,32 @@ var Screen = Backbone.View.extend({
   },
 
   doubleTap: function(event) {
-    // Toggle the 'zoomed' state of the map.
     var map = this.model.get("map");
+
+    // Center the view where the user tapped if entering a zoomed state.
+    if (!map.get("zoomed")) {
+      var touch = event.changedTouches[0],
+          width = map.get("width"),
+          height = map.get("height"),
+          viewWidth = map.get("viewWidth"),
+          viewHeight = map.get("viewHeight"),
+          newX = Math.round(width/viewWidth * touch.screenX - viewWidth/2),
+          newY = Math.round(height/viewHeight * touch.screenY - viewHeight/2);
+
+      // Keep the coordinates within our map boundaries.
+      if (newX < 0)
+        newX = 0;
+      else if (newX + viewWidth > width)
+        newX = width - viewWidth;
+      if (newY < 0)
+        newY = 0;
+      else if (newY + viewHeight > height)
+        newY = height - viewHeight;
+
+      map.set({viewXPosition: newX, viewYPosition: newY});
+    }
+
+    // Toggle the 'zoomed' state of the map.
     map.set({zoomed: !map.get("zoomed")});
   },
 
