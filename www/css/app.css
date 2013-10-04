@@ -28,6 +28,11 @@ div#game{
 
 div#game img#coin {
     float: left;
+
+    /* Prevent a blue 'selection background' from appearing behind the coin
+       when double tapping the map. */
+    -moz-user-select: none;
+    -webkit-user-select: none;
 }
 
 div#game p#money {
