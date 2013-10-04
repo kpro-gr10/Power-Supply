@@ -7,6 +7,7 @@ var Screen = Backbone.View.extend({
     this.listenTo(this.model.get("map").get("buildings"), "all", function() {
       this.needsRepaint = true;
     });
+    this.listenTo(this.model, "change:state", this.toggleBackgroundState);
     this.on("doubletap", this.doubleTap);
   },
 
@@ -108,6 +109,14 @@ var Screen = Backbone.View.extend({
         context.drawImage(bImg, bX, bY);
       }
     }
+  },
+
+  toggleBackgroundState: function() {
+    var state = this.model.get("state");
+    if (state == GameState.BuildPP || state == GameState.BuildPL)
+      this.model.get("map").set({background: imgLib.buildBackground});
+    else
+      this.model.get("map").set({background: imgLib.background});
   },
 
   // Stores the previous touch object captured by the 'touchstart' handler.
