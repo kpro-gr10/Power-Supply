@@ -33,12 +33,29 @@ var Level = Backbone.Model.extend({
 		}
 	},
 
+
+	/*
+	 * Build a powerplant on the map
+	 *
+	 * sx = screen x position
+	 * sy = screen y position
+	 */
 	buildPowerPlantAt: function(sx, sy) {
 		if(DEBUG) {console.log("Build Powerplant at: " + (this.get("map").get("viewXPosition")+sx) + ", " + (this.get("map").get("viewYPosition")+sy));}
-    	this.get("map").get("buildings").add(new Powerplant({
-        	x: this.get("map").get("viewXPosition")+sx,
-        	y: this.get("map").get("viewYPosition")+sy
-    	}));
-    	this.set("state", GameState.Normal);
+		this.set("state", GameState.Normal);
+
+		var powerplant = new Powerplant(); // TODO Replace this with grabbing a building from the object pool
+
+		var confirm = window.confirm("Do you want to build here?\nPrice: " + POWERPLANT_COST + " ,-");
+		if(confirm) {
+			var sprite=powerplant.get("sprite"),
+				map=this.get("map");
+
+   			powerplant.set("x", map.get("viewXPosition") + sx + window.pageXOffset - sprite.width/2);
+   			powerplant.set("y", map.get("viewYPosition") + sy + window.pageYOffset - sprite.height/2);
+
+   			this.get("player").set("money", this.get("player").get("money") - POWERPLANT_COST);
+			map.get("buildings").add(powerplant);
+		}
 	}
 });
