@@ -40,9 +40,10 @@ var imgLib = new function() {
     this.factory2=this.loadImage("res/sprites/factory_2_128.png");
     this.company1=this.loadImage("res/sprites/company_1_128.png");
     this.house1=this.loadImage("res/sprites/house_1_128.png");
-    this.house1=this.loadImage("res/sprites/house_2_128.png");
-    this.house1=this.loadImage("res/sprites/house_3_128.png");
-    this.house1=this.loadImage("res/sprites/house_4_128.png");
+    this.house2=this.loadImage("res/sprites/house_2_128.png");
+    this.house3=this.loadImage("res/sprites/house_3_128.png");
+    this.house4=this.loadImage("res/sprites/house_4_128.png");
+    this.buildMarker=this.loadImage("res/sprites/bm.png");
     
     imagesLoaded += 1;
 }
