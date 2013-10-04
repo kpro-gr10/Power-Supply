@@ -87,10 +87,10 @@ var app = {
   onDeviceReady: function() {
     //Initialize main menu
     var menu = new Menu();
+    app.initGame(0);
 
     function startMenu(){
       $('#start_game').click(function(){
-        app.initGame(0);
         app.startGame();
       });
       $('#instructions').click(function(){
