@@ -10,6 +10,7 @@ var Screen = Backbone.View.extend({
     this.listenTo(this.model.get("map").get("buildings"), "all", function() {
       this.needsRepaint = true;
     });
+    this.listenTo(this.model, "change:state", this.toggleBackgroundState);
     this.on("doubletap", this.doubleTap);
   },
 
