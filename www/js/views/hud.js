@@ -30,9 +30,17 @@ var HudButtons = Backbone.View.extend({
 	},
 
 	buildPowerPlant: function() {
-		scrollToTop();
-		if(DEBUG) {console.log("build power plant");}
-		this.model.set("state", GameState.BuildPP);
+		if(this.model.get("player").get("money")>=POWERPLANT_COST) {
+			if(DEBUG) {console.log("build power plant");}
+			var map = this.model.get("map");
+      		if(!map.get("zoomed")) {
+        		map.set({zoomed: true});
+      		}
+			scrollToTop();
+			this.model.set("state", GameState.BuildPP);
+		} else {
+			window.alert("You cannot afford this!");
+		}
 	},
 
 	buildPowerLine: function() {
