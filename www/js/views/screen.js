@@ -110,6 +110,9 @@ var Screen = Backbone.View.extend({
     }
   },
 
+  // If the series of touch events from the previous touchEnd corresponds to a screen move
+  screenMove: false,
+
   // Stores the previous touch object captured by the 'touchstart' handler.
   prevTouchStart: undefined,
 
@@ -143,17 +146,18 @@ var Screen = Backbone.View.extend({
       this.trigger("doubletap", event);
 
       return;
-    } else if (this.model.get("state") === GameState.BuildPP) {
-      // TODO: Ask if the player really wants to build here
+    } else if (this.model.get("state") === GameState.BuildPP && !this.screenMove) {
       this.model.buildPowerPlantAt(touch.screenX, touch.screenY);
     }
 
     this.prevTouchEnd = event.changedTouches[0];
     this.prevTouchEndTime = Date.now();
+    this.screenMove=false;
   },
 
   touchMove: function(event) {
     event.preventDefault();
+    this.screenMove=true;
     var map = this.model.get("map");
     var touchObject = event.touches[0];
     
