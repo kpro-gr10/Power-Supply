@@ -4,6 +4,9 @@ var Screen = Backbone.View.extend({
     this.listenTo(this.model.get("map"), "change", function() {
       this.needsRepaint = true;
     });
+    this.listenTo(this.model, "change", function() {
+      this.needsRepaint = true;
+    });
     this.listenTo(this.model.get("map").get("buildings"), "all", function() {
       this.needsRepaint = true;
     });
@@ -72,6 +75,11 @@ var Screen = Backbone.View.extend({
         context.drawImage(bImg, bX, bY);
       }
     }
+
+    var state = this.model.get("state");
+    if(state===GameState.BuildPP || state===GameState.BuildPL) { 
+      this.renderBuildMode(context, width, height);
+    }
   },
 
   // Render the zoomed-out overview of the map.
@@ -107,6 +115,21 @@ var Screen = Backbone.View.extend({
       if (bX+bW > 0 && bY+bH > 0 && bX < width && bY < height) {
         context.drawImage(bImg, bX, bY);
       }
+    }
+
+    var state = this.model.get("state");
+    if(state===GameState.BuildPP || state===GameState.BuildPL) { 
+      this.renderBuildMode(context, width, height);
+    }
+  },
+
+  renderBuildMode: function(context, width, height) {
+    var buildMarker = imgLib.buildMarker,
+        bmW=buildMarker.width,
+        bmH=buildMarker.height;
+    for(var i=0; i<width; i+=bmW) {
+      context.drawImage(buildMarker, i, 0);
+      context.drawImage(buildMarker, i, height-bmH);
     }
   },
 

@@ -5,34 +5,53 @@ var Level = Backbone.Model.extend({
 		player: undefined,
 		playtime: 0, // In seconds
 		state: GameState.Normal,
-		frequency: 5000,
-		lastTime: 0
+		createBuildingFreq: 5000
 	},
 
 	update: function (dt){
 		var playtime=this.get("playtime");
 		this.set("playtime", playtime+(dt/1000));
 
-		var last = this.get("lastTime") + dt;
-		var freq=this.get("frequency");
+		var last = this.timeSinceBuilding + dt;
+		var freq=this.get("createBuildingFreq");
 		if(last>freq){
-			var map = this.get("map");
-			var xr = Math.floor(Math.random()*map.get("width"));
-			var yr = Math.floor(Math.random()*map.get("height"));
-			console.log("New building at: " + xr + ", " + yr);
-
-
-			map.get("buildings").add(new Building({
-				x: xr,
-				y: yr
-			}));
-
-			this.set("lastTime", last-freq);
+			this.createBuilding();
+			this.timeSinceBuilding = last - freq;
 		} else {
-			this.set("lastTime", last);
+			this.timeSinceBuilding = last;
 		}
 	},
 
+	/*
+	 * Time in milliseconds since the last building was placed.
+	 */
+	timeSinceBuilding: 0,
+
+	/*
+	 * Call this function when a new building that needs power should be placed on the map.
+	 */
+	createBuilding: function() {
+		var map = this.get("map"),
+			building = new Building(),
+			sprite = building.get("sprite"),
+			xr = Math.floor(Math.random()*(map.get("width")-sprite.width)),
+			yr = Math.floor(Math.random()*(map.get("height")-sprite.height));
+		if(DEBUG) {console.log("New building at: " + xr + ", " + yr);}
+
+		building.set({x: xr});
+		building.set({y: yr});
+
+		map.get("buildings").add(building);
+	},
+
+	/*
+	 * Dialogue boxes causes the game loop to stop. Call this 
+	 * function before using window.alert( .. ) or window.confirm( .. )
+	 * if the game is running.
+	 */
+	pauseGameClock: function(time) {
+
+	},
 
 	/*
 	 * Build a powerplant on the map
