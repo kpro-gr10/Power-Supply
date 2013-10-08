@@ -76,5 +76,30 @@ var Level = Backbone.Model.extend({
    			this.get("player").set("money", this.get("player").get("money") - POWERPLANT_COST);
 			map.get("buildings").add(powerplant);
 		}
-	}
+	},
+
+  startPowerLineAt: function(startBuilding) {
+    var powerLine = new PowerLine({
+      startBuilding: startBuilding
+    });
+
+    return powerLine;
+  },
+
+  connectPowerLineAt: function(powerLine, x, y) {
+    powerLine.get("connectingPoints").add({
+      x: x,
+      y: y
+    });
+
+    return powerLine;
+  },
+
+  finishPowerLineAt: function(powerLine, terminalBuilding) {
+    powerLine.set({
+      terminalBuilding: terminalBuilding
+    });
+
+    return powerLine;
+  }
 });
