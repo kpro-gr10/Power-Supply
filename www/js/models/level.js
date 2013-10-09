@@ -64,7 +64,6 @@ var Level = Backbone.Model.extend({
 		this.set("state", GameState.Normal);
 
 		var powerplant = new Powerplant(); // TODO Replace this with grabbing a building from the object pool
-
 		var confirm = window.confirm("Do you want to build here?\nPrice: " + POWERPLANT_COST + " ,-");
 		if(confirm) {
 			var sprite=powerplant.get("sprite"),
