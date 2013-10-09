@@ -1,9 +1,9 @@
-var GAME_FPS = 60;
-var DEBUG=true;
-var HIDDEN_HUD_HEIGHT=100;
-var POWERPLANT_COST=100;
-var GameState = {
+var GAME_FPS = 60, 
+	DEBUG=true,
+	HIDDEN_HUD_HEIGHT=100,
+	POWERPLANT_COST=100,
+	GameState = {
 	Normal: "Playing",
 	BuildPP: "Build Powerplant",
-	BuildPL: "Build Powerline"
-};
+	BuildPL: "Build Powerline"},
+	PLAYER_MAX_HP=3;
