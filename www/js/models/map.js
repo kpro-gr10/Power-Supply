@@ -50,26 +50,40 @@ var Map = Backbone.Model.extend({
     this.set("viewYPosition", viewY);
     },
 
-    showBuildingInformation: function(sx, sy){
+    showBuildingInformation: function(sx, sy, player){
+        var tapX = sx + this.get("viewXPosition");
+        var tapY = sy + this.get("viewYPosition");
 
         var allBuildings = this.get("buildings");
         for(var i=0; i<allBuildings.length ; i++){
-            if(allBuildings.at(i).get("x") < sx  
-            && allBuildings.at(i).get("x") + allBuildings.at(i).get("sprite").width > sx
-            && allBuildings.at(i).get("y") < sy
-            && allBuildings.at(i).get("y") + allBuildings.at(i).get("sprite").height > sy){    
-                
-                var confirm = window.confirm("Information about the building!\n" + 
-                    "Building is at level" + allBuildings.at(i).get("level") +
-                    "Upgrade cost: " + UPGRADE_COST + " ,-\n" +
-                    "Press 'OK' to upgrade your powerplant.");
-                if(confirm){
-                         
-                }
-                break;
+            if(allBuildings.at(i).get("x") < tapX
+            && allBuildings.at(i).get("x") + allBuildings.at(i).get("sprite").width > tapX
+            && allBuildings.at(i).get("y") < tapY
+            && allBuildings.at(i).get("y") + allBuildings.at(i).get("sprite").height > tapY){
 
+                if(allBuildings.at(i).get("level") === undefined){
+                    alert("This is a building!");
+                } 
+                else{   
+                    var confirm = window.confirm("Information about the building!\n" + 
+                         "Building is at level " + allBuildings.at(i).get("level") + ".\n" +
+                         "Upgrade cost: " + UPGRADE_COST + " ,-\n" +
+                         "Press 'OK' to upgrade your powerplant.");
+                    
+                    if(confirm){
+                        if(player.get("money")>= UPGRADE_COST){
+                            allBuildings.at(i).set("level", allBuildings.at(i).get("level") + 1);
+                            player.set("money", player.get("money") - UPGRADE_COST);
+                        }
+                        else{
+                            alert("You cannot afford the upgrade!");
+                        }
+                    }
+                }
+                
+                break;
             }
         }
-  }
+    }
 
 });
