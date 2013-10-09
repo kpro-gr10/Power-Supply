@@ -2,7 +2,7 @@ var HudMoney = Backbone.View.extend({
 
 	initialize: function() {
 		this.render();
-		this.listenTo(this.model.get("player"), "change", this.render);
+		this.listenTo(this.model.get("player"), "change:money", this.render);
 	},
 
 	render: function() {
