@@ -4,7 +4,7 @@ var Screen = Backbone.View.extend({
     this.listenTo(this.model.get("map"), "change", function() {
       this.needsRepaint = true;
     });
-    this.listenTo(this.model, "change", function() {
+    this.listenTo(this.model, "change:state", function() {
       this.needsRepaint = true;
     });
     this.listenTo(this.model.get("map").get("buildings"), "all", function() {
@@ -23,17 +23,18 @@ var Screen = Backbone.View.extend({
 
   render: function() {
     // If there's nothing to do, don't do anything.
-    if (!this.needsRepaint)
-      return;
+    if (this.needsRepaint) {
+      this.needsRepaint = false;
 
-    var context = this.el.getContext("2d");
+      var context = this.el.getContext("2d");
 
-    if (this.model.get("map").get("zoomed"))
-      this.renderZoomedView(context);
-    else
-      this.renderOverview(context);
+      if (this.model.get("map").get("zoomed")) {
+        this.renderZoomedView(context);
+      } else {
+        this.renderOverview(context);
+      }
+    }
 
-    this.needsRepaint = false;
   },
 
   // Render the up-close working view of the map.

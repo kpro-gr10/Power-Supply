@@ -7,4 +7,5 @@ var GameState = {
 	Normal: "Playing",
 	BuildPP: "Build Powerplant",
 	BuildPL: "Build Powerline"
-};
+},
+PLAYER_MAX_HP=3;

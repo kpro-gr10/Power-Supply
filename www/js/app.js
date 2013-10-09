@@ -16,6 +16,9 @@ var app = {
   // Set by initGame.
   gameLevel: undefined,
   gameScreen: undefined,
+  hudBtns: undefined,
+  hudMny: undefined,
+  hpBar: undefined,
 
   // Set to true by calling startGame, set to false by calling stopGame.
   gameRunning: false,
@@ -49,8 +52,9 @@ var app = {
 
     // Initialize game view / controller
     this.gameScreen = new Screen({model: this.gameLevel, el: $('#screen')});
-    var hudBtns = new HudButtons({model: this.gameLevel, el: $('#hudButtons')});
-    var hudMny = new HudMoney({model: this.gameLevel, el: $('#money')});
+    this.hudBtns = new HudButtons({model: this.gameLevel, el: $('#hudButtons')});
+    this.hudMny = new HudMoney({model: this.gameLevel, el: $('#money')});
+    this.hpBar = new HpBar({model: this.gameLevel, el: document.getElementById('hpbar')})
 
     canvas.addEventListener("touchstart", this.gameScreen, false);
     canvas.addEventListener("touchmove", this.gameScreen, false);
