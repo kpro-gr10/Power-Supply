@@ -1,6 +1,6 @@
 var Player = Backbone.Model.extend({
   defaults: {
-    "health": 3,
+    "health": PLAYER_MAX_HP,
     "money": 599
   }
 });
