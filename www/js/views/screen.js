@@ -171,11 +171,11 @@ var Screen = Backbone.View.extend({
       return;
     } else if (this.model.get("state") === GameState.BuildPP && !this.screenMove) {
       this.model.buildPowerPlantAt(touch.screenX, touch.screenY);
+    } else if (!this.screenMove){
+      //Checks if player has touched on the building
+      this.model.get("map").showBuildingInformation(touch.screenX, touch.screenY, this.model.get("player"));
     }
-
-    //Checks if player has touched on the building
-    this.model.get("map").showBuildingInformation(touch.screenX, touch.screenY);
-
+    
     this.prevTouchEnd = event.changedTouches[0];
     this.prevTouchEndTime = Date.now();
     this.screenMove=false;
