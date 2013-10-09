@@ -53,30 +53,20 @@ var Map = Backbone.Model.extend({
     showBuildingInformation: function(sx, sy){
 
         var allBuildings = this.get("buildings");
-
         for(var i=0; i<allBuildings.length ; i++){
             if(allBuildings.at(i).get("x") < sx  
             && allBuildings.at(i).get("x") + allBuildings.at(i).get("sprite").width > sx
             && allBuildings.at(i).get("y") < sy
             && allBuildings.at(i).get("y") + allBuildings.at(i).get("sprite").height > sy){    
-  
-
-                // navigator.notification.confirm("Do you want to quit", 
-                //     function(){
-                //         if(button == "1"){
-                //             console.log("HEEEEEEEEEI"); 
-                //         }
-                //     }, 
-                //     "QUIT TITLE", 
-                //     "OK,Cancel"  
-                // );
-
+                
                 var confirm = window.confirm("Information about the building!\n" + 
+                    "Building is at level" + allBuildings.at(i).get("level") +
                     "Upgrade cost: " + UPGRADE_COST + " ,-\n" +
-                    "Press 'Upgrade' to upgrade your powerplant.");
+                    "Press 'OK' to upgrade your powerplant.");
                 if(confirm){
-                    console.log("Upgrade");
+                         
                 }
+                break;
 
             }
         }
