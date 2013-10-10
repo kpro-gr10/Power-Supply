@@ -7,10 +7,15 @@ body {
 
 p {
     padding: 0;
-    margin-bottom: 80px;
-    margin-top: 8px;
-    margin-left: 20px;
-    font-size: 200%;
+    margin: 0;
+}
+
+div#game p#health {
+    float: right;
+
+    /* Match the size of the coin icon. The image is 64px by 64px,
+       but the actual coin is approximately 48px in height. */
+    font-size: 48px;
 }
 
 div#menu{

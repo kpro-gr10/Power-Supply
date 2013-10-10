@@ -32,10 +32,14 @@
 
             <div id="lowerHud">
 
-              <table border="0" width="100%" height="64px">
+              <table border="0" width="100%" height="100px">
                 <tr>
-                  <td valign="top"><img id="coin" src="res/sprites/coin.png" width="64" height="64"><p id="money">0</p></td>
-                  <td valign="top"><div align="right"><canvas id="hpbar" width="200px" height="64px"></canvas></div></td>
+                  <td valign="top"><div align="left">
+                    <img id="coin" src="res/sprites/coin.png" width="64" height="64"><p id="money">0</p>
+                  </div></td>
+                  <td valign="top"><div align="right">
+                      <p id="health">Health:<canvas id="hpbar" width="200px" height="64px"></canvas></p>
+                  </div></td>
                 </tr>
               </table>
 
