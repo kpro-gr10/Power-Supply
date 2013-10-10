@@ -195,7 +195,12 @@ var Screen = Backbone.View.extend({
           return;
         }
 
-        this.model.finishPowerLineAt(this.unfinishedPowerLine, building);
+        // Save successfully created power lines.
+        var powerLine = this.model.finishPowerLineAt(this.unfinishedPowerLine,
+                                                     building);
+        this.model.get("map").get("powerLines").add(powerLine);
+
+        // Reset our 'power line building' state.
         this.unfinishedPowerLine = null;
         this.model.set({state: GameState.Normal});
       } else if (this.unfinishedPowerLine) {

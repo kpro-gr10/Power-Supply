@@ -19,7 +19,10 @@ var Map = Backbone.Model.extend({
     background: undefined,
 
     // The buildings placed on the map:
-    buildings: new BuildingList()
+    buildings: new BuildingList(),
+
+    // The power lines connecting power plants and other buildings:
+    powerLines: new PowerLineList()
   },
 
   update: function(dt) {
