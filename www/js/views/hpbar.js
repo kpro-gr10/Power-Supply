@@ -1,6 +1,5 @@
 var HpBar = Backbone.View.extend({
 	initialize: function() {
-		console.log(this.el);
 		this.render();
 		this.listenTo(this.model.get("player"), "change:health", this.render);
 	},
