@@ -18,6 +18,10 @@ div#game p#health {
     font-size: 48px;
 }
 
+canvas#hpbar{
+    border: 1px solid black;
+}
+
 div#menu{
     width: 100%;
     height: 100%;
