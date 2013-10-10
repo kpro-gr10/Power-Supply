@@ -5,7 +5,8 @@ var Level = Backbone.Model.extend({
 		player: undefined,
 		playtime: 0, // In seconds
 		state: GameState.Normal,
-		createBuildingFreq: 5000
+		createBuildingFreq: 5000,
+		goal: 1500
 	},
 
 	update: function (dt){

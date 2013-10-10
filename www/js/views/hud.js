@@ -7,6 +7,7 @@ var HudMoney = Backbone.View.extend({
 
 	render: function() {
 		this.el.innerHTML = this.model.get("player").get("money");
+		document.getElementById("goal").innerHTML = this.model.get("goal");
 	}
 
 });
