@@ -16,7 +16,7 @@ var Map = Backbone.Model.extend({
     "viewHeight": 0,
 
     // The (CSS) background image:
-    "background": undefined,
+    "background": null,
 
     // The buildings placed on the map:
     "buildings": new Backbone.Collection

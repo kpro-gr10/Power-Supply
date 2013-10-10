@@ -141,10 +141,10 @@ var Screen = Backbone.View.extend({
   screenMove: false,
 
   // Stores the previous touch object captured by the 'touchstart' handler.
-  prevTouchStart: undefined,
+  prevTouchStart: null,
 
   // Stores the previous touch object captured by the 'touchend' handler.
-  prevTouchEnd: undefined,
+  prevTouchEnd: null,
 
   // Stores the time of the previous 'touchend' event.
   prevTouchEndTime: -Infinity,
