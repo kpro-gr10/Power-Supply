@@ -48,7 +48,7 @@ var app = {
       width: 2000,
       height: 2000
     });
-    this.gameLevel = new Level({map: map, player: player});
+    this.gameLevel = new Level({levelId: levelId, map: map, player: player});
 
     // Initialize game view / controller
     this.gameScreen = new Screen({model: this.gameLevel, el: $('#screen')});
