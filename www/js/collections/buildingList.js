@@ -3,7 +3,7 @@ var BuildingList = Backbone.Collection.extend({
 
   // Is there a building present at the given coordinates?
   buildingAt: function(x, y) {
-    var result = false;
+    var result = null;
     this.each(function(building) {
       var buildingX = building.get("x"),
           buildingY = building.get("y"),
@@ -12,7 +12,7 @@ var BuildingList = Backbone.Collection.extend({
 
       if (x >= buildingX && x <= buildingX+buildingWidth &&
           y >= buildingY && y <= buildingY+buildingHeight)
-        result = true;
+        result = building;
     });
 
     return result;

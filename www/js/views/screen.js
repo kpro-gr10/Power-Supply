@@ -133,8 +133,14 @@ var Screen = Backbone.View.extend({
     }
   },
 
-  // If the series of touch events from the previous touchEnd corresponds to a screen move
+  // Does the series of touch events from the previous touchEnd correspond
+  // to a screen move?
   screenMove: false,
+
+  // Because building a power line takes several steps (begin building the
+  // power line, (potentially) add connecting points and terminate it), we
+  // need to keep track of it along the way.
+  unfinishedPowerLine: null,
 
   // Stores the previous touch object captured by the 'touchstart' handler.
   prevTouchStart: undefined,
@@ -171,6 +177,33 @@ var Screen = Backbone.View.extend({
       return;
     } else if (this.model.get("state") === GameState.BuildPP && !this.screenMove) {
       this.model.buildPowerPlantAt(touch.screenX, touch.screenY);
+    } else if (this.model.get("state") === GameState.BuildPL && !this.screenMove) {
+      var map = this.model.get("map"),
+          coords = map.zoomedToAbsoluteCoordinates(touch.screenX,
+                                                   touch.screenY),
+          x = coords[0],
+          y = coords[1],
+          building = map.get("buildings").buildingAt(x, y);
+
+      if (building && !this.unfinishedPowerLine) {
+        this.unfinishedPowerLine = this.model.startPowerLineAt(building);
+      } else if (building) {
+        // Let's not pull power lines from and to the same building.
+        if (this.unfinishedPowerLine.get("startBuilding") === building) {
+          this.unfinishedPowerLine = null;
+          this.model.set({state: GameState.Normal});
+          return;
+        }
+
+        this.model.finishPowerLineAt(this.unfinishedPowerLine, building);
+        this.unfinishedPowerLine = null;
+        this.model.set({state: GameState.Normal});
+      } else if (this.unfinishedPowerLine) {
+        this.unfinishedPowerLine =
+            this.model.connectPowerLineAt(this.unfinishedPowerLine, x, y);
+      } else {
+        this.model.set({state: GameState.Normal});
+      }
     }
 
     this.prevTouchEnd = event.changedTouches[0];
