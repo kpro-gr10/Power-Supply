@@ -36,7 +36,6 @@ var imgLib = new function() {
     
     // Load background image
     this.background=this.loadImage("res/sprites/background_grass.png");
-    this.buildBackground=this.loadImage("res/sprites/build_background.png");
     this.factory1=this.loadImage("res/sprites/factory_1_128.png");
     this.factory2=this.loadImage("res/sprites/factory_2_128.png");
     this.company1=this.loadImage("res/sprites/company_1_128.png");
