@@ -48,6 +48,11 @@ var Map = Backbone.Model.extend({
     // Set model values
     this.set("viewXPosition", viewX);
     this.set("viewYPosition", viewY);
-  }
+  },
 
+  // Takes some 'zoomed' screen coordinates (x,y) and returns an array
+  // containing this map's corresponding absolute coordinates.
+  zoomedToAbsoluteCoordinates: function(x, y) {
+    return [x + this.get("viewXPosition"), y + this.get("viewYPosition")];
+  }
 });
