@@ -23,7 +23,10 @@ var Map = Backbone.Model.extend({
   },
 
   update: function(dt) {
-
+    var buildings=this.get("buildings");
+    for(var i=0; i<buildings.length; i++) {
+        buildings.at(i).update(dt);
+    }
   },
 
   translateView: function(dx, dy) {
@@ -50,40 +53,16 @@ var Map = Backbone.Model.extend({
     this.set("viewYPosition", viewY);
     },
 
-    showBuildingInformation: function(sx, sy, player){
-        var tapX = sx + this.get("viewXPosition");
-        var tapY = sy + this.get("viewYPosition");
-
-        var allBuildings = this.get("buildings");
-        for(var i=0; i<allBuildings.length ; i++){
-            if(allBuildings.at(i).get("x") < tapX
-            && allBuildings.at(i).get("x") + allBuildings.at(i).get("sprite").width > tapX
-            && allBuildings.at(i).get("y") < tapY
-            && allBuildings.at(i).get("y") + allBuildings.at(i).get("sprite").height > tapY){
-
-                if(allBuildings.at(i).get("level") === null){
-                    alert("This is a building!");
-                } 
-                else{   
-                    var confirm = window.confirm("Information about the building!\n" + 
-                         "Building is at level " + allBuildings.at(i).get("level") + ".\n" +
-                         "Upgrade cost: " + UPGRADE_COST + " ,-\n" +
-                         "Press 'OK' to upgrade your powerplant.");
-                    
-                    if(confirm){
-                        if(player.get("money")>= UPGRADE_COST){
-                            allBuildings.at(i).set("level", allBuildings.at(i).get("level") + 1);
-                            player.set("money", player.get("money") - UPGRADE_COST);
-                        }
-                        else{
-                            alert("You cannot afford the upgrade!");
-                        }
-                    }
-                }
-                
-                break;
+    getBuildingAt: function(sx, sy) {
+        var mapX=sx+this.get("viewXPosition"),
+            mapY=sy+this.get("viewYPosition"),
+            buildings=this.get("buildings");
+        for(var i=0; i<buildings.length; i++) {
+            if(buildings.at(i).contains(mapX, mapY)) {
+                return buildings.at(i);
             }
         }
+        return undefined;
     }
 
 });

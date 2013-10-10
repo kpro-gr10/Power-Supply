@@ -12,17 +12,6 @@ var HudMoney = Backbone.View.extend({
 
 });
 
-function scrollToTop() {
-	var currX = window.pageXOffset;
-	var currY = window.pageYOffset;
-	var newX = currX*0.8;
-	var newY = currY*0.8;
-	window.scrollTo(newX, newY);
-	if(newX>0 || newY>0) {
-		setTimeout(scrollToTop, 30);
-	}
-}
-
 var HudButtons = Backbone.View.extend({
 
 	events: {

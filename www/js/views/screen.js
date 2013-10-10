@@ -74,6 +74,9 @@ var Screen = Backbone.View.extend({
       var bH = bImg.height;
       if (bX+bW > 0 && bY+bH > 0 && bX < width && bY < height) {
         context.drawImage(bImg, bX, bY);
+        if(building.get("revenue") !== undefined && building.get("revenue") > 0) {
+          context.drawImage(imgLib.coin, bX-imgLib.coin.width/2, bY+bH-imgLib.coin.height/2)
+        }
       }
     }
 
@@ -172,9 +175,8 @@ var Screen = Backbone.View.extend({
       return;
     } else if (this.model.get("state") === GameState.BuildPP && !this.screenMove) {
       this.model.buildPowerPlantAt(touch.screenX, touch.screenY);
-    } else if (!this.screenMove){
-      //Checks if player has touched on the building
-      this.model.get("map").showBuildingInformation(touch.screenX, touch.screenY, this.model.get("player"));
+    } else if (this.model.get("state") === GameState.Normal && !this.screenMove){
+      this.model.tapMap(touch.screenX, touch.screenY);
     }
     
     this.prevTouchEnd = event.changedTouches[0];

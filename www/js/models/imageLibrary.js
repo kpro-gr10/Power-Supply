@@ -45,6 +45,7 @@ var imgLib = new function() {
     this.house3=this.loadImage("res/sprites/house_3_128.png");
     this.house4=this.loadImage("res/sprites/house_4_128.png");
     this.buildMarker=this.loadImage("res/sprites/bm.png");
+    this.coin=this.loadImage("res/sprites/coin.png")
     
     imagesLoaded += 1;
 }
