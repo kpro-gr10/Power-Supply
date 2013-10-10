@@ -16,7 +16,7 @@ var Map = Backbone.Model.extend({
     "viewHeight": 0,
 
     // The (CSS) background image:
-    "background": undefined,
+    "background": null,
 
     // The buildings placed on the map:
     "buildings": new Backbone.Collection
@@ -61,7 +61,7 @@ var Map = Backbone.Model.extend({
             && allBuildings.at(i).get("y") < tapY
             && allBuildings.at(i).get("y") + allBuildings.at(i).get("sprite").height > tapY){
 
-                if(allBuildings.at(i).get("level") === undefined){
+                if(allBuildings.at(i).get("level") === null){
                     alert("This is a building!");
                 } 
                 else{   

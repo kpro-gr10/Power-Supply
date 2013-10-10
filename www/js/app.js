@@ -14,11 +14,11 @@ var app = {
    */
 
   // Set by initGame.
-  gameLevel: undefined,
-  gameScreen: undefined,
-  hudBtns: undefined,
-  hudMny: undefined,
-  hpBar: undefined,
+  gameLevel: null,
+  gameScreen: null,
+  hudBtns: null,
+  hudMny: null,
+  hpBar: null,
 
   // Set to true by calling startGame, set to false by calling stopGame.
   gameRunning: false,
