@@ -44,7 +44,7 @@ var Level = Backbone.Model.extend({
 			this.timeSinceBuilding = last;
 		}
 
-		this.get("map").update(dt);
+		this.get("map").update(dt, this);
 	},
 
 	/*
