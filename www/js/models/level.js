@@ -93,9 +93,9 @@ var Level = Backbone.Model.extend({
                      "Upgrade cost: " + UPGRADE_COST + " ,-\n" +
                      "Press 'OK' to upgrade your powerplant.");
                 
-                if(confirm){
+                if(confirm) {
                     if(player.get("money")>= UPGRADE_COST){
-                        building.set("level", allBuildings.at(i).get("level") + 1);
+                        building.set("level", building.get("level") + 1);
                         player.set("money", player.get("money") - UPGRADE_COST);
                     } else {
                         alert("You cannot afford the upgrade!");
