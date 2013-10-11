@@ -22,49 +22,65 @@ var Screen = Backbone.View.extend({
   prevZoomed: true,
 
   render: function() {
-    // If there's nothing to do, don't do anything.
-    if (this.needsRepaint) {
-      this.needsRepaint = false;
 
+    if(this.needsRepaint) {
       var context = this.el.getContext("2d");
 
-      if (this.model.get("map").get("zoomed")) {
-        this.renderZoomedView(context);
-      } else {
-        this.renderOverview(context);
-      }
-    }
+      var map = this.model.get("map");
+      var bg = map.get("background");
+      var width, height, xPos, yPos, xOffset, yOffset;
 
+      if(map.get("zoomed")) {
+        width = map.get("viewWidth");
+        height = map.get("viewHeight");
+        xPos = map.get("viewXPosition");
+        yPos = map.get("viewYPosition");
+        xOffset = xPos % bg.width;
+        yOffset = yPos % bg.height;
+
+        if (!this.prevZoomed) {
+          var xScale = map.get("width") / map.get("viewWidth"),
+              yScale = map.get("height") / map.get("viewHeight");
+
+          context.scale(xScale, yScale);
+          this.prevZoomed = true;
+        }
+      } else {
+        width = map.get("width");
+        height = map.get("height");
+        xPos = 0;
+        yPos = 0;
+        xOffset = 0;
+        yOffset = 0;
+
+        if (this.prevZoomed) {
+          var xScale = map.get("viewWidth") / map.get("width"),
+              yScale = map.get("viewHeight") / map.get("height");
+
+          context.scale(xScale, yScale);
+          this.prevZoomed = false;
+        }
+      }
+
+      for (var y = -yOffset; y < height; y += bg.height) {
+        for (var x = -xOffset; x < width; x += bg.width) {
+          context.drawImage(bg, x, y);
+        }
+      }
+
+      this.renderBuildings(context, map, xPos, yPos, width, height);
+
+      var state = this.model.get("state");
+      if(state===GameState.BuildPP || state===GameState.BuildPL) { 
+        this.renderBuildMode(context, width, height);
+      }
+
+    }
   },
 
-  // Render the up-close working view of the map.
-  renderZoomedView: function(context) {
-    var map = this.model.get("map"),
-        bg = map.get("background"),
-        bgWidth = bg.width,
-        bgHeight = bg.height,
-        width = map.get("viewWidth"),
-        height = map.get("viewHeight"),
-        xPos = map.get("viewXPosition"),
-        yPos = map.get("viewYPosition"),
-        xOffset = xPos % bgWidth,
-        yOffset = yPos % bgHeight;
-
-    if (!this.prevZoomed) {
-      var xScale = map.get("width") / map.get("viewWidth"),
-          yScale = map.get("height") / map.get("viewHeight");
-
-      context.scale(xScale, yScale);
-      this.prevZoomed = true;
-    }
-
-    for (var y = -yOffset; y < height; y += bgHeight) {
-      for (var x = -xOffset; x < width; x += bgWidth) {
-        context.drawImage(bg, x, y);
-      }
-    }
-
+  renderBuildings: function(context, map, xPos, yPos, width, height) {
     var buildings = map.get("buildings");
+
     for (var i = 0; i < buildings.length; i++) {
       var building  =  buildings.at(i);
       var bImg = building.get("sprite");
@@ -72,58 +88,21 @@ var Screen = Backbone.View.extend({
       var bY = building.get("y") - yPos;
       var bW = bImg.width;
       var bH = bImg.height;
+
       if (bX+bW > 0 && bY+bH > 0 && bX < width && bY < height) {
         context.drawImage(bImg, bX, bY);
         if(building.get("revenue") !== undefined && building.get("revenue") > 0) {
           context.drawImage(imgLib.coin, bX-imgLib.coin.width/2, bY+bH-imgLib.coin.height/2)
         }
+        var extent = building.get("durability") / BUILDING_DURABILITY;
+        if(extent < 0.9) {
+          context.fillStyle = "black";
+          context.fillRect(bX+bW, bY, 8, bH);
+          context.fillStyle = "red";
+          context.fillRect(bX+bW+2, bY+2 + (1-extent)*(bH-4), 4, extent*(bH-4));
+        }
       }
-    }
 
-    var state = this.model.get("state");
-    if(state===GameState.BuildPP || state===GameState.BuildPL) { 
-      this.renderBuildMode(context, width, height);
-    }
-  },
-
-  // Render the zoomed-out overview of the map.
-  renderOverview: function(context) {
-    var map = this.model.get("map"),
-        bg = map.get("background"),
-        width = map.get("width"),
-        height = map.get("height");
-
-    if (this.prevZoomed) {
-      var xScale = map.get("viewWidth") / map.get("width"),
-          yScale = map.get("viewHeight") / map.get("height");
-
-      context.scale(xScale, yScale);
-      this.prevZoomed = false;
-    }
-
-    for (var y = 0; y < height; y += bg.height) {
-      for (var x = 0; x < width; x += bg.width) {
-        context.drawImage(bg, x, y);
-      }
-    }
-
-    var buildings = map.get("buildings");
-    for (var i = 0; i < buildings.length; i++) {
-      var building = buildings.at(i),
-          bImg = building.get("sprite"),
-          bX = building.get("x"),
-          bY = building.get("y"),
-          bW = bImg.width,
-          bH = bImg.height;
-
-      if (bX+bW > 0 && bY+bH > 0 && bX < width && bY < height) {
-        context.drawImage(bImg, bX, bY);
-      }
-    }
-
-    var state = this.model.get("state");
-    if(state===GameState.BuildPP || state===GameState.BuildPL) { 
-      this.renderBuildMode(context, width, height);
     }
   },
 
