@@ -37,6 +37,15 @@ table#upperHud{
     color: white;
 }
 
+div#gameover{
+    color:white;
+}
+
+button#gameover{
+    font-size: 4em;
+    width: 40%;
+}
+
 div#game{
     display: none;
     color: white;
