@@ -22,11 +22,18 @@ var Map = Backbone.Model.extend({
     "buildings": new Backbone.Collection
   },
 
-  update: function(dt) {
+  update: function(dt, level) {
     var buildings=this.get("buildings");
+    var toRemove=[];
     for(var i=0; i<buildings.length; i++) {
-        buildings.at(i).update(dt);
+        var building = buildings.at(i);
+        building.update(dt);
+        if(building.shouldBeRemoved()) {
+            toRemove.push(building);
+        }
     }
+    buildings.remove(toRemove);
+    level.get("player").damage(toRemove.length);
   },
 
   translateView: function(dx, dy) {
