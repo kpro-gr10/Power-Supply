@@ -91,6 +91,10 @@ div#highscore{
     display: none;
 }
 
+div#gameover{
+    display: none;
+}
+
 div#menu ul{
     list-style-type: none; 
     display: inline-block; 
@@ -116,4 +120,3 @@ img#logo{
     margin-right: auto;
     width: 90%;
 }
-
