@@ -29,22 +29,28 @@ var Level = Backbone.Model.extend({
 	 * Update level state
 	 */
 	update: function (dt){
-		var playtime=this.get("playtime");
-		this.set("playtime", playtime+(dt/1000));
+		if(this.get("state") !== GameState.GameOver) {
+			var playtime=this.get("playtime");
+			this.set("playtime", playtime+(dt/1000));
 
-		var last = this.timeSinceBuilding + dt;
-		var freq=this.createBuildingFreq;
-		if(last>freq){
-			this.createBuilding();
-			this.timeSinceBuilding = last - freq;
-			this.createBuildingFreq = generateBuildingSpawnTime(this.get("levelId"), this.get("playtime"));
-			this.buildingCluster = generateClusterOfBuildings(this.get("levelId"), this.get("playtime"));
-			console.log(this.createBuildingFreq+", "+this.buildingCluster);
-		} else {
-			this.timeSinceBuilding = last;
+			var last = this.timeSinceBuilding + dt;
+			var freq=this.createBuildingFreq;
+			if(last>freq){
+				this.createBuilding();
+				this.timeSinceBuilding = last - freq;
+				this.createBuildingFreq = generateBuildingSpawnTime(this.get("levelId"), this.get("playtime"));
+				this.buildingCluster = generateClusterOfBuildings(this.get("levelId"), this.get("playtime"));
+				console.log(this.createBuildingFreq+", "+this.buildingCluster);
+			} else {
+				this.timeSinceBuilding = last;
+			}
+
+			this.get("map").update(dt, this);
+
+			if(this.get("player").get("health") <= 0) {
+				this.set("state", GameState.GameOver);
+			}
 		}
-
-		this.get("map").update(dt, this);
 	},
 
 	/*

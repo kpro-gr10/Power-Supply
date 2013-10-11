@@ -36,7 +36,8 @@ var Building = Entity.extend({
 	 */
 	updateRevenue: function(dt) {
 		this.timeSinceRevenue+=dt;
-		var freq=this.get("revenueFreq");
+		var freq=this.get("revenueFreq"),
+			durability = this.get("durability");
 
 		if(this.timeSinceRevenue >= freq) {
 			this.timeSinceRevenue -= freq;
@@ -44,6 +45,9 @@ var Building = Entity.extend({
 			var rincr=this.get("revenueIncr"),
 				r=this.get("revenue");
 			this.set("revenue", r+rincr);
+		}
+		if(durability < BUILDING_DURABILITY) {
+			this.set("durability", Math.min(durability+2*dt, BUILDING_DURABILITY));
 		}
 	},
 
