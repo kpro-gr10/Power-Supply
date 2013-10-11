@@ -76,6 +76,8 @@ var Screen = Backbone.View.extend({
       }
     }
 
+    this.drawPowerLines(context);
+
     var state = this.model.get("state");
     if(state===GameState.BuildPP || state===GameState.BuildPL) { 
       this.renderBuildMode(context, width, height);
@@ -117,6 +119,8 @@ var Screen = Backbone.View.extend({
       }
     }
 
+    this.drawPowerLines(context);
+
     var state = this.model.get("state");
     if(state===GameState.BuildPP || state===GameState.BuildPL) { 
       this.renderBuildMode(context, width, height);
@@ -131,6 +135,35 @@ var Screen = Backbone.View.extend({
       context.drawImage(buildMarker, i, 0);
       context.drawImage(buildMarker, i, height-bmH);
     }
+  },
+
+  drawPowerLines: function(context) {
+    var map = this.model.get("map"),
+        powerLines = map.get("powerLines");
+
+    powerLines.each(function(powerLine) {
+      var startBuilding = powerLine.get("startBuilding"),
+          terminalBuilding = powerLine.get("terminalBuilding"),
+          pylons = powerLine.get("connectingPoints"),
+
+          sx = startBuilding.get("x"),
+          sy = startBuilding.get("y"),
+          dx = terminalBuilding.get("x"),
+          dy = terminalBuilding.get("y"),
+          connections = pylons.map(function(pylon) {
+            return [pylon.get("x"), pylon.get("y")];
+          });
+
+      context.beginPath();
+      context.lineWidth = '10';
+      context.strokeStyle = 'white';
+      context.moveTo(sx, sy);
+      _.each(connections, function(connection) {
+        context.lineTo(connection[0], connection[1]);
+      });
+      context.lineTo(dx, dy);
+      context.stroke();
+    });
   },
 
   // Does the series of touch events from the previous touchEnd correspond
@@ -258,6 +291,11 @@ var Screen = Backbone.View.extend({
 
       map.set({viewXPosition: newX, viewYPosition: newY});
     }
+
+      // If we're building a power line, the first tap will have entered
+      // a connection point we don't want. Let's remove it.
+      if (this.unfinishedPowerLine)
+        this.unfinishedPowerLine.get("connectingPoints").pop();
 
     // Toggle the 'zoomed' state of the map.
     map.set({zoomed: !map.get("zoomed")});
