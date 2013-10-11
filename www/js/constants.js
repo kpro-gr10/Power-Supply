@@ -13,7 +13,7 @@ var BUILDING_REVENUE_INCREMENT=20;
 
 // How often in milliseconds a building supplied with power should generate revenue. Can
 // be changed to array or function for different building types.
-var BUILDING_REVENUE_FREQ=8000;
+var BUILDING_REVENUE_FREQ=11000;
 
 // How many milliseconds a building will remain without being supplied with power.
 // Can be replaced with array or function for multiple building types.
@@ -29,9 +29,10 @@ var UPGRADE_COST = 100;
 var GameState = {
 	Normal: "Playing",
 	BuildPP: "Build Powerplant",
-	BuildPL: "Build Powerline"
+	BuildPL: "Build Powerline",
+	GameOver: "Game Over"
 };
 
 // How much hp the player should have at the beginning of each level. Can be changed to array or
 // function to support multiple levels with different difficulties.
-var PLAYER_MAX_HP=3;
+var PLAYER_MAX_HP=4;
