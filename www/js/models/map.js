@@ -16,7 +16,7 @@ var Map = Backbone.Model.extend({
     viewHeight: 0,
 
     // The (CSS) background image:
-    background: undefined,
+    background: null,
 
     // The buildings placed on the map:
     buildings: new BuildingList(),
@@ -25,10 +25,26 @@ var Map = Backbone.Model.extend({
     powerLines: new PowerLineList()
   },
 
-  update: function(dt) {
-
+  /*
+   * Updates the state of this map.
+   */
+  update: function(dt, level) {
+    var buildings=this.get("buildings");
+    var toRemove=[];
+    for(var i=0; i<buildings.length; i++) {
+        var building = buildings.at(i);
+        building.update(dt);
+        if(building.shouldBeRemoved()) {
+            toRemove.push(building);
+        }
+    }
+    buildings.remove(toRemove);
+    level.get("player").damage(toRemove.length);
   },
 
+  /*
+   * Move the view of the map by [dx, dy] pixels
+   */
   translateView: function(dx, dy) {
     // Get current values
     var viewX = this.get("viewXPosition"),
@@ -53,9 +69,26 @@ var Map = Backbone.Model.extend({
     this.set("viewYPosition", viewY);
   },
 
-  // Takes some 'zoomed' screen coordinates (x,y) and returns an array
-  // containing this map's corresponding absolute coordinates.
-  zoomedToAbsoluteCoordinates: function(x, y) {
-    return [x + this.get("viewXPosition"), y + this.get("viewYPosition")];
-  }
+    /*
+     * Transforms the input screen coordinates to map coordinates, and if a building
+     * can be found at those coordinates, this function returns that building.
+     * If no building can be found, undefined is returned.
+     */
+    getBuildingAt: function(sx, sy) {
+        var mapX=sx+this.get("viewXPosition"),
+            mapY=sy+this.get("viewYPosition"),
+            buildings=this.get("buildings");
+        for(var i=0; i<buildings.length; i++) {
+            if(buildings.at(i).contains(mapX, mapY)) {
+                return buildings.at(i);
+            }
+        }
+        return undefined;
+    },
+
+    // Takes some 'zoomed' screen coordinates (x,y) and returns an array
+    // containing this map's corresponding absolute coordinates.
+    zoomedToAbsoluteCoordinates: function(x, y) {
+      return [x + this.get("viewXPosition"), y + this.get("viewYPosition")];
+    }
 });

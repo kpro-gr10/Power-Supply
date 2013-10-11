@@ -32,8 +32,20 @@
 
             <div id="lowerHud">
 
-              <img id="coin" src="res/sprites/coin.png" width="64" height="64">
-              <p id="money">0</p>
+              <table id="upperHud" border="0">
+                <tr>
+                  <td valign="top" id="cellMoney">
+                    <img id="coin" src="res/sprites/coin.png">
+                    <p class="texthud" id="money">0</p>
+                    <p class="texthud" id="slash">/</p>
+                    <p class="texthud" id="goal">0</p>
+                  </td>
+
+                  <td valign="top" id="cellHealth">
+                      <canvas id="hpbar"></canvas>
+                  </td>
+                </tr>
+              </table>
 
               <div id="hudButtons" align="center">
                 <button class="buildPowerPlant">
@@ -76,8 +88,10 @@
 
         <!-- Our code -->
         <script type="text/javascript" src="js/constants.js"></script>
+        <script type="text/javascript" src="js/utilities.js"></script>
         <script type="text/javascript" src="js/models/imageLibrary.js"></script>
         <script type="text/javascript" src="js/models/player.js"></script>
+        <script type="text/javascript" src="js/models/entity.js"></script>
         <script type="text/javascript" src="js/models/building.js"></script>
         <script type="text/javascript" src="js/collections/buildingList.js"></script>
         <script type="text/javascript" src="js/models/powerplant.js"></script>
@@ -86,6 +100,7 @@
         <script type="text/javascript" src="js/models/map.js"></script>
         <script type="text/javascript" src="js/models/level.js"></script>        
         <script type="text/javascript" src="js/views/screen.js"></script>
+        <script type="text/javascript" src="js/views/hpbar.js"></script>
         <script type="text/javascript" src="js/views/hud.js"></script>
         <script type="text/javascript" src="js/views/menu.js"></script>
         <script type="text/javascript" src="js/app.js"></script>

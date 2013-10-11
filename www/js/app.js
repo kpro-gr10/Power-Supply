@@ -14,8 +14,11 @@ var app = {
    */
 
   // Set by initGame.
-  gameLevel: undefined,
-  gameScreen: undefined,
+  gameLevel: null,
+  gameScreen: null,
+  hudBtns: null,
+  hudMny: null,
+  hpBar: null,
 
   // Set to true by calling startGame, set to false by calling stopGame.
   gameRunning: false,
@@ -26,7 +29,7 @@ var app = {
     // initialize the game canvas
     var canvas = document.getElementById('screen');
     canvas.width = window.screen.availWidth;
-    canvas.height = window.screen.availHeight - HIDDEN_HUD_HEIGHT;
+    canvas.height = window.screen.availHeight * (1-HIDDEN_HUD_HEIGHT/100);
   },
 
   bindEvents: function() {
@@ -45,12 +48,13 @@ var app = {
       width: 2000,
       height: 2000
     });
-    this.gameLevel = new Level({map: map, player: player});
+    this.gameLevel = new Level({levelId: levelId, map: map, player: player});
 
     // Initialize game view / controller
     this.gameScreen = new Screen({model: this.gameLevel, el: $('#screen')});
-    var hudBtns = new HudButtons({model: this.gameLevel, el: $('#hudButtons')});
-    var hudMny = new HudMoney({model: this.gameLevel, el: $('#money')});
+    this.hudBtns = new HudButtons({model: this.gameLevel, el: $('#hudButtons')});
+    this.hudMny = new HudMoney({model: this.gameLevel, el: $('#money')});
+    this.hpBar = new HpBar({model: this.gameLevel, el: document.getElementById('hpbar')})
 
     canvas.addEventListener("touchstart", this.gameScreen, false);
     canvas.addEventListener("touchmove", this.gameScreen, false);

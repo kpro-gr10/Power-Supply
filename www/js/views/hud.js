@@ -2,25 +2,15 @@ var HudMoney = Backbone.View.extend({
 
 	initialize: function() {
 		this.render();
-		this.listenTo(this.model.get("player"), "change", this.render);
+		this.listenTo(this.model.get("player"), "change:money", this.render);
 	},
 
 	render: function() {
 		this.el.innerHTML = this.model.get("player").get("money");
+		document.getElementById("goal").innerHTML = this.model.get("goal");
 	}
 
 });
-
-function scrollToTop() {
-	var currX = window.pageXOffset;
-	var currY = window.pageYOffset;
-	var newX = currX*0.8;
-	var newY = currY*0.8;
-	window.scrollTo(newX, newY);
-	if(newX>0 || newY>0) {
-		setTimeout(scrollToTop, 30);
-	}
-}
 
 var HudButtons = Backbone.View.extend({
 
