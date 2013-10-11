@@ -29,7 +29,7 @@ var app = {
     // initialize the game canvas
     var canvas = document.getElementById('screen');
     canvas.width = window.screen.availWidth;
-    canvas.height = window.screen.availHeight - HIDDEN_HUD_HEIGHT;
+    canvas.height = window.screen.availHeight * (1-HIDDEN_HUD_HEIGHT/100);
   },
 
   bindEvents: function() {

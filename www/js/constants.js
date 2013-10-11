@@ -4,8 +4,8 @@ var GAME_FPS = 60;
 // Display and print debug information if this variable is true
 var DEBUG=true;
 
-// How many pixels high should the hud be when hidden
-var HIDDEN_HUD_HEIGHT=100;
+// How many % high the hud should be when "hidden" (Hidden not meaning invisible but lowered)
+var HIDDEN_HUD_HEIGHT=parseInt(window.getComputedStyle(document.getElementById("upperHud"),null).getPropertyValue("height"), 10);
 
 // How much revenue a building should generate each time. Can be changed to array or function
 // for different building types.
