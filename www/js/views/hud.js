@@ -20,6 +20,7 @@ var HudButtons = Backbone.View.extend({
 	},
 
 	buildPowerPlant: function() {
+		if(this.model.get("state") !== GameState.Normal) {return;}
 		if(this.model.get("player").get("money")>=POWERPLANT_COST) {
 			if(DEBUG) {console.log("build power plant");}
 			var map = this.model.get("map");
@@ -34,6 +35,7 @@ var HudButtons = Backbone.View.extend({
 	},
 
 	buildPowerLine: function() {
+		if(this.model.get("state") !== GameState.Normal) {return;}
 		scrollToTop();
 		if(DEBUG) {console.log("build power line");}
 		this.model.set("state", GameState.BuildPL);
