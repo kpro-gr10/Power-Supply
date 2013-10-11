@@ -77,6 +77,11 @@ var app = {
         app.gameScreen.render();
         app.gameLevel.update(dt);
       }
+      if(app.gameLevel.get("state") === GameState.GameOver) {
+        app.stopGame();
+        $('div#game').css('display', 'none');
+        $('div#gameover').css('display', 'inline');
+      }
     }
 
     this.gameRunning = true;
@@ -107,6 +112,11 @@ var app = {
     startMenu();
 
     document.addEventListener("backbutton", onBackButton, false);
+
+    document.getElementById("gameover").onclick = function() {
+      $('div#gameover').css('display', 'none');
+      $('div#menu').css('display', 'inline');
+    }
 
     function  onBackButton(){
       if ($('div#instructions').css('display') == 'inline'){
