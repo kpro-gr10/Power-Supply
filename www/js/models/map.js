@@ -22,6 +22,9 @@ var Map = Backbone.Model.extend({
     "buildings": new Backbone.Collection
   },
 
+  /*
+   * Updates the state of this map.
+   */
   update: function(dt, level) {
     var buildings=this.get("buildings");
     var toRemove=[];
@@ -36,6 +39,9 @@ var Map = Backbone.Model.extend({
     level.get("player").damage(toRemove.length);
   },
 
+  /*
+   * Move the view of the map by [dx, dy] pixels
+   */
   translateView: function(dx, dy) {
     // Get current values
     var viewX = this.get("viewXPosition"),
@@ -58,8 +64,13 @@ var Map = Backbone.Model.extend({
     // Set model values
     this.set("viewXPosition", viewX);
     this.set("viewYPosition", viewY);
-    },
+  },
 
+    /*
+     * Transforms the input screen coordinates to map coordinates, and if a building
+     * can be found at those coordinates, this function returns that building.
+     * If no building can be found, undefined is returned.
+     */
     getBuildingAt: function(sx, sy) {
         var mapX=sx+this.get("viewXPosition"),
             mapY=sy+this.get("viewYPosition"),
