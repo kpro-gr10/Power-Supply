@@ -21,7 +21,14 @@ var Building = Entity.extend({
 		/*
 		 * IMPORTANT TODO: Actually implement this
 		 */
-		return true;
+		return false;
+	},
+
+	/*
+	 * Buildings disappear from the map if their durability has fallen to 0.
+	 */
+	shouldBeRemoved: function() {
+		return this.get("durability") <= 0;
 	},
 
 	/*
@@ -46,10 +53,7 @@ var Building = Entity.extend({
 	 */
 	lowerDurability: function(dt) {
 		var newDurability = this.get("durability")-dt;
-		this.set("durability", newDurability);
-		/*
-		 * IMPORTANT TODO: Find a way to damage the player
-		 */
+		this.set("durability", Math.max(newDurability, 0));
 	},
 
 	update: function(dt) {

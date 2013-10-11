@@ -1,6 +1,19 @@
 var Entity = Backbone.Model.extend({
+
+	/*
+	 * Update the state of this entity. Should be overwritten
+	 * by subclasses
+	 */
 	update: function(dt) {
 
+	},
+
+	/*
+	 * Returns if this entity should be removed from the map or not.
+	 * Should be overwritten by subclasses.
+	 */
+	shouldBeRemoved: function() {
+		return false;
 	},
 
 	/*
