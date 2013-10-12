@@ -181,7 +181,7 @@ var Screen = Backbone.View.extend({
       var map = this.model.get("map"),
           building = map.getBuildingAt(touch.screenX, touch.screenY);
 
-      if(building !== undefined) {
+      if(building !== null) {
         if(this.buildingTemp) {
           var powerline = new PowerLine({buildingA: building, buildingB: this.buildingTemp});
           building.connectTo(powerline);

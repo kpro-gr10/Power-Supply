@@ -89,7 +89,7 @@ var Level = Backbone.Model.extend({
         if(building !== null) {
 
         	// TODO: Check what type of building it is
-            if(building.get("level") === undefined) {
+            if(building.get("level") === null) {
             	// TODO Play money sound
                 player.set("money", building.get("revenue")+player.get("money"));
                 building.set("revenue", 0);
