@@ -11,17 +11,17 @@ var Menu = Backbone.View.extend({
         
     },
 	startGame: function(){
-		$('div#game').css('display', 'inline');
+		$('div#game').css('display', 'block');
 		$('div#menu').css('display', 'none');
     },
 
     instructions: function(){
     	$('div#menu').css('display', 'none');
-        $('div#instructions').css('display', 'inline');
+        $('div#instructions').css('display', 'block');
     },
 
     highscore: function(){
     	$('div#menu').css('display', 'none');
-        $('div#highscore').css('display', 'inline');
+        $('div#highscore').css('display', 'block');
     },
 });

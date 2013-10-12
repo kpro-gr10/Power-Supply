@@ -80,7 +80,7 @@ var app = {
       if(app.gameLevel.get("state") === GameState.GameOver) {
         app.stopGame();
         $('div#game').css('display', 'none');
-        $('div#gameover').css('display', 'inline');
+        $('div#gameover').css('display', 'block');
       }
     }
 
@@ -113,24 +113,24 @@ var app = {
 
     document.addEventListener("backbutton", onBackButton, false);
 
-    document.getElementById("gameover").onclick = function() {
+    document.getElementById("gameoverButton").onclick = function() {
       $('div#gameover').css('display', 'none');
-      $('div#menu').css('display', 'inline');
+      $('div#menu').css('display', 'block');
     }
 
     function  onBackButton(){
-      if ($('div#instructions').css('display') == 'inline'){
+      if ($('div#instructions').css('display') != 'none'){
         $('div#instructions').css('display', 'none');
-        $('div#menu').css('display', 'inline');
+        $('div#menu').css('display', 'block');
       }
-      else if($('div#highscore').css('display') == 'inline'){
+      else if($('div#highscore').css('display') != 'none'){
         $('div#highscore').css('display', 'none');
-        $('div#menu').css('display', 'inline');
+        $('div#menu').css('display', 'block');
       }
-      else if($('div#game').css('display') == 'inline'){
+      else if($('div#game').css('display') != 'none'){
         app.stopGame();
         $('div#game').css('display', 'none');
-        $('div#menu').css('display', 'inline');
+        $('div#menu').css('display', 'block');
       }
     }
   }

@@ -28,7 +28,6 @@ img#coin{
 div#menu{
     width: 100%;
     height: 100%;
-    display: inline; 
     text-align:center;
     position: absolute;
 }
@@ -42,12 +41,15 @@ table#upperHud{
 }
 
 div#gameover{
-    color:white;
+    display: none;
+    width: 50%;
+    margin: auto;
+    color: white;
+    text-align: center;
 }
 
-button#gameover{
+button#gameoverButton{
     font-size: 4em;
-    width: 40%;
 }
 
 div#game{
@@ -107,14 +109,8 @@ div#highscore{
     color: white;
 }
 
-div#gameover{
-    display: none;
-}
-
 div#menu ul{
-    display: inline;
     list-style-type: none; 
-    display: inline-block; 
     padding: 0;
     width: 100%;
 }
