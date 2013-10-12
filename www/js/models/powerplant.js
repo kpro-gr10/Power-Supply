@@ -4,6 +4,10 @@ var Powerplant = Entity.extend({
 		x: 0,
 		y: 0,
 		level: 1
+	},
+
+	isPowerplant: function() {
+		return true;
 	}
 
 });
