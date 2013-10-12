@@ -68,8 +68,8 @@ var Screen = Backbone.View.extend({
         }
       }
 
+      this.drawPowerLines(context, map, xPos, yPos, width, height);
       this.renderBuildings(context, map, xPos, yPos, width, height);
-      this.drawPowerLines(context);
 
       var state = this.model.get("state");
       if(state===GameState.BuildPP || state===GameState.BuildPL) { 
@@ -117,19 +117,18 @@ var Screen = Backbone.View.extend({
     }
   },
 
-  drawPowerLines: function(context) {
-    var map = this.model.get("map"),
-        powerLines = map.get("powerLines");
+  drawPowerLines: function(context, map, xPos, yPos, width, height) {
+    var powerLines = map.get("powerLines");
 
     powerLines.each(function(powerLine) {
       var startBuilding = powerLine.get("startBuilding"),
           terminalBuilding = powerLine.get("terminalBuilding"),
           pylons = powerLine.get("connectingPoints"),
 
-          sx = startBuilding.get("x"),
-          sy = startBuilding.get("y"),
-          dx = terminalBuilding.get("x"),
-          dy = terminalBuilding.get("y"),
+          sx = startBuilding.get("x") + startBuilding.get("sprite").width/2,
+          sy = startBuilding.get("y") + startBuilding.get("sprite").height/2,
+          dx = terminalBuilding.get("x") + terminalBuilding.get("sprite").width/2,
+          dy = terminalBuilding.get("y") + terminalBuilding.get("sprite").height/2,
           connections = pylons.map(function(pylon) {
             return [pylon.get("x"), pylon.get("y")];
           });
@@ -137,11 +136,11 @@ var Screen = Backbone.View.extend({
       context.beginPath();
       context.lineWidth = '10';
       context.strokeStyle = 'white';
-      context.moveTo(sx, sy);
+      context.moveTo(sx-xPos, sy-yPos);
       _.each(connections, function(connection) {
-        context.lineTo(connection[0], connection[1]);
+        context.lineTo(connection[0]-xPos, connection[1]-yPos);
       });
-      context.lineTo(dx, dy);
+      context.lineTo(dx-xPos, dy-yPos);
       context.stroke();
     });
   },
