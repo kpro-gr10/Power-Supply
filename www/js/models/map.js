@@ -74,6 +74,8 @@ var Map = Backbone.Model.extend({
      * can be found at those coordinates, this function returns that building.
      * If no building can be found, undefined is returned.
      */
+
+    // IMPORTANT TODO: SHOULD RETURN NULL INSTEAD OF UNDEFINED
     getBuildingAt: function(sx, sy) {
         var mapX=sx+this.get("viewXPosition"),
             mapY=sy+this.get("viewYPosition"),
