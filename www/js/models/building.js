@@ -15,16 +15,6 @@ var Building = Entity.extend({
 	timeSinceRevenue: 0,
 
 	/*
-	 * Returns true if this building is connected to a powerplant
-	 */
-	isConnected: function() {
-		/*
-		 * IMPORTANT TODO: Actually implement this
-		 */
-		return false;
-	},
-
-	/*
 	 * Buildings disappear from the map if their durability has fallen to 0.
 	 */
 	shouldBeRemoved: function() {
