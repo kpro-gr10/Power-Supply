@@ -5,9 +5,5 @@ var Powerplant = Entity.extend({
     y: 0,
     level: 1,
     type: BuildingType.PowerPlant,
-  },
-
-  isPowerplant: function() {
-    return true;
   }
 });

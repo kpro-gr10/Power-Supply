@@ -28,10 +28,6 @@ var Entity = Backbone.Model.extend({
 		this.get("connections").remove(powerline);
 	},
 
-	isPowerplant: function() {
-		return false;
-	},
-
 	/*
 	 * Returns if this entity should be removed from the map or not.
 	 * Should be overwritten by subclasses.
