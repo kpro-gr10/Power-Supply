@@ -118,40 +118,27 @@ var Screen = Backbone.View.extend({
 
   drawPowerLines: function(context, map, xPos, yPos, width, height) {
     var powerLines = map.get("powerLines");
-
-    powerLines.each(function(powerLine) {
-      var startBuilding = powerLine.get("startBuilding"),
-          terminalBuilding = powerLine.get("terminalBuilding"),
-          pylons = powerLine.get("connectingPoints"),
-
-          sx = startBuilding.get("x") + startBuilding.get("sprite").width/2,
-          sy = startBuilding.get("y") + startBuilding.get("sprite").height/2,
-          dx = terminalBuilding.get("x") + terminalBuilding.get("sprite").width/2,
-          dy = terminalBuilding.get("y") + terminalBuilding.get("sprite").height/2,
-          connections = pylons.map(function(pylon) {
-            return [pylon.get("x"), pylon.get("y")];
-          });
+    for(var i=0; i<powerLines.length; i++) {
+      var pl=powerLines.at(i);
+      var a=pl.get("buildingA");
+      var b=pl.get("buildingB");
 
       context.beginPath();
-      context.lineWidth = '10';
-      context.strokeStyle = 'white';
-      context.moveTo(sx-xPos, sy-yPos);
-      _.each(connections, function(connection) {
-        context.lineTo(connection[0]-xPos, connection[1]-yPos);
-      });
-      context.lineTo(dx-xPos, dy-yPos);
+      context.lineWidth = 10;
+      context.strokeStyle="white";
+      context.moveTo(a.get("x") + a.get("sprite").width/2 - xPos,
+                     a.get("y") + a.get("sprite").height/2 - yPos);
+      context.lineTo(b.get("x") + b.get("sprite").width/2 - xPos,
+                     b.get("y") + b.get("sprite").height/2 - yPos);
       context.stroke();
-    });
+    }
   },
 
-  // Does the series of touch events from the previous touchEnd correspond
+  buildingTemp: null,
+
+  // Does the series of touch events from the recent touchStart correspond
   // to a screen move?
   screenMove: false,
-
-  // Because building a power line takes several steps (begin building the
-  // power line, (potentially) add connecting points and terminate it), we
-  // need to keep track of it along the way.
-  unfinishedPowerLine: null,
 
   // Stores the previous touch object captured by the 'touchstart' handler.
   prevTouchStart: null,
@@ -180,8 +167,7 @@ var Screen = Backbone.View.extend({
 
     if (Date.now() - this.prevTouchEndTime < doubleTapInterval &&
         Math.abs(touch.screenX - this.prevTouchEnd.screenX) <= doubleTapArea &&
-        Math.abs(touch.screenY - this.prevTouchEnd.screenY) <= doubleTapArea &&
-        state === GameState.Normal) {
+        Math.abs(touch.screenY - this.prevTouchEnd.screenY) <= doubleTapArea) {
       // Prevent triple taps registering as two double taps.
       this.prevTouchEndTime = -Infinity;
 
@@ -193,36 +179,22 @@ var Screen = Backbone.View.extend({
       this.model.buildPowerPlantAt(touch.screenX, touch.screenY);
     } else if (state === GameState.BuildPL && !this.screenMove) {
       var map = this.model.get("map"),
-          coords = map.zoomedToAbsoluteCoordinates(touch.screenX,
-                                                   touch.screenY),
-          x = coords[0],
-          y = coords[1],
-          building = map.get("buildings").buildingAt(x, y);
+          building = map.getBuildingAt(touch.screenX, touch.screenY);
 
-      if (building && !this.unfinishedPowerLine) {
-        this.unfinishedPowerLine = this.model.startPowerLineAt(building);
-      } else if (building) {
-        // Let's not pull power lines from and to the same building.
-        if (this.unfinishedPowerLine.get("startBuilding") === building) {
-          this.unfinishedPowerLine = null;
+      if(building !== undefined) {
+        if(this.buildingTemp) {
+          var powerline = new PowerLine({buildingA: building, buildingB: this.buildingTemp});
+          building.connectTo(powerline);
+          this.buildingTemp.connectTo(powerline);
+          this.model.get("map").get("powerLines").add(powerline);
+          this.buildingTemp=null;
           this.model.set({state: GameState.Normal});
-          return;
+
+        } else {
+          this.buildingTemp = building;
         }
-
-        // Save successfully created power lines.
-        var powerLine = this.model.finishPowerLineAt(this.unfinishedPowerLine,
-                                                     building);
-        this.model.get("map").get("powerLines").add(powerLine);
-
-        // Reset our 'power line building' state.
-        this.unfinishedPowerLine = null;
-        this.model.set({state: GameState.Normal});
-      } else if (this.unfinishedPowerLine) {
-        this.unfinishedPowerLine =
-            this.model.connectPowerLineAt(this.unfinishedPowerLine, x, y);
-      } else {
-        this.model.set({state: GameState.Normal});
       }
+
     } else if (state === GameState.Normal && !this.screenMove){
       this.model.tapMap(touch.screenX, touch.screenY);
     }
@@ -273,11 +245,6 @@ var Screen = Backbone.View.extend({
 
       map.set({viewXPosition: newX, viewYPosition: newY});
     }
-
-      // If we're building a power line, the first tap will have entered
-      // a connection point we don't want. Let's remove it.
-      if (this.unfinishedPowerLine)
-        this.unfinishedPowerLine.get("connectingPoints").pop();
 
     // Toggle the 'zoomed' state of the map.
     map.set({zoomed: !map.get("zoomed")});
