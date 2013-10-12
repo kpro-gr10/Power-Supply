@@ -22,7 +22,6 @@ var Screen = Backbone.View.extend({
   prevZoomed: true,
 
   render: function() {
-
     if(this.needsRepaint) {
       var context = this.el.getContext("2d");
 
@@ -72,7 +71,7 @@ var Screen = Backbone.View.extend({
       this.renderBuildings(context, map, xPos, yPos, width, height);
 
       var state = this.model.get("state");
-      if(state===GameState.BuildPP || state===GameState.BuildPL) { 
+      if(state===GameState.BuildPP || state===GameState.BuildPL) {
         this.renderBuildMode(context, width, height);
       }
 
@@ -168,6 +167,7 @@ var Screen = Backbone.View.extend({
     
     // Store the touch object for the coming events
     this.prevTouchStart = event.touches[0];
+    this.screenMove=false;
   },
 
   touchEnd: function(event) {
@@ -175,11 +175,13 @@ var Screen = Backbone.View.extend({
 
     var doubleTapInterval = 500, // in milliseconds
         doubleTapArea = 40,      // in pixels
-        touch = event.changedTouches[0];
+        touch = event.changedTouches[0],
+        state = this.model.get("state");
 
     if (Date.now() - this.prevTouchEndTime < doubleTapInterval &&
         Math.abs(touch.screenX - this.prevTouchEnd.screenX) <= doubleTapArea &&
-        Math.abs(touch.screenY - this.prevTouchEnd.screenY) <= doubleTapArea) {
+        Math.abs(touch.screenY - this.prevTouchEnd.screenY) <= doubleTapArea &&
+        state === GameState.Normal) {
       // Prevent triple taps registering as two double taps.
       this.prevTouchEndTime = -Infinity;
 
@@ -187,9 +189,9 @@ var Screen = Backbone.View.extend({
       this.trigger("doubletap", event);
 
       return;
-    } else if (this.model.get("state") === GameState.BuildPP && !this.screenMove) {
+    } else if (state === GameState.BuildPP && !this.screenMove) {
       this.model.buildPowerPlantAt(touch.screenX, touch.screenY);
-    } else if (this.model.get("state") === GameState.BuildPL && !this.screenMove) {
+    } else if (state === GameState.BuildPL && !this.screenMove) {
       var map = this.model.get("map"),
           coords = map.zoomedToAbsoluteCoordinates(touch.screenX,
                                                    touch.screenY),
@@ -221,13 +223,12 @@ var Screen = Backbone.View.extend({
       } else {
         this.model.set({state: GameState.Normal});
       }
-    } else if (this.model.get("state") === GameState.Normal && !this.screenMove) {
+    } else if (state === GameState.Normal && !this.screenMove){
       this.model.tapMap(touch.screenX, touch.screenY);
     }
     
     this.prevTouchEnd = event.changedTouches[0];
     this.prevTouchEndTime = Date.now();
-    this.screenMove=false;
   },
 
   touchMove: function(event) {

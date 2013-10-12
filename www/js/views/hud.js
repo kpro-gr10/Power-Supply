@@ -20,6 +20,9 @@ var HudButtons = Backbone.View.extend({
 	},
 
 	buildPowerPlant: function() {
+		if(this.model.get("state") !== GameState.Normal) {
+			return;
+		}
 		if(this.model.get("player").get("money")>=POWERPLANT_COST) {
 			var map = this.model.get("map");
       		if(!map.get("zoomed")) {
@@ -33,6 +36,9 @@ var HudButtons = Backbone.View.extend({
 	},
 
 	buildPowerLine: function() {
+		if(this.model.get("state") !== GameState.Normal) {
+			return;
+		}
 		var map = this.model.get("map");
 		if(!map.get("zoomed")) {
         	map.set({zoomed: true});
