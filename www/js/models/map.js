@@ -72,7 +72,7 @@ var Map = Backbone.Model.extend({
     /*
      * Transforms the input screen coordinates to map coordinates, and if a building
      * can be found at those coordinates, this function returns that building.
-     * If no building can be found, undefined is returned.
+     * If no building can be found, null is returned.
      */
 
     // IMPORTANT TODO: SHOULD RETURN NULL INSTEAD OF UNDEFINED
@@ -85,7 +85,7 @@ var Map = Backbone.Model.extend({
                 return buildings.at(i);
             }
         }
-        return undefined;
+        return null;
     },
 
     // Takes some 'zoomed' screen coordinates (x,y) and returns an array
