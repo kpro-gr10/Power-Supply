@@ -33,6 +33,13 @@ var GameState = {
 	GameOver: "Game Over"
 };
 
+// The different types of buildings. Every building has a 'type' attribute
+// which holds one of these values.
+var BuildingType = {
+  PowerPlant: "Power plant",
+  ConsumerBuilding: "Consumer building",
+};
+
 // How much hp the player should have at the beginning of each level. Can be changed to array or
 // function to support multiple levels with different difficulties.
 var PLAYER_MAX_HP=4;

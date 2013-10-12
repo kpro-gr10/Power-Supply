@@ -1,13 +1,14 @@
 var Building = Entity.extend({
-	defaults: {
-		sprite: imgLib.company1,
-		x: 0, 
-		y: 0,
-		durability: BUILDING_DURABILITY,
-		revenueIncr: BUILDING_REVENUE_INCREMENT,
-		revenueFreq: BUILDING_REVENUE_FREQ,
-		revenue: 0
-	},
+  defaults: {
+    sprite: imgLib.company1,
+    x: 0,
+    y: 0,
+    durability: BUILDING_DURABILITY,
+    revenueIncr: BUILDING_REVENUE_INCREMENT,
+    revenueFreq: BUILDING_REVENUE_FREQ,
+    revenue: 0,
+    type: BuildingType.ConsumerBuilding,
+  },
 
 	/*
 	 * Duration since last time the building generated revenue

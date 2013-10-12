@@ -1,4 +1,8 @@
 var Entity = Backbone.Model.extend({
+  defaults: {
+    // The type of entity should be set in inheriting models.
+    type: null,
+  },
 
 	initialize: function() {
 		this.set("connections", new Backbone.Collection());

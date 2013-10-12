@@ -1,5 +1,7 @@
 var BuildingList = Backbone.Collection.extend({
-  model: Building,
+  // A building list may contain both power plants
+  // and other types of buildings, hence 'Entity'.
+  model: Entity,
 
   // Is there a building present at the given coordinates?
   buildingAt: function(x, y) {
