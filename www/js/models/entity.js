@@ -1,11 +1,31 @@
 var Entity = Backbone.Model.extend({
 
+	initialize: function() {
+		this.set("connections", new Backbone.Collection());
+	},
+
 	/*
 	 * Update the state of this entity. Should be overwritten
 	 * by subclasses
 	 */
 	update: function(dt) {
 
+	},
+
+	isConnected: function() {
+		return this.get("connections").length > 0;
+	},
+
+	connectTo: function(powerline) {
+		this.get("connections").add(powerline);
+	},
+
+	disconnect: function(powerline) {
+		this.get("connections").remove(powerline);
+	},
+
+	isPowerplant: function() {
+		return false;
 	},
 
 	/*
