@@ -2,8 +2,8 @@ var Level = Backbone.Model.extend({
 	
 	defaults: {
 		levelId: 0,
-		map: undefined,
-		player: undefined,
+		map: null,
+		player: null,
 		playtime: 0, // In seconds
 		state: GameState.Normal,
 		createBuildingFreq: 5000,
@@ -86,7 +86,7 @@ var Level = Backbone.Model.extend({
         var player = this.get("player"),
         	building = this.get("map").getBuildingAt(sx, sy);
 
-        if(building !== undefined) {
+        if(building !== null) {
 
         	// TODO: Check what type of building it is
             if(building.get("level") === undefined) {
