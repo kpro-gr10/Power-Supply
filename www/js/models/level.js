@@ -27,17 +27,17 @@ var Level = Backbone.Model.extend({
 
 			if(last>freq){
 				this.createBuilding();
-				this.set({ timeSinceBuilding, last - freq });
-				this.set({ createBuildingFreq, generateBuildingSpawnTime(lvl, playtime) });
-				this.set({ buildingCluster, generateClusterOfBuildings(lvl, playtime) });
+				this.set({ timeSinceBuilding: last - freq });
+				this.set({ createBuildingFreq: generateBuildingSpawnTime(lvl, playtime) });
+				this.set({ buildingCluster: generateClusterOfBuildings(lvl, playtime) });
 			} else {
-				this.set({ timeSinceBuilding, last });
+				this.set({ timeSinceBuilding: last });
 			}
 
 			this.get("map").update(dt, this);
 
 			if(this.get("player").get("health") <= 0) {
-				this.set({ state, GameState.GameOver });
+				this.set({ state: GameState.GameOver });
 			}
 		}
 	},
@@ -67,24 +67,26 @@ var Level = Backbone.Model.extend({
         	building = this.get("map").getBuildingAt(sx, sy);
 
         if(building) {
-
-        	// TODO: Check what type of building it is
-            if(building.get("level") === undefined) {
+            if(building.get("type") === BuildingType.Building) {
             	// TODO Play money sound
                 player.set("money", building.get("revenue")+player.get("money"));
                 building.set("revenue", 0);
-            } else {
-                var confirm = window.confirm("Information about the building!\n" + 
-                     "Building is at level " + building.get("level") + ".\n" +
-                     "Upgrade cost: " + UPGRADE_COST + " ,-\n" +
-                     "Press 'OK' to upgrade your powerplant.");
+
+            } else if(building.canBeUpgraded()) {
+            	var level = building.get("level"),
+            		confirm = window.confirm("Information about the building!\n" + 
+                    						 "Building is at level " + (level+1) + ".\n" +
+                     						 "Upgrade cost: " + UPGRADE_COST + " ,-\n" +
+                     						 "Press 'OK' to upgrade your powerplant.");
                 
                 if(confirm) {
-                    if(player.get("money")>= UPGRADE_COST){
-                        building.set("level", building.get("level") + 1);
-                        player.set("money", player.get("money") - UPGRADE_COST);
+                	var money = player.get("money");
+                    if(money >= UPGRADE_COST){
+                        building.upgrade();
+                        player.set({ money: money - UPGRADE_COST });
                     } else {
                         alert("You cannot afford the upgrade!");
+
                     }
                 }
             }
