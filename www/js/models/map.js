@@ -32,11 +32,11 @@ var Map = Backbone.Model.extend({
     var buildings=this.get("buildings");
     var toRemove=[];
     for(var i=0; i<buildings.length; i++) {
-        var building = buildings.at(i);
-        building.update(dt);
-        if(building.shouldBeRemoved()) {
-            toRemove.push(building);
-        }
+      var building = buildings.at(i);
+      building.update(dt);
+      if(building.shouldBeRemoved()) {
+        toRemove.push(building);
+      }
     }
     buildings.remove(toRemove);
     level.get("player").damage(toRemove.length);
@@ -74,7 +74,6 @@ var Map = Backbone.Model.extend({
      * can be found at those coordinates, this function returns that building.
      * If no building can be found, null is returned.
      */
-
     getBuildingAt: function(sx, sy) {
         var mapX=sx+this.get("viewXPosition"),
             mapY=sy+this.get("viewYPosition"),
@@ -89,7 +88,7 @@ var Map = Backbone.Model.extend({
 
     // Takes some 'zoomed' screen coordinates (x,y) and returns an array
     // containing this map's corresponding absolute coordinates.
-    zoomedToAbsoluteCoordinates: function(x, y) {
+    screenToMapCoordinates: function(x, y) {
       return [x + this.get("viewXPosition"), y + this.get("viewYPosition")];
     }
 });
