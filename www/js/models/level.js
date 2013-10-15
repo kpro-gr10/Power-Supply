@@ -142,5 +142,35 @@ var Level = Backbone.Model.extend({
    			this.get("player").set("money", this.get("player").get("money") - POWERPLANT_COST);
 			map.get("buildings").add(powerplant);
 		}
-	}
+	},
+
+  costOfPowerLine: function(aBuilding, anotherBuilding) {
+    var x0 = aBuilding.get("x") + aBuilding.get("sprite").width/2,
+        y0 = aBuilding.get("y") + aBuilding.get("sprite").height/2,
+        x1 = anotherBuilding.get("x") + anotherBuilding.get("sprite").width/2,
+        y1 = anotherBuilding.get("y") + anotherBuilding.get("sprite").height/2,
+        dx = Math.abs(x0 - x1),
+        dy = Math.abs(y0 - y1),
+        length = Math.sqrt(dx*dx + dy*dy),
+        cost = Math.round(length * POWERLINE_COST);
+
+    return cost;
+  },
+
+  connectWithPowerLine: function(aBuilding, anotherBuilding) {
+    if (!aBuilding || !anotherBuilding)
+      throw "Attempted to create a power line with invalid 'building' values.";
+
+    var cost = this.costOfPowerLine(aBuilding, anotherBuilding),
+        means = this.get("player").get("money");
+    if (means < cost)
+      throw "Insufficient means.";
+
+    var powerLine = new PowerLine({buildingA: aBuilding,
+                                   buildingB: anotherBuilding});
+    aBuilding.connectTo(powerLine);
+    anotherBuilding.connectTo(powerLine);
+    this.get("map").get("powerLines").add(powerLine);
+    this.get("player").set({money: means - cost});
+  }
 });

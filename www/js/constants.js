@@ -22,6 +22,9 @@ var BUILDING_DURABILITY=300000;
 // How much it costs to build a powerplant
 var POWERPLANT_COST=100;
 
+// Cost per screen unit (pixel) of power line.
+var POWERLINE_COST = 0.10;
+
 // How much it costs to upgrade a powerplant
 var UPGRADE_COST = 100;
 

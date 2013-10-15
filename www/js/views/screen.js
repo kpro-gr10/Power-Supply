@@ -181,21 +181,25 @@ var Screen = Backbone.View.extend({
       var map = this.model.get("map"),
           building = map.getBuildingAt(touch.screenX, touch.screenY);
 
-      if(building !== null) {
-        if(this.buildingTemp) {
-          var powerline = new PowerLine({buildingA: building, buildingB: this.buildingTemp});
-          building.connectTo(powerline);
-          this.buildingTemp.connectTo(powerline);
-          this.model.get("map").get("powerLines").add(powerline);
-          this.buildingTemp=null;
-          this.model.set({state: GameState.Normal});
+      if (building && this.buildingTemp) {
+        var cost = this.model.costOfPowerLine(building, this.buildingTemp),
+            means = this.model.get("player").get("money");
 
+        if (means < cost) {
+          alert("You cannot afford to build this power line!");
         } else {
-          this.buildingTemp = building;
+          var wantsToBuild = confirm("Do you want to connect these buildings?" +
+                                     "\nPrice: " + cost + " ,-");
+          if (wantsToBuild)
+            this.model.connectWithPowerLine(building, this.buildingTemp);
         }
-      }
 
-    } else if (state === GameState.Normal && !this.screenMove){
+        this.buildingTemp = null;
+        this.model.set({state: GameState.Normal});
+      } else if (building) {
+        this.buildingTemp = building;
+      }
+    } else if (state === GameState.Normal && !this.screenMove) {
       this.model.tapMap(touch.screenX, touch.screenY);
     }
     
