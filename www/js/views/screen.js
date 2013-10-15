@@ -91,15 +91,25 @@ var Screen = Backbone.View.extend({
 
       if (bX+bW > 0 && bY+bH > 0 && bX < width && bY < height) {
         context.drawImage(bImg, bX, bY);
-        if(building.get("revenue") !== undefined && building.get("revenue") > 0) {
-          context.drawImage(imgLib.coin, bX-imgLib.coin.width/2, bY+bH-imgLib.coin.height/2)
-        }
-        var extent = building.get("durability") / BUILDING_DURABILITY;
-        if(extent < 0.9) {
-          context.fillStyle = "black";
-          context.fillRect(bX+bW, bY, 8, bH);
-          context.fillStyle = "red";
-          context.fillRect(bX+bW+2, bY+2 + (1-extent)*(bH-4), 4, extent*(bH-4));
+        if(building.get("type") === BuildingType.Building) {
+          if(building.get("revenue") > 0) {
+            context.drawImage(imgLib.coin, bX-imgLib.coin.width/2, bY+bH-imgLib.coin.height/2)
+          }
+          var extent = building.get("durability") / BUILDING_DURABILITY;
+          if(extent < 0.95) {
+            context.fillStyle = "black";
+            context.fillRect(bX+bW, bY, 8, bH);
+            context.fillStyle = "red";
+            context.fillRect(bX+bW+2, bY+2 + (1-extent)*(bH-4), 4, extent*(bH-4));
+          }
+        } else if(building.get("type") === BuildingType.Powerplant) {
+          var txt=(building.get("level")+1) + "/" + POWERPLANT_MAX_LEVEL;
+          context.font="30px Arial";
+          context.strokeStyle="black"
+          context.lineWidth = 4;
+          context.strokeText(txt,bX-15, bY+bH-15);
+          context.fillStyle="white"
+          context.fillText(txt,bX-15, bY+bH-15);
         }
       }
 
