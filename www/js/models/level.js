@@ -7,48 +7,37 @@ var Level = Backbone.Model.extend({
 		playtime: 0, // In seconds
 		state: GameState.Normal,
 		createBuildingFreq: 5000,
+		timeSinceBuilding: 0,
+		createBuildingFreq: 1000,
+		buildingCluster: 1,
 		goal: 1500
 	},
-
-	/*
-	 * Time in milliseconds since the last building was placed.
-	 */
-	timeSinceBuilding: 0,
-
-	/*
-	 * Time in millis till the next time buildings should be placed
-	 */
-	createBuildingFreq: 1000,
-
-	/*
-	 * How many buildings to place
-	 */
-	buildingCluster: 1,
 
 	/*
 	 * Update level state
 	 */
 	update: function (dt){
 		if(this.get("state") !== GameState.GameOver) {
-			var playtime=this.get("playtime");
-			this.set("playtime", playtime+(dt/1000));
+			var playtime = this.get("playtime")+(dt/1000),
+				last = this.get("timeSinceBuilding") + dt,
+				freq = this.get("createBuildingFreq"),
+				lvl = this.get("levelId");
 
-			var last = this.timeSinceBuilding + dt;
-			var freq=this.createBuildingFreq;
+			this.set("playtime", playtime);
+
 			if(last>freq){
 				this.createBuilding();
-				this.timeSinceBuilding = last - freq;
-				this.createBuildingFreq = generateBuildingSpawnTime(this.get("levelId"), this.get("playtime"));
-				this.buildingCluster = generateClusterOfBuildings(this.get("levelId"), this.get("playtime"));
-				console.log(this.createBuildingFreq+", "+this.buildingCluster);
+				this.set({ timeSinceBuilding, last - freq });
+				this.set({ createBuildingFreq, generateBuildingSpawnTime(lvl, playtime) });
+				this.set({ buildingCluster, generateClusterOfBuildings(lvl, playtime) });
 			} else {
-				this.timeSinceBuilding = last;
+				this.set({ timeSinceBuilding, last });
 			}
 
 			this.get("map").update(dt, this);
 
 			if(this.get("player").get("health") <= 0) {
-				this.set("state", GameState.GameOver);
+				this.set({ state, GameState.GameOver });
 			}
 		}
 	},
@@ -58,26 +47,17 @@ var Level = Backbone.Model.extend({
 	 */
 	createBuilding: function() {
 		var map = this.get("map"),
-			rx=Math.random(),
-			ry=Math.random(),
-			offX = map.get("width")*0.1,
-			offY = map.get("height")*0.1;
+			num = this.get("buildingCluster");
 
-		for(var i=0; i<this.buildingCluster; i++) {
+		for(var i=0; i<num; i++) {
 			var building = new Building(),
 				sprite = building.get("sprite"),
 				limX=map.get("width")-sprite.width,
 				limY=map.get("height")-sprite.height,
-				x = rx*limX,
-				y = ry*limY,
-				nx = x + Math.floor((Math.random()-0.5)*offX),
-				ny = y + Math.floor((Math.random()-0.5)*offY);
-			if(nx < 0) {nx=0;}
-			else if(nx >= limX) {nx=limX;}
-			if(ny < 0) {ny=0;}
-			else if(ny > limY) {ny=limY;}
-			building.set({x: nx});
-			building.set({y: ny});
+				nx = Math.floor(Math.random()*limX),
+				ny = Math.floor(Math.random()*limY);
+			building.set({ x: nx });
+			building.set({ y: ny });
 			map.get("buildings").add(building);
 		}
 	},
@@ -86,7 +66,7 @@ var Level = Backbone.Model.extend({
         var player = this.get("player"),
         	building = this.get("map").getBuildingAt(sx, sy);
 
-        if(building !== null) {
+        if(building) {
 
         	// TODO: Check what type of building it is
             if(building.get("level") === undefined) {
@@ -112,15 +92,6 @@ var Level = Backbone.Model.extend({
     },
 
 	/*
-	 * Dialogue boxes causes the game loop to stop. Call this 
-	 * function before using window.alert( .. ) or window.confirm( .. )
-	 * if the game is running.
-	 */
-	pauseGameClock: function(time) {
-
-	},
-
-	/*
 	 * Build a powerplant on the map
 	 *
 	 * sx = screen x position
@@ -142,5 +113,12 @@ var Level = Backbone.Model.extend({
    			this.get("player").set("money", this.get("player").get("money") - POWERPLANT_COST);
 			map.get("buildings").add(powerplant);
 		}
+	},
+
+	buildPowerline: function(buildingA, buildingB) {
+		var powerline = new PowerLine({buildingA: buildingA, buildingB: buildingB});
+        buildingA.connectTo(powerline);
+        buildingB.connectTo(powerline);
+        this.get("map").get("powerLines").add(powerline);
 	}
 });
