@@ -181,15 +181,11 @@ var Screen = Backbone.View.extend({
       var map = this.model.get("map"),
           building = map.getBuildingAt(touch.screenX, touch.screenY);
 
-      if(building !== null) {
+      if(building) {
         if(this.buildingTemp) {
-          var powerline = new PowerLine({buildingA: building, buildingB: this.buildingTemp});
-          building.connectTo(powerline);
-          this.buildingTemp.connectTo(powerline);
-          this.model.get("map").get("powerLines").add(powerline);
+          this.model.buildPowerline(building, this.buildingTemp);
           this.buildingTemp=null;
           this.model.set({state: GameState.Normal});
-
         } else {
           this.buildingTemp = building;
         }
