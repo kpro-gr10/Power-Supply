@@ -133,3 +133,7 @@ img#logo{
     margin-right: auto;
     width: 90%;
 }
+
+table#gameElements{
+    border-spacing: 20px;
+}
