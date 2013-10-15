@@ -20,5 +20,5 @@ function generateBuildingSpawnTime(levelId, playtime) {
 // TODO: Include playtime as a part of the formula,
 // less buildings spawn at the beginning
 function generateClusterOfBuildings(levelId, playtime) {
-	return Math.random()*(levelId/3+2);
+	return 1;
 }
