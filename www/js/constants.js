@@ -28,6 +28,9 @@ var POWERPLANT_MAX_LEVEL=5;
 // How much power the powerplant can deliver at each level.
 var POWERPLANT_POWER = [100, 150, 200, 250, 300];
 
+// Cost per screen unit (pixel) of power line.
+var POWERLINE_COST = 0.10;
+
 // How much it costs to upgrade a powerplant
 var UPGRADE_COST = 75;
 
