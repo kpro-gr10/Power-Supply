@@ -1,9 +1,4 @@
 var Entity = Backbone.Model.extend({
-  defaults: {
-    // The type of entity should be set in inheriting models.
-    type: null,
-  },
-
 	initialize: function() {
 		this.set("connections", new Backbone.Collection());
 	},
@@ -16,6 +11,14 @@ var Entity = Backbone.Model.extend({
 
 	},
 
+	/*
+	 * Returns if this entity should be removed from the map or not.
+	 * Should be overwritten by subclasses.
+	 */
+	shouldBeRemoved: function() {
+		return false;
+	},
+
 	isConnected: function() {
 		return this.get("connections").length > 0;
 	},
@@ -26,14 +29,6 @@ var Entity = Backbone.Model.extend({
 
 	disconnect: function(powerline) {
 		this.get("connections").remove(powerline);
-	},
-
-	/*
-	 * Returns if this entity should be removed from the map or not.
-	 * Should be overwritten by subclasses.
-	 */
-	shouldBeRemoved: function() {
-		return false;
 	},
 
 	/*

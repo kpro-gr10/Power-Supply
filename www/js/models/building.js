@@ -7,7 +7,7 @@ var Building = Entity.extend({
     revenueIncr: BUILDING_REVENUE_INCREMENT,
     revenueFreq: BUILDING_REVENUE_FREQ,
     revenue: 0,
-    type: BuildingType.ConsumerBuilding,
+    type: BuildingType.Building,
   },
 
 	/*
