@@ -62,36 +62,47 @@ var Level = Backbone.Model.extend({
 		}
 	},
 
-	tapMap: function(sx, sy) {
-        var player = this.get("player"),
-        	building = this.get("map").getBuildingAt(sx, sy);
+  tapMap: function(sx, sy) {
+    var player = this.get("player"),
+        building = this.get("map").getBuildingAt(sx, sy),
+        powerLine = this.get("map").getPowerLineAt(sx, sy);
 
-        if(building) {
-            if(building.get("type") === BuildingType.Building) {
-            	// TODO Play money sound
-                player.set("money", building.get("revenue")+player.get("money"));
-                building.set("revenue", 0);
+    if(building) {
+      if(building.get("type") === BuildingType.Building) {
+        // TODO Play money sound
+        player.set("money", building.get("revenue")+player.get("money"));
+        building.set("revenue", 0);
 
-            } else if(building.canBeUpgraded()) {
-            	var level = building.get("level"),
-            		confirm = window.confirm("Information about the building!\n" + 
-                    						 "Building is at level " + (level+1) + ".\n" +
-                     						 "Upgrade cost: " + UPGRADE_COST + " ,-\n" +
-                     						 "Press 'OK' to upgrade your powerplant.");
-                
-                if(confirm) {
-                	var money = player.get("money");
-                    if(money >= UPGRADE_COST){
-                        building.upgrade();
-                        player.set({ money: money - UPGRADE_COST });
-                    } else {
-                        alert("You cannot afford the upgrade!");
+      } else if(building.canBeUpgraded()) {
+        var level = building.get("level"),
+        confirm = window.confirm("Information about the building!\n" +
+          "Building is at level " + (level+1) + ".\n" +
+          "Upgrade cost: " + UPGRADE_COST + " ,-\n" +
+        "Press 'OK' to upgrade your powerplant.");
 
-                    }
-                }
-            }
+        if(confirm) {
+          var money = player.get("money");
+          if(money >= UPGRADE_COST){
+            building.upgrade();
+            player.set({ money: money - UPGRADE_COST });
+          } else {
+            alert("You cannot afford the upgrade!");
+
+          }
         }
-    },
+      }
+    } else if (powerLine) {
+      var answer = window.confirm("Do you wish to destroy this power line?");
+      if (answer) {
+        var buildingA = powerLine.get("buildingA"),
+            buildingB = powerLine.get("buildingB");
+
+        buildingA.disconnect(powerLine);
+        buildingB.disconnect(powerLine);
+        this.get("map").get("powerLines").remove(powerLine);
+      }
+    }
+  },
 
 	/*
 	 * Build a powerplant on the map

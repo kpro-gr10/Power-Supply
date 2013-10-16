@@ -90,5 +90,27 @@ var Map = Backbone.Model.extend({
     // containing this map's corresponding absolute coordinates.
     screenToMapCoordinates: function(x, y) {
       return [x + this.get("viewXPosition"), y + this.get("viewYPosition")];
+    },
+
+    getPowerLineAt: function(x, y) {
+      // Create a dummy context to place the power lines on.
+      var canvas = document.createElement("canvas");
+      canvas.width = this.get("width");
+      canvas.height = this.get("height");
+      var context = canvas.getContext("2d");
+
+      var screenX = this.get("zoomed") ? this.get("viewXPosition") : 0,
+          screenY = this.get("zoomed") ? this.get("viewYPosition") : 0;
+
+      // If no power line is found, we'll return null.
+      var result = null;
+
+      this.get("powerLines").each(function(powerLine) {
+        powerLine.drawPath(context, screenX, screenY);
+        if (context.isPointInStroke(x, y))
+          result = powerLine;
+      });
+
+      return result;
     }
 });
