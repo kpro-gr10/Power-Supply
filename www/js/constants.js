@@ -31,6 +31,9 @@ var POWERPLANT_POWER = [100, 150, 200, 250, 300];
 // Cost per screen unit (pixel) of power line.
 var POWERLINE_COST = 0.10;
 
+// The line width of a power line as drawn.
+var POWERLINE_WIDTH = 10;
+
 // How much it costs to upgrade a powerplant
 var UPGRADE_COST = 75;
 

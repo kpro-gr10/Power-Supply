@@ -67,7 +67,7 @@ var Screen = Backbone.View.extend({
         }
       }
 
-      this.drawPowerLines(context, map, xPos, yPos, width, height);
+      this.drawPowerLines(context, map, xPos, yPos);
       this.renderBuildings(context, map, xPos, yPos, width, height);
 
       var state = this.model.get("state");
@@ -126,22 +126,11 @@ var Screen = Backbone.View.extend({
     }
   },
 
-  drawPowerLines: function(context, map, xPos, yPos, width, height) {
-    var powerLines = map.get("powerLines");
-    for(var i=0; i<powerLines.length; i++) {
-      var pl=powerLines.at(i);
-      var a=pl.get("buildingA");
-      var b=pl.get("buildingB");
-
-      context.beginPath();
-      context.lineWidth = 10;
-      context.strokeStyle="white";
-      context.moveTo(a.get("x") + a.get("sprite").width/2 - xPos,
-                     a.get("y") + a.get("sprite").height/2 - yPos);
-      context.lineTo(b.get("x") + b.get("sprite").width/2 - xPos,
-                     b.get("y") + b.get("sprite").height/2 - yPos);
+  drawPowerLines: function(context, map, screenX, screenY) {
+    map.get("powerLines").each(function(powerLine) {
+      powerLine.drawPath(context, screenX, screenY);
       context.stroke();
-    }
+    });
   },
 
   buildingTemp: null,
