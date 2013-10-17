@@ -1,6 +1,6 @@
 var Screen = Backbone.View.extend({
 
-  initialize: function() {
+  init: function() {
     this.listenTo(this.model.get("map"), "change", function() {
       this.needsRepaint = true;
     });
@@ -10,7 +10,6 @@ var Screen = Backbone.View.extend({
     this.listenTo(this.model.get("map").get("buildings"), "all", function() {
       this.needsRepaint = true;
     });
-    this.on("doubletap", this.doubleTap);
   },
 
   needsRepaint: true,
@@ -216,7 +215,7 @@ var Screen = Backbone.View.extend({
       this.prevTouchEndTime = -Infinity;
 
       // Delegate to a dedicated double tap handler.
-      this.trigger("doubletap", event);
+      this.doubleTap(event);
 
       return;
 

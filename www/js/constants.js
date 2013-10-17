@@ -17,7 +17,7 @@ var BUILDING_REVENUE_FREQ=11000;
 
 // How many milliseconds a building will remain without being supplied with power.
 // Can be replaced with array or function for multiple building types.
-var BUILDING_DURABILITY=60000;
+var BUILDING_DURABILITY=6000;
 
 // How much it costs to build a powerplant
 var POWERPLANT_COST=200;
@@ -47,4 +47,4 @@ var GameState = {
 
 // How much hp the player should have at the beginning of each level. Can be changed to array or
 // function to support multiple levels with different difficulties.
-var PLAYER_MAX_HP=100;
+var PLAYER_MAX_HP=4;

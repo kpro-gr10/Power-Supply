@@ -30,6 +30,16 @@ var app = {
     var canvas = document.getElementById('screen');
     canvas.width = window.screen.availWidth;
     canvas.height = window.screen.availHeight * (1-HIDDEN_HUD_HEIGHT/100);
+
+    // Initialize game view / controller
+    this.gameScreen = new Screen({el: $('#screen')});
+    this.hudBtns = new HudButtons({el: $('#hudButtons')});
+    this.hudMny = new HudMoney({el: $('#money')});
+    this.hpBar = new HpBar({el: $('#hpbar')})
+
+    canvas.addEventListener("touchstart", this.gameScreen, false);
+    canvas.addEventListener("touchmove", this.gameScreen, false);
+    canvas.addEventListener("touchend", this.gameScreen, false);
   },
 
   bindEvents: function() {
@@ -50,19 +60,13 @@ var app = {
     });
     this.gameLevel = new Level({levelId: levelId, map: map, player: player});
 
-    // Initialize game view / controller
-    this.gameScreen = new Screen({model: this.gameLevel, el: $('#screen')});
-    this.hudBtns = new HudButtons({model: this.gameLevel, el: $('#hudButtons')});
-    this.hudMny = new HudMoney({model: this.gameLevel, el: $('#money')});
-    this.hpBar = new HpBar({model: this.gameLevel, el: document.getElementById('hpbar')})
-
-    canvas.addEventListener("touchstart", this.gameScreen, false);
-    canvas.addEventListener("touchmove", this.gameScreen, false);
-    canvas.addEventListener("touchend", this.gameScreen, false);
-  },
-
-  resetGame: function(levelId) {
-
+    this.gameScreen.model=this.gameLevel;
+    this.hudBtns.model=this.gameLevel;
+    this.hudMny.model=this.gameLevel;
+    this.hpBar.model=this.gameLevel;
+    this.gameScreen.init();
+    this.hudMny.init();
+    this.hpBar.init();
   },
 
   startGame: function() {
@@ -106,15 +110,20 @@ var app = {
   stopGame: function() {
     if(DEBUG) {console.log("Stopping game..");}
     this.gameRunning = false;
+    this.gameLevel.get("map").get("buildings").reset();
+    this.gameLevel.get("map").get("powerplants").reset();
+    this.gameLevel.get("map").get("powerLines").reset();
+    this.gameLevel.get("map").destroy();
+    this.gameLevel.destroy();
   },
 
   onDeviceReady: function() {
     //Initialize main menu
     var menu = new Menu();
-    app.initGame(0);
 
     function startMenu(){
       $('#start_game').click(function(){
+        app.initGame(0);
         app.startGame();
       });
       $('#instructions').click(function(){
