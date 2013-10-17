@@ -4,7 +4,7 @@ var Powerplant = Entity.extend({
     x: 0,
     y: 0,
     level: 0,
-    type: BuildingType.Powerplant,
+    remainingPower: POWERPLANT_POWER[0]
   },
 
   canBeUpgraded: function() {
@@ -17,5 +17,50 @@ var Powerplant = Entity.extend({
 
   upgrade: function() {
   	this.set({ level: this.get("level") + 1 });
+  },
+
+  distributePower: function() {
+    var connections = this.get("connections");
+    var queue = new Queue();
+    for(var i=0; i<connections.length; i++) {
+      queue.enqueue(connections.at(i));
+    }
+    var power=this.getMaxPower();
+    console.log("max power: " + power);
+    var num=0;
+
+    while(queue.getLength() > 0) {
+      var powerline = queue.dequeue(),
+          buildingA = powerline.get("buildingA"),
+          buildingB = powerline.get("buildingB");
+
+      if (buildingA instanceof Building && 
+          buildingA.get("powerRequirement") <= power && 
+          !buildingA.get("receivePower")) {
+        power -= buildingA.get("powerRequirement");
+        buildingA.set({ receivePower: true });
+        connections = buildingA.get("connections");
+        for(var i=0; i<connections.length; i++) {
+          queue.enqueue(connections.at(i));
+        }
+      }
+
+      if (buildingB instanceof Building && 
+          buildingB.get("powerRequirement") <= power && 
+          !buildingB.get("receivePower")) {
+        power -= buildingB.get("powerRequirement");
+        buildingB.set({ receivePower: true });
+        connections = buildingB.get("connections");
+        for(var i=0; i<connections.length; i++) {
+          queue.enqueue(connections.at(i));
+        }
+      }
+
+    }
+
+    this.set({remainingPower: power});
+    console.log("remaining power: " + power);
+    console.log("num: " + num);
+
   }
 });
