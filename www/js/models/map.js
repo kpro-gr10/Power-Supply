@@ -128,11 +128,11 @@ var Map = Backbone.Model.extend({
       // If no power line is found, we'll return null.
       var result = null;
 
-      this.get("powerLines").each(function(powerLine) {
-        powerLine.drawPath(context, screenX, screenY);
-        if (context.isPointInStroke(x, y))
-          result = powerLine;
-      });
+      //this.get("powerLines").each(function(powerLine) {
+        //powerLine.drawPath(context, screenX, screenY);
+        //if (context.isPointInStroke(x, y))
+        //  result = powerLine;
+      //});
 
       return result;
     }
