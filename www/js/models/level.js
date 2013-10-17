@@ -67,7 +67,7 @@ var Level = Backbone.Model.extend({
         	building = this.get("map").getBuildingAt(sx, sy);
 
         if(building) {
-            if(building.get("type") === BuildingType.Building) {
+            if(building instanceof Building) {
             	// TODO Play money sound
                 player.set("money", building.get("revenue")+player.get("money"));
                 building.set("revenue", 0);
@@ -83,6 +83,7 @@ var Level = Backbone.Model.extend({
                 	var money = player.get("money");
                     if(money >= UPGRADE_COST){
                         building.upgrade();
+                        this.get("map").set({ redistributePower: true });
                         player.set({ money: money - UPGRADE_COST });
                     } else {
                         alert("You cannot afford the upgrade!");
@@ -100,12 +101,11 @@ var Level = Backbone.Model.extend({
 	 * sy = screen y position
 	 */
 	buildPowerPlantAt: function(sx, sy) {
-		if(DEBUG) {console.log("Build Powerplant at: " + (this.get("map").get("viewXPosition")+sx) + ", " + (this.get("map").get("viewYPosition")+sy));}
-		this.set("state", GameState.Normal);
+		this.set({ state: GameState.Normal });
 
-		var powerplant = new Powerplant(); // TODO Replace this with grabbing a building from the object pool
 		var confirm = window.confirm("Do you want to build here?\nPrice: " + POWERPLANT_COST + " ,-");
 		if(confirm) {
+			var powerplant = new Powerplant(); // TODO Replace this with grabbing a building from the object pool
 			var sprite=powerplant.get("sprite"),
 				map=this.get("map");
 
@@ -113,7 +113,7 @@ var Level = Backbone.Model.extend({
    			powerplant.set("y", map.get("viewYPosition") + sy + window.pageYOffset - sprite.height/2);
 
    			this.get("player").set("money", this.get("player").get("money") - POWERPLANT_COST);
-			map.get("buildings").add(powerplant);
+			map.get("powerplants").add(powerplant);
 		}
 	},
 
@@ -144,6 +144,7 @@ var Level = Backbone.Model.extend({
     aBuilding.connectTo(powerLine);
     anotherBuilding.connectTo(powerLine);
     this.get("map").get("powerLines").add(powerLine);
+    this.get("map").set({ redistributePower: true });
     this.get("player").set({money: means - cost});
   }
 });
