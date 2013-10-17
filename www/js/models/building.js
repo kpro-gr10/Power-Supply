@@ -3,11 +3,12 @@ var Building = Entity.extend({
     sprite: imgLib.company1,
     x: 0,
     y: 0,
+    powerRequirement: 15,
+    receivePower: false, // TODO: Set to false again when nolonger getting power
     durability: BUILDING_DURABILITY,
     revenueIncr: BUILDING_REVENUE_INCREMENT,
     revenueFreq: BUILDING_REVENUE_FREQ,
-    revenue: 0,
-    type: BuildingType.Building,
+    revenue: 0
   },
 
 	/*
@@ -52,7 +53,7 @@ var Building = Entity.extend({
 	},
 
 	update: function(dt) {
-		if(this.isConnected()) {
+		if(this.get("receivePower")) {
 			this.updateRevenue(dt);
 		} else {
 			this.lowerDurability(dt);
