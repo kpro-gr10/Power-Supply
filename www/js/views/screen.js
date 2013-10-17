@@ -80,37 +80,59 @@ var Screen = Backbone.View.extend({
 
   renderBuildings: function(context, map, xPos, yPos, width, height) {
     var buildings = map.get("buildings");
+    var powerplants = map.get("powerplants");
 
     for (var i = 0; i < buildings.length; i++) {
-      var building  =  buildings.at(i);
-      var bImg = building.get("sprite");
-      var bX = building.get("x") - xPos;
-      var bY = building.get("y") - yPos;
-      var bW = bImg.width;
-      var bH = bImg.height;
+      var building  =  buildings.at(i),
+          sprite = building.get("sprite"),
+          x = building.get("x") - xPos,
+          y = building.get("y") - yPos,
+          w = sprite.width,
+          h = sprite.height;
 
-      if (bX+bW > 0 && bY+bH > 0 && bX < width && bY < height) {
-        context.drawImage(bImg, bX, bY);
-        if(building.get("type") === BuildingType.Building) {
-          if(building.get("revenue") > 0) {
-            context.drawImage(imgLib.coin, bX-imgLib.coin.width/2, bY+bH-imgLib.coin.height/2)
-          }
-          var extent = building.get("durability") / BUILDING_DURABILITY;
-          if(extent < 0.95) {
-            context.fillStyle = "black";
-            context.fillRect(bX+bW, bY, 8, bH);
-            context.fillStyle = "red";
-            context.fillRect(bX+bW+2, bY+2 + (1-extent)*(bH-4), 4, extent*(bH-4));
-          }
-        } else if(building.get("type") === BuildingType.Powerplant) {
-          var txt=(building.get("level")+1) + "/" + POWERPLANT_MAX_LEVEL;
-          context.font="30px Arial";
-          context.strokeStyle="black"
-          context.lineWidth = 4;
-          context.strokeText(txt,bX-15, bY+bH-15);
-          context.fillStyle="white"
-          context.fillText(txt,bX-15, bY+bH-15);
+      if (x+w > 0 && y+h > 0 && x < width && y < height) {
+        context.drawImage(sprite, x, y);
+        if(building.get("revenue") > 0) {
+          context.drawImage(imgLib.coin, x-imgLib.coin.width/2, y+h-imgLib.coin.height/2)
         }
+        var extent = building.get("durability") / BUILDING_DURABILITY;
+        if(extent < 0.95) {
+          context.fillStyle = "black";
+          context.fillRect(x+w, y, 8, h);
+          context.fillStyle = "red";
+          context.fillRect(x+w+2, y+2 + (1-extent)*(h-4), 4, extent*(h-4));
+        }
+      }
+
+    }
+
+    for (var i = 0; i < powerplants.length; i++) {
+      var powerplant  =  powerplants.at(i),
+          sprite = powerplant.get("sprite"),
+          x = powerplant.get("x") - xPos,
+          y = powerplant.get("y") - yPos,
+          w = sprite.width,
+          h = sprite.height;
+
+      if (x+w > 0 && y+h > 0 && x < width && y < height) {
+        context.drawImage(sprite, x, y);
+
+        var txt=(powerplant.get("level")+1) + "/" + POWERPLANT_MAX_LEVEL;
+        context.font="30px Arial";
+        context.strokeStyle="black"
+        context.lineWidth = 4;
+        context.strokeText(txt, x-15, y+h-15);
+        context.fillStyle="white"
+        context.fillText(txt, x-15, y+h-15);
+
+        var extent = powerplant.get("remainingPower") / powerplant.getMaxPower();
+        if(extent < 0.95) {
+          context.fillStyle = "black";
+          context.fillRect(x+w, y, 8, h);
+          context.fillStyle = "yellow";
+          context.fillRect(x+w+2, y+2 + (1-extent)*(h-4), 4, extent*(h-4));
+        }
+
       }
 
     }
@@ -132,15 +154,27 @@ var Screen = Backbone.View.extend({
       var pl=powerLines.at(i);
       var a=pl.get("buildingA");
       var b=pl.get("buildingB");
+      var x0=a.get("x") + a.get("sprite").width/2 - xPos;
+      var y0=a.get("y") + a.get("sprite").height/2 - yPos;
+      var x1=b.get("x") + b.get("sprite").width/2 - xPos;
+      var y1=b.get("y") + b.get("sprite").height/2 - yPos;
 
       context.beginPath();
-      context.lineWidth = 10;
-      context.strokeStyle="white";
-      context.moveTo(a.get("x") + a.get("sprite").width/2 - xPos,
-                     a.get("y") + a.get("sprite").height/2 - yPos);
-      context.lineTo(b.get("x") + b.get("sprite").width/2 - xPos,
-                     b.get("y") + b.get("sprite").height/2 - yPos);
+      context.lineWidth = 20;
+      context.strokeStyle="black";
+      context.moveTo(x0, y0);
+      context.lineTo(x1, y1);
       context.stroke();
+      if(pl.get("buildingA").get("receivePower") && pl.get("buildingB").get("receivePower") ||
+        pl.get("buildingA") instanceof Powerplant && pl.get("buildingB").get("receivePower") ||
+        pl.get("buildingA").get("receivePower") && pl.get("buildingB") instanceof Powerplant) {
+        context.beginPath();
+        context.lineWidth = 8;
+        context.strokeStyle="yellow";
+        context.moveTo(x0, y0);
+        context.lineTo(x1, y1);
+        context.stroke();
+      }
     }
   },
 
