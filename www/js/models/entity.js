@@ -1,6 +1,6 @@
 var Entity = Backbone.Model.extend({
 	initialize: function() {
-		this.set("connections", new Backbone.Collection());
+		this.set("connections", new PowerLineList());
 	},
 
 	/*
@@ -17,10 +17,6 @@ var Entity = Backbone.Model.extend({
 	 */
 	shouldBeRemoved: function() {
 		return false;
-	},
-
-	isConnected: function() {
-		return this.get("connections").length > 0;
 	},
 
 	connectTo: function(powerline) {
