@@ -67,7 +67,7 @@ var Screen = Backbone.View.extend({
         }
       }
 
-      this.drawPowerLines(context, map, xPos, yPos, width, height);
+      this.drawPowerLines(context, map, xPos, yPos);
       this.renderBuildings(context, map, xPos, yPos, width, height);
 
       var state = this.model.get("state");
@@ -160,7 +160,7 @@ var Screen = Backbone.View.extend({
       var y1=b.get("y") + b.get("sprite").height/2 - yPos;
 
       context.beginPath();
-      context.lineWidth = 20;
+      context.lineWidth = POWERLINE_WIDTH;
       context.strokeStyle="black";
       context.moveTo(x0, y0);
       context.lineTo(x1, y1);
@@ -169,7 +169,7 @@ var Screen = Backbone.View.extend({
         pl.get("buildingA") instanceof Powerplant && pl.get("buildingB").get("receivePower") ||
         pl.get("buildingA").get("receivePower") && pl.get("buildingB") instanceof Powerplant) {
         context.beginPath();
-        context.lineWidth = 8;
+        context.lineWidth = POWERLINE_WIDTH/2;
         context.strokeStyle="yellow";
         context.moveTo(x0, y0);
         context.lineTo(x1, y1);

@@ -34,6 +34,9 @@ var UPGRADE_COST = 75;
 // Cost per screen unit (pixel) of power line.
 var POWERLINE_COST = 0.10;
 
+// The line width of a power line as drawn.
+var POWERLINE_WIDTH = 18;
+
 // State of the game, indicates what the player can and cannot do
 var GameState = {
 	Normal: "Playing",
