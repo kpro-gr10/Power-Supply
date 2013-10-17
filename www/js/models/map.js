@@ -21,14 +21,20 @@ var Map = Backbone.Model.extend({
     // The buildings placed on the map:
     buildings: new BuildingList(),
 
+    // The powerplants placed on the map:
+    powerplants: new Backbone.Collection(),
+
     // The power lines connecting power plants and other buildings:
-    powerLines: new PowerLineList()
+    powerLines: new PowerLineList(),
+
+    redistributePower: false
   },
 
   /*
    * Updates the state of this map.
    */
   update: function(dt, level) {
+    var redistPower = this.get("redistributePower");
     var buildings=this.get("buildings");
     var toRemove=[];
     for(var i=0; i<buildings.length; i++) {
@@ -37,9 +43,20 @@ var Map = Backbone.Model.extend({
       if(building.shouldBeRemoved()) {
         toRemove.push(building);
       }
+      if(redistPower) {
+        building.set({ receivePower: false })
+      }
     }
     buildings.remove(toRemove);
     level.get("player").damage(toRemove.length);
+
+    if(redistPower) {
+      var powerplants=this.get("powerplants");
+      for(var i=0; i<powerplants.length; i++) {
+        powerplants.at(i).distributePower();
+      }
+      this.set({ redistributePower: false });
+    }
   },
 
   /*
@@ -78,10 +95,16 @@ var Map = Backbone.Model.extend({
         var mapX=sx+this.get("viewXPosition"),
             mapY=sy+this.get("viewYPosition"),
             buildings=this.get("buildings");
+            powerplants=this.get("powerplants");
         for(var i=0; i<buildings.length; i++) {
-            if(buildings.at(i).contains(mapX, mapY)) {
-                return buildings.at(i);
-            }
+          if(buildings.at(i).contains(mapX, mapY)) {
+            return buildings.at(i);
+          }
+        }
+        for(var i=0; i<powerplants.length; i++) {
+          if(powerplants.at(i).contains(mapX, mapY)) {
+            return powerplants.at(i);
+          }
         }
         return null;
     },
