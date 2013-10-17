@@ -1,46 +1,63 @@
 var Level = Backbone.Model.extend({
-	
-	defaults: {
-		levelId: 0,
-		map: null,
-		player: null,
-		playtime: 0, // In seconds
-		state: GameState.Normal,
-		createBuildingFreq: 5000,
-		timeSinceBuilding: 0,
-		createBuildingFreq: 1000,
-		buildingCluster: 1,
-		goal: 1500
-	},
 
-	/*
-	 * Update level state
-	 */
-	update: function (dt){
-		if(this.get("state") !== GameState.GameOver) {
-			var playtime = this.get("playtime")+(dt/1000),
-				last = this.get("timeSinceBuilding") + dt,
-				freq = this.get("createBuildingFreq"),
-				lvl = this.get("levelId");
+  defaults: {
+    levelId: 0,
+    map: null,
+    player: null,
+    playtime: 0, // In seconds
+    state: GameState.Normal,
 
-			this.set("playtime", playtime);
+    createBuildingFreq: 5000,
+    timeSinceBuilding: 0,
+    createBuildingFreq: 1000,
+    buildingCluster: 1,
 
-			if(last>freq){
-				this.createBuilding();
-				this.set({ timeSinceBuilding: last - freq });
-				this.set({ createBuildingFreq: generateBuildingSpawnTime(lvl, playtime) });
-				this.set({ buildingCluster: generateClusterOfBuildings(lvl, playtime) });
-			} else {
-				this.set({ timeSinceBuilding: last });
-			}
+    powerLineBreakageFreq: 10000,
+    prevBreakage: Date.now(),
 
-			this.get("map").update(dt, this);
+    goal: 1500,
+  },
 
-			if(this.get("player").get("health") <= 0) {
-				this.set({ state: GameState.GameOver });
-			}
-		}
-	},
+  /*
+  * Update level state
+  */
+  update: function (dt){
+    if(this.get("state") !== GameState.GameOver) {
+      var playtime = this.get("playtime")+(dt/1000),
+          last = this.get("timeSinceBuilding") + dt,
+          freq = this.get("createBuildingFreq"),
+          lvl = this.get("levelId");
+
+      this.set("playtime", playtime);
+
+      if(last>freq){
+        this.createBuilding();
+        this.set({ timeSinceBuilding: last - freq });
+        this.set({ createBuildingFreq: generateBuildingSpawnTime(lvl, playtime) });
+        this.set({ buildingCluster: generateClusterOfBuildings(lvl, playtime) });
+      } else {
+        this.set({ timeSinceBuilding: last });
+      }
+
+      var timeSinceBreakage = Date.now() - this.get("prevBreakage");
+      if (timeSinceBreakage > this.get("powerLineBreakageFreq")) {
+        var magic = 1/3500; // Found through experimentation.
+        if (Math.random() < (this.get("levelId")+1) * magic) {
+          var powerLine = this.get("map").get("powerLines").sample();
+          if (powerLine) {
+            powerLine.break();
+            this.set({prevBreakage: Date.now()});
+          }
+        }
+      }
+
+      this.get("map").update(dt, this);
+
+      if(this.get("player").get("health") <= 0) {
+        this.set({ state: GameState.GameOver });
+      }
+    }
+  },
 
 	/*
 	 * Call this function when a new building that needs power should be placed on the map.
