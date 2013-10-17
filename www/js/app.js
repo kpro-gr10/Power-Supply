@@ -61,11 +61,20 @@ var app = {
     canvas.addEventListener("touchend", this.gameScreen, false);
   },
 
+  resetGame: function(levelId) {
+
+  },
+
   startGame: function() {
     if(DEBUG) {console.log("Starting game..");}
     // Game loop
     var prev = Date.now();
     var now = prev;
+
+    //Debug
+    var frameCount=0;
+    var lastPrint = now;
+
     function gameLoop() {
       if (app.gameRunning) {
         requestAnimFrame(gameLoop);
@@ -76,6 +85,12 @@ var app = {
 
         app.gameScreen.render();
         app.gameLevel.update(dt);
+        frameCount++;
+        if(now-lastPrint >= 1000) {
+          lastPrint+=1000;
+          //console.log("FPS: " + frameCount);
+          frameCount = 0;
+        }
       }
       if(app.gameLevel.get("state") === GameState.GameOver) {
         app.stopGame();
