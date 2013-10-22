@@ -80,6 +80,9 @@ var Level = Backbone.Model.extend({
 	},
 
   tapMap: function(sx, sy) {
+    if (!this.get("map").get("zoomed"))
+      return;
+
     var player = this.get("player"),
         building = this.get("map").getBuildingAt(sx, sy),
         powerLine = this.get("map").getPowerLineAt(sx, sy);
