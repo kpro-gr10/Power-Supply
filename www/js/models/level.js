@@ -10,7 +10,6 @@ var Level = Backbone.Model.extend({
     createBuildingFreq: 5000,
     timeSinceBuilding: 0,
     createBuildingFreq: 1000,
-    buildingCluster: 1,
 
     powerLineBreakageFreq: 10000,
     prevBreakage: Date.now(),
@@ -34,7 +33,6 @@ var Level = Backbone.Model.extend({
         this.createBuilding();
         this.set({ timeSinceBuilding: last - freq });
         this.set({ createBuildingFreq: generateBuildingSpawnTime(lvl, playtime) });
-        this.set({ buildingCluster: generateClusterOfBuildings(lvl, playtime) });
       } else {
         this.set({ timeSinceBuilding: last });
       }
@@ -64,19 +62,16 @@ var Level = Backbone.Model.extend({
 	 */
 	createBuilding: function() {
 		var map = this.get("map"),
-			num = this.get("buildingCluster");
-
-		for(var i=0; i<num; i++) {
-			var building = new Building(),
-				sprite = building.get("sprite"),
-				limX=map.get("width")-sprite.width,
-				limY=map.get("height")-sprite.height,
-				nx = Math.floor(Math.random()*limX),
-				ny = Math.floor(Math.random()*limY);
-			building.set({ x: nx });
-			building.set({ y: ny });
-			map.get("buildings").add(building);
-		}
+        id = Math.floor(Math.random()*BuildingTemplates.length),
+		    building = new Building(BuildingTemplates[id]),
+        sprite = building.get("sprite"),
+        limX=map.get("width")-sprite.width,
+        limY=map.get("height")-sprite.height,
+        nx = Math.floor(Math.random()*limX),
+        ny = Math.floor(Math.random()*limY);
+    building.set({ x: nx });
+    building.set({ y: ny });
+    map.get("buildings").add(building);
 	},
 
   tapMap: function(sx, sy) {
