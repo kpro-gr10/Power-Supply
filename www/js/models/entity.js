@@ -11,6 +11,14 @@ var Entity = Backbone.Model.extend({
 
 	},
 
+	getCenterPos: function() {
+		var x=this.get("x"),
+			y=this.get("y"),
+			w=this.get("sprite").width,
+			h=this.get("sprite").height;
+		return {x: x+w/2, y: y+h/2};
+	},
+
 	/*
 	 * Returns if this entity should be removed from the map or not.
 	 * Should be overwritten by subclasses.
