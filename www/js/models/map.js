@@ -115,25 +115,19 @@ var Map = Backbone.Model.extend({
       return [x + this.get("viewXPosition"), y + this.get("viewYPosition")];
     },
 
-    getPowerLineAt: function(x, y) {
-      // Create a dummy context to place the power lines on.
-      var canvas = document.createElement("canvas");
-      canvas.width = this.get("width");
-      canvas.height = this.get("height");
-      var context = canvas.getContext("2d");
+    getPowerLineAt: function(sx, sy) {
+      var p = {x: sx+this.get("viewXPosition"), y: sy+this.get("viewYPosition")},
+          powerlines=this.get("powerLines");
 
-      var screenX = this.get("zoomed") ? this.get("viewXPosition") : 0,
-          screenY = this.get("zoomed") ? this.get("viewYPosition") : 0;
-
-      // If no power line is found, we'll return null.
-      var result = null;
-
-      //this.get("powerLines").each(function(powerLine) {
-        //powerLine.drawPath(context, screenX, screenY);
-        //if (context.isPointInStroke(x, y))
-        //  result = powerLine;
-      //});
-
-      return result;
+      for(var i=0; i<powerlines.length; i++) {
+        var powerline = powerlines.at(i),
+            distSqrt = distToSegmentSquared(p, 
+                              powerline.getPointA(), 
+                              powerline.getPointB());
+        if (distSqrt <= POWERLINE_WIDTH*POWERLINE_WIDTH) {
+          return powerline;
+        }
+      }
+      return null;
     }
 });
