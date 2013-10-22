@@ -173,6 +173,13 @@ var Screen = Backbone.View.extend({
         context.moveTo(x0, y0);
         context.lineTo(x1, y1);
         context.stroke();
+      } else if (pl.get("state") == PowerLineState.Broken) {
+        context.beginPath();
+        context.lineWidth = POWERLINE_WIDTH/2;
+        context.strokeStyle="red";
+        context.moveTo(x0, y0);
+        context.lineTo(x1, y1);
+        context.stroke();
       }
     }
   },

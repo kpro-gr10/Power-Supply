@@ -42,8 +42,15 @@ var GameState = {
 	Normal: "Playing",
 	BuildPP: "Build Powerplant",
 	BuildPL: "Build Powerline",
-	GameOver: "Game Over"
+	GameOver: "Game Over",
 };
+
+// Power lines sometimes break. Therefore, we need an indicator of
+// a power line's health.
+var PowerLineState = {
+  Healthy: "Healthy",
+  Broken: "Broken",
+}
 
 // How much hp the player should have at the beginning of each level. Can be changed to array or
 // function to support multiple levels with different difficulties.
