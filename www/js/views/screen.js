@@ -22,6 +22,7 @@ var Screen = Backbone.View.extend({
 
   render: function() {
     if(this.needsRepaint) {
+      this.needsRepaint=false;
       var context = this.el.getContext("2d");
 
       var map = this.model.get("map");
@@ -90,10 +91,24 @@ var Screen = Backbone.View.extend({
           h = sprite.height;
 
       if (x+w > 0 && y+h > 0 && x < width && y < height) {
+        // Draw a circle below this building if you are trying to connect a powerline to it
+        if(building === this.buildingTemp) {
+          var d=Math.max(w, h);
+          context.fillStyle="white";
+          context.beginPath();
+          context.arc(x+w/2-3, y+h/2-3, d/2+6, 0, 2*Math.PI);
+          context.fill();
+        }
+
+        // Render the building
         context.drawImage(sprite, x, y);
+
+        // Render a coin if the building has generated revenue
         if(building.get("revenue") > 0) {
           context.drawImage(imgLib.coin, x-imgLib.coin.width/2, y+h-imgLib.coin.height/2)
         }
+
+        // Draw the buidling's durability bar
         var extent = building.get("durability") / BUILDING_DURABILITY;
         if(extent < 0.95) {
           context.fillStyle = "black";
@@ -115,6 +130,15 @@ var Screen = Backbone.View.extend({
 
       if (x+w > 0 && y+h > 0 && x < width && y < height) {
         context.drawImage(sprite, x, y);
+
+        // Draw a circle below this building if you are trying to connect a powerline to it
+        if(building === this.buildingTemp) {
+          var d=Math.max(w, h);
+          context.fillStyle="white";
+          context.beginPath();
+          context.arc(x+w/2-3, y+h/2-3, d/2+6, 0, 2*Math.PI);
+          context.fill();
+        }
 
         var txt=(powerplant.get("level")+1) + "/" + POWERPLANT_MAX_LEVEL;
         context.font="30px Arial";
