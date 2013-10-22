@@ -1,3 +1,6 @@
+/*
+ * Scrolls the browser window to the top left corner of the page.
+ */
 function scrollToTop() {
 	var currX = window.pageXOffset;
 	var currY = window.pageYOffset;
@@ -23,14 +26,28 @@ function generateClusterOfBuildings(levelId, playtime) {
 	return 1;
 }
 
+/*
+ * Returns the square of x
+ */
 function sqr(x) { 
     return x * x;
 }
 
+/*
+ * Returns the square of the distance from v to w
+ */
 function dist2(v, w) { 
     return sqr(v.x - w.x) + sqr(v.y - w.y);
 }
 
+/*
+ * Returns the square of the distance from the point p to the line segment from v to w.
+ * p, v and w must be objects with x and y fields.
+ *
+ * p: point - point to check distance from
+ * v: point - first point of the line segment
+ * w: point - second point of the line segment
+ */
 function distToSegmentSquared(p, v, w) {
   var l2 = dist2(v, w);
   if (l2 == 0) return dist2(p, v);
@@ -41,6 +58,14 @@ function distToSegmentSquared(p, v, w) {
                     y: v.y + t * (w.y - v.y) });
 }
 
+/*
+ * Returns the distance from the point p to the line segment from v to w.
+ * p, v and w must be objects with x and y fields.
+ *
+ * p: point - point to check distance from
+ * v: point - first point of the line segment
+ * w: point - second point of the line segment
+ */
 function distToSegment(p, v, w) { 
     return Math.sqrt(distToSegmentSquared(p, v, w));
 }
