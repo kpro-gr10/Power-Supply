@@ -132,7 +132,7 @@ var Screen = Backbone.View.extend({
         context.drawImage(sprite, x, y);
 
         // Draw a circle below this building if you are trying to connect a powerline to it
-        if(building === this.buildingTemp) {
+        if(powerplant === this.buildingTemp) {
           var d=Math.max(w, h);
           context.fillStyle="white";
           context.beginPath();
