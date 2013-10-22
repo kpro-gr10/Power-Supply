@@ -17,7 +17,7 @@ var BUILDING_REVENUE_FREQ=11000;
 
 // How many milliseconds a building will remain without being supplied with power.
 // Can be replaced with array or function for multiple building types.
-var BUILDING_DURABILITY=6000;
+var BUILDING_DURABILITY=30000;
 
 // How much it costs to build a powerplant
 var POWERPLANT_COST=200;
