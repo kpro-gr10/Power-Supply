@@ -7,9 +7,13 @@ var DEBUG=true;
 // How many % high the hud should be when "hidden" (Hidden not meaning invisible but lowered)
 var HIDDEN_HUD_HEIGHT=parseInt(window.getComputedStyle(document.getElementById("upperHud"),null).getPropertyValue("height"), 10);
 
-// How much revenue a building should generate each time. Can be changed to array or function
-// for different building types.
-var BUILDING_REVENUE_INCREMENT=20;
+var BuildingTemplates = [
+{sprite:imgLib.house1, powerRequirement:10, revenueIncr:5},
+{sprite:imgLib.house2, powerRequirement:15, revenueIncr:10},
+{sprite:imgLib.house3, powerRequirement:20, revenueIncr:10},
+{sprite:imgLib.house4, powerRequirement:25, revenueIncr:15},
+{sprite:imgLib.company1, powerRequirement:45, revenueIncr:30}
+];
 
 // How often in milliseconds a building supplied with power should generate revenue. Can
 // be changed to array or function for different building types.
@@ -50,7 +54,7 @@ var GameState = {
 var PowerLineState = {
   Healthy: "Healthy",
   Broken: "Broken",
-}
+};
 
 // How much hp the player should have at the beginning of each level. Can be changed to array or
 // function to support multiple levels with different difficulties.
