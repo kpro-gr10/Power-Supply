@@ -118,6 +118,7 @@ var Level = Backbone.Model.extend({
         buildingA.disconnect(powerLine);
         buildingB.disconnect(powerLine);
         this.get("map").get("powerLines").remove(powerLine);
+        this.get("map").set({ redistributePower: true });
       }
     }
   },
