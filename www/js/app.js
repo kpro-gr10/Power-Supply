@@ -107,8 +107,11 @@ var app = {
     gameLoop();
   },
 
+  pauseGame: function() {
+    this.gameRunning = false;
+  },
+
   stopGame: function() {
-    if(DEBUG) {console.log("Stopping game..");}
     this.gameRunning = false;
     this.gameLevel.get("map").get("buildings").reset();
     this.gameLevel.get("map").get("powerplants").reset();
