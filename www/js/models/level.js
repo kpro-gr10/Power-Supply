@@ -9,7 +9,6 @@ var Level = Backbone.Model.extend({
 
     createBuildingFreq: 5000,
     timeSinceBuilding: 0,
-    createBuildingFreq: 1000,
 
     powerLineBreakageFreq: 10000,
     prevBreakage: Date.now(),
