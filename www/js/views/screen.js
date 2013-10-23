@@ -67,7 +67,7 @@ var Screen = Backbone.View.extend({
         }
       }
 
-      this.drawPowerLines(context, map, xPos, yPos);
+      this.renderPowerLines(context, map, xPos, yPos);
       this.renderBuildings(context, map, xPos, yPos, width, height);
 
       var state = this.model.get("state");
@@ -171,7 +171,7 @@ var Screen = Backbone.View.extend({
     }
   },
 
-  drawPowerLines: function(context, map, xPos, yPos, width, height) {
+  renderPowerLines: function(context, map, xPos, yPos, width, height) {
     var powerLines = map.get("powerLines");
     for(var i=0; i<powerLines.length; i++) {
       var pl=powerLines.at(i);
@@ -227,7 +227,7 @@ var Screen = Backbone.View.extend({
     event.preventDefault();
     
     // Store the touch object for the coming events
-    this.prevTouchStart = event.touches[0];
+    this.prevTouchStart = event.targetTouches[0];
     this.screenMove=false;
   },
 
@@ -287,7 +287,7 @@ var Screen = Backbone.View.extend({
     event.preventDefault();
     this.screenMove=true;
     var map = this.model.get("map");
-    var touchObject = event.touches[0];
+    var touchObject = event.targetTouches[0];
     
     // Calculate change
     var dx = this.prevTouchStart.screenX - touchObject.screenX;
