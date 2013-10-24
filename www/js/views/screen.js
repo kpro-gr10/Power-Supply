@@ -20,6 +20,18 @@ var Screen = Backbone.View.extend({
   // When the game begins, the map should be in a zoomed state.
   prevZoomed: true,
 
+  resetZoom: function() {
+    var map = this.model.get("map");
+    if(map.get("zoomed")) {
+      if (!this.prevZoomed) {
+        var xScale = map.get("width") / map.get("viewWidth"),
+            yScale = map.get("height") / map.get("viewHeight");
+        context.scale(xScale, yScale);
+        this.prevZoomed = true;
+      }
+    }
+  },
+
   render: function() {
     if(this.needsRepaint) {
       this.needsRepaint=false;
