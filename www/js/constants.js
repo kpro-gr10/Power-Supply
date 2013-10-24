@@ -17,7 +17,7 @@ var BuildingTemplates = [
 
 // How often in milliseconds a building supplied with power should generate revenue. Can
 // be changed to array or function for different building types.
-var BUILDING_REVENUE_FREQ=11000;
+var BUILDING_REVENUE_FREQ=9000;
 
 // How many milliseconds a building will remain without being supplied with power.
 // Can be replaced with array or function for multiple building types.

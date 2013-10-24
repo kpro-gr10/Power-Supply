@@ -8,7 +8,7 @@ function scrollToTop() {
 	var newY = currY*0.8;
 	window.scrollTo(newX, newY);
 	if(newX>0 || newY>0) {
-		setTimeout(scrollToTop, 30);
+		setTimeout(scrollToTop, 15);
 	}
 }
 
@@ -17,7 +17,7 @@ function calcGoal(levelId) {
 }
 
 function calcLevelSize(levelId) {
-	return {width: 500*(levelId)+1500, height: 500*(levelId)+1500};
+	return {width: 500*(Math.floor(levelId/5))+1500, height: 500*(Math.floor(levelId/5))+1500};
 }
 
 // How long until the next time building should spawn
@@ -25,13 +25,6 @@ function calcLevelSize(levelId) {
 // make it more customizable
 function generateBuildingSpawnTime(levelId, playtime) {
 	return 9000 * Math.exp(-(playtime*(0.1*levelId+1))/600) + 4500;
-}
-
-// How many buildings should spawn at the same time
-// TODO: Include playtime as a part of the formula,
-// less buildings spawn at the beginning
-function generateClusterOfBuildings(levelId, playtime) {
-	return 1;
 }
 
 /*
