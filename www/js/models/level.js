@@ -12,13 +12,11 @@ var Level = Backbone.Model.extend({
 
     powerLineBreakageFreq: 10000,
     prevBreakage: Date.now(),
-
-    goal: 1500,
   },
 
   /*
-  * Update level state
-  */
+   * Update level state
+   */
   update: function (dt){
     if(this.get("state") !== GameState.GameOver) {
       var playtime = this.get("playtime")+(dt/1000),
@@ -52,6 +50,8 @@ var Level = Backbone.Model.extend({
 
       if(this.get("player").get("health") <= 0) {
         this.set({ state: GameState.GameOver });
+      } else if(this.get("player").get("money") >= this.get("goal")) {
+        this.set({ state: GameState.Victory });
       }
     }
   },
