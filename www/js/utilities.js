@@ -12,6 +12,14 @@ function scrollToTop() {
 	}
 }
 
+function calcGoal(levelId) {
+	return 1000+(levelId)*250;
+}
+
+function calcLevelSize(levelId) {
+	return {width: 500*(levelId)+1500, height: 500*(levelId)+1500};
+}
+
 // How long until the next time building should spawn
 // IMPORTANT TODO: Write documentation on how this function works, and
 // make it more customizable
