@@ -47,19 +47,23 @@ var app = {
   },
 
   initGame: function(levelId) {
-    if(DEBUG) {console.log("Initializing game..");}
     var canvas = document.getElementById('screen');
+    canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+    
     // Load and initialize game models
     var player = new Player;
+    var mapSize = calcLevelSize(levelId);
     var map = new Map({
       viewWidth: canvas.width, 
       viewHeight: canvas.height,
       background: imgLib.background,
-      width: 2000,
-      height: 2000
-    });
-    this.gameLevel = new Level({levelId: levelId, map: map, player: player});
+      width: mapSize.width,
+      height: mapSize.height
 
+    });
+    this.gameLevel = new Level({levelId: levelId, map: map, player: player, goal: calcGoal(levelId)});
+
+    this.gameScreen.needsRepaint = true;
     this.gameScreen.model=this.gameLevel;
     this.hudBtns.model=this.gameLevel;
     this.hudMny.model=this.gameLevel;
@@ -98,7 +102,13 @@ var app = {
       }
       if(app.gameLevel.get("state") === GameState.GameOver) {
         app.stopGame();
-        app.initGame();
+        app.initGame(0);
+        $('div#game').css('display', 'none');
+        $('div#gameover').css('display', 'block');
+      } else if(app.gameLevel.get("state") === GameState.Victory) {
+        var id=app.gameLevel.get("levelId");
+        app.stopGame();
+        app.initGame(id+1);
         $('div#game').css('display', 'none');
         $('div#gameover').css('display', 'block');
       }
@@ -114,6 +124,7 @@ var app = {
 
   stopGame: function() {
     this.gameRunning = false;
+    this.gameScreen.resetZoom();
     this.gameLevel.get("map").get("buildings").reset();
     this.gameLevel.get("map").get("powerplants").reset();
     this.gameLevel.get("map").get("powerLines").reset();
