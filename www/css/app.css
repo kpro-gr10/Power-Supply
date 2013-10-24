@@ -48,7 +48,19 @@ div#gameover{
     text-align: center;
 }
 
+div#victory{
+    display: none;
+    width: 50%;
+    margin: auto;
+    color: white;
+    text-align: center;
+}
+
 button#gameoverButton{
+    font-size: 4em;
+}
+
+button#victoryButton{
     font-size: 4em;
 }
 
