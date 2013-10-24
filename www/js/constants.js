@@ -8,11 +8,11 @@ var DEBUG=true;
 var HIDDEN_HUD_HEIGHT=parseInt(window.getComputedStyle(document.getElementById("upperHud"),null).getPropertyValue("height"), 10);
 
 var BuildingTemplates = [
-{sprite:imgLib.house1, powerRequirement:10, revenueIncr:5},
-{sprite:imgLib.house2, powerRequirement:15, revenueIncr:10},
-{sprite:imgLib.house3, powerRequirement:20, revenueIncr:10},
-{sprite:imgLib.house4, powerRequirement:25, revenueIncr:15},
-{sprite:imgLib.company1, powerRequirement:45, revenueIncr:30}
+{sprite:imgLib.house1, powerRequirement:10, revenueIncr:10},
+{sprite:imgLib.house2, powerRequirement:15, revenueIncr:15},
+{sprite:imgLib.house3, powerRequirement:20, revenueIncr:20},
+{sprite:imgLib.house4, powerRequirement:25, revenueIncr:25},
+{sprite:imgLib.company1, powerRequirement:45, revenueIncr:45}
 ];
 
 // How often in milliseconds a building supplied with power should generate revenue. Can
