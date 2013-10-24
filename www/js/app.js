@@ -110,7 +110,7 @@ var app = {
         app.stopGame();
         app.initGame(id+1);
         $('div#game').css('display', 'none');
-        $('div#gameover').css('display', 'block');
+        $('div#victory').css('display', 'block');
       }
     }
 
@@ -155,6 +155,12 @@ var app = {
     document.getElementById("gameoverButton").onclick = function() {
       $('div#gameover').css('display', 'none');
       $('div#menu').css('display', 'block');
+    }
+
+    document.getElementById("victoryButton").onclick = function() {
+      $('div#victory').css('display', 'none');
+      $('div#game').css('display', 'block');
+      app.startGame();
     }
 
     function  onBackButton(){
