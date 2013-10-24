@@ -129,8 +129,6 @@ var Screen = Backbone.View.extend({
           h = sprite.height;
 
       if (x+w > 0 && y+h > 0 && x < width && y < height) {
-        context.drawImage(sprite, x, y);
-
         // Draw a circle below this building if you are trying to connect a powerline to it
         if(powerplant === this.buildingTemp) {
           var d=Math.max(w, h);
@@ -139,6 +137,8 @@ var Screen = Backbone.View.extend({
           context.arc(x+w/2-3, y+h/2-3, d/2+6, 0, 2*Math.PI);
           context.fill();
         }
+
+        context.drawImage(sprite, x, y);
 
         var txt=(powerplant.get("level")+1) + "/" + POWERPLANT_MAX_LEVEL;
         context.font="30px Arial";
