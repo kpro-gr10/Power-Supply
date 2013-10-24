@@ -98,6 +98,7 @@ var app = {
       }
       if(app.gameLevel.get("state") === GameState.GameOver) {
         app.stopGame();
+        app.initGame();
         $('div#game').css('display', 'none');
         $('div#gameover').css('display', 'block');
       }
@@ -123,10 +124,10 @@ var app = {
   onDeviceReady: function() {
     //Initialize main menu
     var menu = new Menu();
+    app.initGame(0);
 
     function startMenu(){
       $('#start_game').click(function(){
-        app.initGame(0);
         app.startGame();
       });
       $('#instructions').click(function(){
@@ -155,7 +156,7 @@ var app = {
         $('div#menu').css('display', 'block');
       }
       else if($('div#game').css('display') != 'none'){
-        app.stopGame();
+        app.pauseGame();
         $('div#game').css('display', 'none');
         $('div#menu').css('display', 'block');
       }
