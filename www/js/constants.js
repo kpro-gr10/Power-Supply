@@ -47,6 +47,7 @@ var GameState = {
 	BuildPP: "Build Powerplant",
 	BuildPL: "Build Powerline",
 	GameOver: "Game Over",
+	Victory: "Victory",
 };
 
 // Power lines sometimes break. Therefore, we need an indicator of
