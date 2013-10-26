@@ -43,14 +43,30 @@ var Map = Backbone.Model.extend({
       if(building.shouldBeRemoved()) {
         toRemove.push(building);
       }
-      if(redistPower) {
-        building.set({ receivePower: false })
+    }
+
+    var g_powerlines = this.get("powerLines");
+    for(var i=0; i<toRemove.length; i++) {
+      var powerlines = toRemove[i].get("connections");
+      if(powerlines.length > 0) {
+        redistPower = true;
+        for(var j=0; j<powerlines.length; j++) {
+          var powerline = powerlines.at(j),
+              buildingA = powerline.get("buildingA"),
+              buildingB = powerline.get("buildingB");
+          buildingA.disconnect(powerline);
+          buildingB.disconnect(powerline);
+          g_powerlines.remove(powerline);
+        }
       }
     }
     buildings.remove(toRemove);
     level.get("player").damage(toRemove.length);
 
     if(redistPower) {
+      for(var i=0; i<buildings.length; i++) {
+        buildings.at(i).set({ receivePower: false })
+      }
       var powerplants=this.get("powerplants");
       for(var i=0; i<powerplants.length; i++) {
         powerplants.at(i).distributePower();
