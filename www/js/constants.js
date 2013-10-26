@@ -7,12 +7,13 @@ var DEBUG=true;
 // How many % high the hud should be when "hidden" (Hidden not meaning invisible but lowered)
 var HIDDEN_HUD_HEIGHT=parseInt(window.getComputedStyle(document.getElementById("upperHud"),null).getPropertyValue("height"), 10);
 
+// List of predefined buildings that can be placed on the game map.
 var BuildingTemplates = [
-{sprite:imgLib.house1, powerRequirement:10, revenueIncr:10},
-{sprite:imgLib.house2, powerRequirement:15, revenueIncr:15},
-{sprite:imgLib.house3, powerRequirement:20, revenueIncr:20},
-{sprite:imgLib.house4, powerRequirement:25, revenueIncr:25},
-{sprite:imgLib.company1, powerRequirement:45, revenueIncr:45}
+{sprite:imgLib.house1, powerRequirement:10, revenueIncr:20},
+{sprite:imgLib.house2, powerRequirement:15, revenueIncr:30},
+{sprite:imgLib.house3, powerRequirement:20, revenueIncr:40},
+{sprite:imgLib.house4, powerRequirement:25, revenueIncr:50},
+{sprite:imgLib.company1, powerRequirement:45, revenueIncr:100}
 ];
 
 // How often in milliseconds a building supplied with power should generate revenue. Can
@@ -21,10 +22,10 @@ var BUILDING_REVENUE_FREQ=9000;
 
 // How many milliseconds a building will remain without being supplied with power.
 // Can be replaced with array or function for multiple building types.
-var BUILDING_DURABILITY=30000;
+var BUILDING_DURABILITY=60000;
 
 // How much it costs to build a powerplant
-var POWERPLANT_COST=200;
+var POWERPLANT_COST=150;
 
 // The highest level a powerplant can have
 var POWERPLANT_MAX_LEVEL=5;
@@ -33,10 +34,10 @@ var POWERPLANT_MAX_LEVEL=5;
 var POWERPLANT_POWER = [100, 150, 200, 250, 300];
 
 // How much it costs to upgrade a powerplant
-var UPGRADE_COST = 75;
+var UPGRADE_COST = 50;
 
 // Cost per screen unit (pixel) of power line.
-var POWERLINE_COST = 0.10;
+var POWERLINE_COST = 0.05;
 
 // The line width of a power line as drawn.
 var POWERLINE_WIDTH = 18;
@@ -59,4 +60,8 @@ var PowerLineState = {
 
 // How much hp the player should have at the beginning of each level. Can be changed to array or
 // function to support multiple levels with different difficulties.
-var PLAYER_MAX_HP=4;
+var PLAYER_MAX_HP=100;
+
+// How much mpney the player should have at the beginning of each level. Can be changed to array or
+// function to support multiple levels with different difficulties.
+var PLAYER_START_MONEY=800;

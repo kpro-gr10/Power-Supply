@@ -1,7 +1,7 @@
 var Player = Backbone.Model.extend({
   defaults: {
     health: PLAYER_MAX_HP,
-    money: 599
+    money: PLAYER_START_MONEY
   },
 
   damage: function(dmg) {
