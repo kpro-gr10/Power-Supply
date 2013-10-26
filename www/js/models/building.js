@@ -2,7 +2,7 @@ var Building = Entity.extend({
   defaults: {
     x: 0,
     y: 0,
-    receivePower: false, // TODO: Set to false again when nolonger getting power
+    receivePower: false,
     durability: BUILDING_DURABILITY,
     revenueFreq: BUILDING_REVENUE_FREQ,
     revenue: 0
