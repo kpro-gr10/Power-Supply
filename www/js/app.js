@@ -35,7 +35,7 @@ var app = {
     this.gameScreen = new Screen({el: $('#screen')});
     this.hudBtns = new HudButtons({el: $('#hudButtons')});
     this.hudMny = new HudMoney({el: $('#money')});
-    this.hpBar = new HpBar({el: $('#hpbar')})
+    this.hpBar = new HpBar({el: $('#hpbar')});
 
     canvas.addEventListener("touchstart", this.gameScreen, false);
     canvas.addEventListener("touchmove", this.gameScreen, false);
