@@ -15,11 +15,6 @@ p.lead {
     font-style: italic;
 }
 
-img#coin{
-    width: 2.5em; 
-    height: 2.5em;
-}
-
 .texthud{
     font-size: 2em;
     display: inline;
@@ -30,14 +25,6 @@ div#menu{
     height: 100%;
     text-align:center;
     position: absolute;
-}
-
-table#upperHud{
-    width: 100%;
-    height: 10%;
-    padding-top: 2%;
-    padding-bottom: 5%;
-    color: white;
 }
 
 div#gameover{
@@ -69,25 +56,21 @@ div#game{
     color: white;
 }
 
-td#cellMoney{
-    width: 50%;
-    height: 7%;
+div#lowerHud{
+    height: 15%;
 }
 
-td#cellHealth{
-    width: 50%;
-    height: 7%;
+table#upperHud{
+    height: 25%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
 }
 
-canvas#hpbar{
-    border: 1px solid black;
-    width: 95%;
-    margin-right: 5%;
-    height: 30%;
-    border-radius: 2em;
-}
+img#coin{
+    width: 3em;
+    height: auto;
 
-div#game img#coin {
     float: left;
 
     /* Prevent a blue 'selection background' from appearing behind the coin
@@ -96,17 +79,43 @@ div#game img#coin {
     -webkit-user-select: none;
 }
 
-div#game p#money {
+p#money {
     float: left;
-
-    /* Match the size of the coin icon. The image is 64px by 64px,
-       but the actual coin is approximately 48px in height. */
 }
 
-div#game div#hudButtons {
-    padding-top: 5%;
+td#cellMoney{
+    width: 50%;
+}
+
+td#cellHealth{
+    width: 50%;
+}
+
+canvas#hpbar{
+    border: 1px solid black;
+    width: 95%;
+    height: 25%;
+    margin-right: 5%;
+    border-radius: 2em;
+}
+
+div#hudButtons {
     clear: both;
+    padding-top: -5em;
+    margin: 0;
+    height: 75%;
+    width: 100%;
 }
+
+button.buildbutton {
+    height: 75%;
+}
+
+img.buildimg {
+    height: inherit;
+    width:auto;
+}
+
 
 div#instructions{
     display: none;

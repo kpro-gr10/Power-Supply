@@ -29,7 +29,7 @@ var app = {
     // initialize the game canvas
     var canvas = document.getElementById('screen');
     canvas.width = window.screen.availWidth;
-    canvas.height = window.screen.availHeight * (1-HIDDEN_HUD_HEIGHT/100);
+    canvas.height = window.screen.availHeight * (1-HUD_HEIGHT/100);
 
     // Initialize game view / controller
     this.gameScreen = new Screen({el: $('#screen')});
@@ -125,6 +125,7 @@ var app = {
   stopGame: function() {
     this.gameRunning = false;
     this.gameScreen.resetZoom();
+    this.gameScreen.buildingTemp = null;
     this.gameLevel.get("map").get("buildings").reset();
     this.gameLevel.get("map").get("powerplants").reset();
     this.gameLevel.get("map").get("powerLines").reset();

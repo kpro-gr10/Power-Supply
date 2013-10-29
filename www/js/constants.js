@@ -4,16 +4,16 @@ var GAME_FPS = 60;
 // Display and print debug information if this variable is true
 var DEBUG=true;
 
-// How many % high the hud should be when "hidden" (Hidden not meaning invisible but lowered)
-var HIDDEN_HUD_HEIGHT=parseInt(window.getComputedStyle(document.getElementById("upperHud"),null).getPropertyValue("height"), 10);
+// How tall is the hud
+var HUD_HEIGHT=parseInt(window.getComputedStyle(document.getElementById("lowerHud"),null).getPropertyValue("height"), 10);
 
 // List of predefined buildings that can be placed on the game map.
 var BuildingTemplates = [
-{sprite:imgLib.house1, powerRequirement:10, revenueIncr:20},
-{sprite:imgLib.house2, powerRequirement:15, revenueIncr:30},
-{sprite:imgLib.house3, powerRequirement:20, revenueIncr:40},
-{sprite:imgLib.house4, powerRequirement:25, revenueIncr:50},
-{sprite:imgLib.company1, powerRequirement:45, revenueIncr:100}
+	{sprite:imgLib.house1, powerRequirement:10, revenueIncr:20},
+	{sprite:imgLib.house2, powerRequirement:15, revenueIncr:30},
+	{sprite:imgLib.house3, powerRequirement:20, revenueIncr:40},
+	{sprite:imgLib.house4, powerRequirement:25, revenueIncr:50},
+	{sprite:imgLib.company1, powerRequirement:45, revenueIncr:100}
 ];
 
 // How often in milliseconds a building supplied with power should generate revenue. Can
@@ -60,7 +60,7 @@ var PowerLineState = {
 
 // How much hp the player should have at the beginning of each level. Can be changed to array or
 // function to support multiple levels with different difficulties.
-var PLAYER_MAX_HP=100;
+var PLAYER_MAX_HP=50;
 
 // How much mpney the player should have at the beginning of each level. Can be changed to array or
 // function to support multiple levels with different difficulties.

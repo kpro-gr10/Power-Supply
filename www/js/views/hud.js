@@ -15,8 +15,8 @@ var HudMoney = Backbone.View.extend({
 var HudButtons = Backbone.View.extend({
 
 	events: {
-		"click .buildPowerPlant": "buildPowerPlant",
-		"click .buildPowerLine": "buildPowerLine"
+		"click #buildPowerPlant": "buildPowerPlant",
+		"click #buildPowerLine": "buildPowerLine"
 	},
 
 	buildPowerPlant: function() {
