@@ -12,6 +12,10 @@ var Screen = Backbone.View.extend({
     });
   },
 
+  // PhoneGap's platform detection is not working properly,
+  // so we'll just do our own.
+  iOS: /(iPhone|iPod|iPad)/.test(window.navigator.userAgent),
+
   needsRepaint: true,
 
   // Keep track of the previous 'zoomed' state so that we don't
@@ -299,11 +303,14 @@ var Screen = Backbone.View.extend({
     event.preventDefault();
     this.screenMove=true;
     var map = this.model.get("map");
-    var touchObject = event.targetTouches[0];
+
+    var touchObject = event;
+    if (!this.iOS)
+      touchObject = touchObject.changedTouches[0];
     
     // Calculate change
-    var dx = this.prevTouchStart.screenX - touchObject.screenX;
-    var dy = this.prevTouchStart.screenY - touchObject.screenY;
+    var dx = this.prevTouchStart.pageX - touchObject.pageX;
+    var dy = this.prevTouchStart.pageY - touchObject.pageY;
 
     // Update model
     map.translateView(dx, dy);
