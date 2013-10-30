@@ -19,11 +19,16 @@ var Powerplant = Entity.extend({
   	this.set({ level: this.get("level") + 1 });
   },
 
+  /*
+   * Distribute power to the connected buildings using breadth first search
+   */
   distributePower: function() {
     var connections = this.get("connections");
     var queue = new Queue();
     for(var i=0; i<connections.length; i++) {
-      queue.enqueue(connections.at(i));
+      if (connections.at(i).isHealthy()) {
+        queue.enqueue(connections.at(i));
+      }
     }
     var power=this.getMaxPower();
     console.log("max power: " + power);
@@ -41,7 +46,9 @@ var Powerplant = Entity.extend({
         buildingA.set({ receivePower: true });
         connections = buildingA.get("connections");
         for(var i=0; i<connections.length; i++) {
-          queue.enqueue(connections.at(i));
+          if (connections.at(i).isHealthy()) {
+            queue.enqueue(connections.at(i));
+          }
         }
       }
 
@@ -52,15 +59,44 @@ var Powerplant = Entity.extend({
         buildingB.set({ receivePower: true });
         connections = buildingB.get("connections");
         for(var i=0; i<connections.length; i++) {
-          queue.enqueue(connections.at(i));
+          if (connections.at(i).isHealthy()) {
+            queue.enqueue(connections.at(i));
+          }
         }
       }
 
     }
 
     this.set({remainingPower: power});
-    console.log("remaining power: " + power);
-    console.log("num: " + num);
 
+  },
+
+  render: function(context, xPos, yPos, width, height) {
+    var sprite = this.get("sprite"),
+      x = this.get("x") - xPos,
+      y = this.get("y") - yPos,
+      w = sprite.width,
+      h = sprite.height;
+
+    if (x+w > 0 && y+h > 0 && x < width && y < height) {
+      context.drawImage(sprite, x, y);
+
+      var txt=(this.get("level")+1) + "/" + POWERPLANT_MAX_LEVEL;
+      context.font="30px Arial";
+      context.strokeStyle="black"
+      context.lineWidth = 4;
+      context.strokeText(txt, x-15, y+h-15);
+      context.fillStyle="white"
+      context.fillText(txt, x-15, y+h-15);
+
+      var extent = this.get("remainingPower") / this.getMaxPower();
+      if(extent < 0.95) {
+        context.fillStyle = "black";
+        context.fillRect(x+w, y, 8, h);
+        context.fillStyle = "yellow";
+        context.fillRect(x+w+2, y+2 + (1-extent)*(h-4), 4, extent*(h-4));
+      }
+
+    }
   }
 });

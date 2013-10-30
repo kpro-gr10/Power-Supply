@@ -104,82 +104,33 @@ var Screen = Backbone.View.extend({
     var powerplants = map.get("powerplants");
 
     for (var i = 0; i < buildings.length; i++) {
-      var building  =  buildings.at(i),
-          sprite = building.get("sprite"),
-          x = building.get("x") - xPos,
-          y = building.get("y") - yPos,
-          w = sprite.width,
-          h = sprite.height;
-
-      if (x+w > 0 && y+h > 0 && x < width && y < height) {
-        // Draw a circle below this building if you are trying to connect a powerline to it
-        if(building === this.buildingTemp) {
-          var d=Math.max(w, h);
-          context.fillStyle="white";
-          context.beginPath();
-          context.arc(x+w/2-3, y+h/2-3, d/2+6, 0, 2*Math.PI);
-          context.fill();
-        }
-
-        // Render the building
-        context.drawImage(sprite, x, y);
-
-        // Render a coin if the building has generated revenue
-        if(building.get("revenue") > 0) {
-          context.drawImage(imgLib.coin, x-imgLib.coin.width/2, y+h-imgLib.coin.height/2)
-        }
-
-        // Draw the buidling's durability bar
-        var extent = building.get("durability") / BUILDING_DURABILITY;
-        if(extent < 0.95) {
-          context.fillStyle = "black";
-          context.fillRect(x+w, y, 8, h);
-          context.fillStyle = "red";
-          context.fillRect(x+w+2, y+2 + (1-extent)*(h-4), 4, extent*(h-4));
-        }
+      // Draw a circle below this building if you are trying to connect a powerline to it
+      if(buildings.at(i) === this.buildingTemp) {
+        this.renderBuildingTemp(context, buildings.at(i), xPos, yPos);
       }
-
+      buildings.at(i).render(context, xPos, yPos, width, height);
     }
 
     for (var i = 0; i < powerplants.length; i++) {
-      var powerplant  =  powerplants.at(i),
-          sprite = powerplant.get("sprite"),
-          x = powerplant.get("x") - xPos,
-          y = powerplant.get("y") - yPos,
-          w = sprite.width,
-          h = sprite.height;
-
-      if (x+w > 0 && y+h > 0 && x < width && y < height) {
-        // Draw a circle below this building if you are trying to connect a powerline to it
-        if(powerplant === this.buildingTemp) {
-          var d=Math.max(w, h);
-          context.fillStyle="white";
-          context.beginPath();
-          context.arc(x+w/2-3, y+h/2-3, d/2+6, 0, 2*Math.PI);
-          context.fill();
-        }
-
-        context.drawImage(sprite, x, y);
-
-        var txt=(powerplant.get("level")+1) + "/" + POWERPLANT_MAX_LEVEL;
-        context.font="30px Arial";
-        context.strokeStyle="black"
-        context.lineWidth = 4;
-        context.strokeText(txt, x-15, y+h-15);
-        context.fillStyle="white"
-        context.fillText(txt, x-15, y+h-15);
-
-        var extent = powerplant.get("remainingPower") / powerplant.getMaxPower();
-        if(extent < 0.95) {
-          context.fillStyle = "black";
-          context.fillRect(x+w, y, 8, h);
-          context.fillStyle = "yellow";
-          context.fillRect(x+w+2, y+2 + (1-extent)*(h-4), 4, extent*(h-4));
-        }
-
+      // Draw a circle below this building if you are trying to connect a powerline to it
+      if(powerplants.at(i) === this.buildingTemp) {
+        this.renderBuildingTemp(context, powerplants.at(i), xPos, yPos);
       }
-
+      powerplants.at(i).render(context, xPos, yPos, width, height);
     }
+  },
+
+  renderBuildingTemp: function(context, building, xPos, yPos) {
+    var sprite = building.get("sprite"),
+      x = building.get("x") - xPos,
+      y = building.get("y") - yPos,
+      w = sprite.width,
+      h = sprite.height,
+      d = Math.max(w, h);
+    context.fillStyle="white";
+    context.beginPath();
+    context.arc(x+w/2-3, y+h/2-3, d/2+6, 0, 2*Math.PI);
+    context.fill();
   },
 
   renderBuildMode: function(context, width, height) {
@@ -195,37 +146,7 @@ var Screen = Backbone.View.extend({
   renderPowerLines: function(context, map, xPos, yPos, width, height) {
     var powerLines = map.get("powerLines");
     for(var i=0; i<powerLines.length; i++) {
-      var pl=powerLines.at(i);
-      var a=pl.get("buildingA");
-      var b=pl.get("buildingB");
-      var x0=a.get("x") + a.get("sprite").width/2 - xPos;
-      var y0=a.get("y") + a.get("sprite").height/2 - yPos;
-      var x1=b.get("x") + b.get("sprite").width/2 - xPos;
-      var y1=b.get("y") + b.get("sprite").height/2 - yPos;
-
-      context.beginPath();
-      context.lineWidth = POWERLINE_WIDTH;
-      context.strokeStyle="black";
-      context.moveTo(x0, y0);
-      context.lineTo(x1, y1);
-      context.stroke();
-      if(pl.get("buildingA").get("receivePower") && pl.get("buildingB").get("receivePower") ||
-        pl.get("buildingA") instanceof Powerplant && pl.get("buildingB").get("receivePower") ||
-        pl.get("buildingA").get("receivePower") && pl.get("buildingB") instanceof Powerplant) {
-        context.beginPath();
-        context.lineWidth = POWERLINE_WIDTH/2;
-        context.strokeStyle="yellow";
-        context.moveTo(x0, y0);
-        context.lineTo(x1, y1);
-        context.stroke();
-      } else if (pl.get("state") == PowerLineState.Broken) {
-        context.beginPath();
-        context.lineWidth = POWERLINE_WIDTH/2;
-        context.strokeStyle="red";
-        context.moveTo(x0, y0);
-        context.lineTo(x1, y1);
-        context.stroke();
-      }
+      powerLines.at(i).render(context, xPos, yPos);
     }
   },
 

@@ -16,6 +16,8 @@ var BuildingTemplates = [
 	{sprite:imgLib.company1, powerRequirement:45, revenueIncr:100}
 ];
 
+var BUILDING_WIDTH=128;
+
 // How often in milliseconds a building supplied with power should generate revenue. Can
 // be changed to array or function for different building types.
 var BUILDING_REVENUE_FREQ=9000;

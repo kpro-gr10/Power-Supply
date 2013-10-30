@@ -14,6 +14,25 @@ var Level = Backbone.Model.extend({
     prevBreakage: Date.now(),
   },
 
+  buildingPlacements: null,
+
+  initialize: function() {
+    var map = this.get("map"),
+        columns = Math.floor(map.get("width") / BUILDING_WIDTH),
+        rows = Math.floor(map.get("height") / BUILDING_WIDTH),
+        n = rows*columns;
+
+    this.buildingPlacements = new Array(n);
+    for(var i=0; i<rows; i++) {
+      for(var j=0; j<columns; j++) {
+        this.buildingPlacements[i*rows+j]={row: i, col: j};
+      }
+    }
+
+    shuffle(this.buildingPlacements);
+
+  },
+
   /*
    * Update level state
    */
@@ -41,6 +60,7 @@ var Level = Backbone.Model.extend({
           var powerLine = this.get("map").get("powerLines").sample();
           if (powerLine) {
             powerLine.break();
+            this.get("map").set({ redistributePower: true });
             this.set({prevBreakage: Date.now()});
           }
         }
@@ -60,16 +80,22 @@ var Level = Backbone.Model.extend({
 	 * Call this function when a new building that needs power should be placed on the map.
 	 */
 	createBuilding: function() {
+    if(this.buildingPlacements.length === 0) {
+      return;
+    }
 		var map = this.get("map"),
         id = Math.floor(Math.random()*BuildingTemplates.length),
 		    building = new Building(BuildingTemplates[id]),
-        sprite = building.get("sprite"),
-        limX=map.get("width")-sprite.width,
-        limY=map.get("height")-sprite.height,
-        nx = Math.floor(Math.random()*limX),
-        ny = Math.floor(Math.random()*limY);
-    building.set({ x: nx });
-    building.set({ y: ny });
+        pos = this.buildingPlacements.pop(),
+        x = pos.col * BUILDING_WIDTH,
+        y = pos.row * BUILDING_WIDTH;
+    while( map.getBuildingAtMap(x, y) ) {
+      pos = this.buildingPlacements.pop();
+      x = pos.col * BUILDING_WIDTH;
+      y = pos.row * BUILDING_WIDTH;
+    }
+    building.set({ x: x });
+    building.set({ y: y });
     map.get("buildings").add(building);
 	},
 
@@ -133,13 +159,23 @@ var Level = Backbone.Model.extend({
 		if(confirm) {
 			var powerplant = new Powerplant(); // TODO Replace this with grabbing a building from the object pool
 			var sprite=powerplant.get("sprite"),
-				map=this.get("map");
+				  map=this.get("map"),
+          x=map.get("viewXPosition") + sx + window.pageXOffset,
+          y=map.get("viewYPosition") + sy + window.pageYOffset;
 
-   			powerplant.set("x", map.get("viewXPosition") + sx + window.pageXOffset - sprite.width/2);
-   			powerplant.set("y", map.get("viewYPosition") + sy + window.pageYOffset - sprite.height/2);
+      x -= x%BUILDING_WIDTH;
+      y -= y%BUILDING_WIDTH;
+
+      if(this.get("map").getBuildingAtMap(x, y)) {
+        window.alert("Location occupied");
+      } else {
+   			powerplant.set("x", x);
+   			powerplant.set("y", y);
 
    			this.get("player").set("money", this.get("player").get("money") - POWERPLANT_COST);
-			map.get("powerplants").add(powerplant);
+  			map.get("powerplants").add(powerplant);
+      }
+
 		}
 	},
 

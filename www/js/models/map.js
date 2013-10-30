@@ -42,6 +42,8 @@ var Map = Backbone.Model.extend({
       building.update(dt);
       if(building.shouldBeRemoved()) {
         toRemove.push(building);
+        level.buildingPlacements.push({row: Math.floor(building.get("y") / BUILDING_WIDTH),
+                                       col: Math.floor(building.get("x") / BUILDING_WIDTH)});
       }
     }
 
@@ -60,8 +62,11 @@ var Map = Backbone.Model.extend({
         }
       }
     }
+    if(toRemove.length > 0) {
+      shuffle(level.buildingPlacements);
+      level.get("player").damage(toRemove.length);
+    }
     buildings.remove(toRemove);
-    level.get("player").damage(toRemove.length);
 
     if(redistPower) {
       for(var i=0; i<buildings.length; i++) {
@@ -109,8 +114,12 @@ var Map = Backbone.Model.extend({
      */
     getBuildingAt: function(sx, sy) {
         var mapX=sx+this.get("viewXPosition"),
-            mapY=sy+this.get("viewYPosition"),
-            buildings=this.get("buildings");
+            mapY=sy+this.get("viewYPosition");
+        return this.getBuildingAtMap(mapX, mapY);
+    },
+
+    getBuildingAtMap: function(mapX, mapY) {
+        var buildings=this.get("buildings");
             powerplants=this.get("powerplants");
         for(var i=0; i<buildings.length; i++) {
           if(buildings.at(i).contains(mapX, mapY)) {
@@ -123,7 +132,7 @@ var Map = Backbone.Model.extend({
           }
         }
         return null;
-    },
+    },    
 
     // Takes some 'zoomed' screen coordinates (x,y) and returns an array
     // containing this map's corresponding absolute coordinates.
