@@ -60,17 +60,16 @@ div#lowerHud{
     height: 15%;
 }
 
-table#upperHud{
-    height: 25%;
+div#upperHud{
+    height: 15%;
     width: 100%;
-    padding: 0;
     margin: 0;
+    padding: 0;
 }
 
 img#coin{
     width: 3em;
     height: auto;
-
     float: left;
 
     /* Prevent a blue 'selection background' from appearing behind the coin
@@ -81,34 +80,30 @@ img#coin{
 
 p#money {
     float: left;
-}
 
-td#cellMoney{
-    width: 50%;
 }
-
-td#cellHealth{
-    width: 50%;
+p.texthud{
+    margin: 0;
+    padding: 0;
 }
 
 canvas#hpbar{
     border: 1px solid black;
-    width: 95%;
-    height: 25%;
+    width: 50%;
+    height: 3em;
     margin-right: 5%;
-    border-radius: 2em;
+    float: right;
 }
 
 div#hudButtons {
     clear: both;
-    padding-top: -5em;
-    margin: 0;
-    height: 75%;
     width: 100%;
 }
 
 button.buildbutton {
-    height: 75%;
+    height: 70%;
+    margin: 0;
+    padding: 0;
 }
 
 img.buildimg {
