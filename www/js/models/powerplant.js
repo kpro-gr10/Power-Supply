@@ -26,7 +26,9 @@ var Powerplant = Entity.extend({
     var connections = this.get("connections");
     var queue = new Queue();
     for(var i=0; i<connections.length; i++) {
-      queue.enqueue(connections.at(i));
+      if (connections.at(i).isHealthy()) {
+        queue.enqueue(connections.at(i));
+      }
     }
     var power=this.getMaxPower();
     console.log("max power: " + power);
@@ -44,7 +46,9 @@ var Powerplant = Entity.extend({
         buildingA.set({ receivePower: true });
         connections = buildingA.get("connections");
         for(var i=0; i<connections.length; i++) {
-          queue.enqueue(connections.at(i));
+          if (connections.at(i).isHealthy()) {
+            queue.enqueue(connections.at(i));
+          }
         }
       }
 
@@ -55,15 +59,15 @@ var Powerplant = Entity.extend({
         buildingB.set({ receivePower: true });
         connections = buildingB.get("connections");
         for(var i=0; i<connections.length; i++) {
-          queue.enqueue(connections.at(i));
+          if (connections.at(i).isHealthy()) {
+            queue.enqueue(connections.at(i));
+          }
         }
       }
 
     }
 
     this.set({remainingPower: power});
-    console.log("remaining power: " + power);
-    console.log("num: " + num);
 
   },
 

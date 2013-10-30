@@ -60,6 +60,7 @@ var Level = Backbone.Model.extend({
           var powerLine = this.get("map").get("powerLines").sample();
           if (powerLine) {
             powerLine.break();
+            this.get("map").set({ redistributePower: true });
             this.set({prevBreakage: Date.now()});
           }
         }

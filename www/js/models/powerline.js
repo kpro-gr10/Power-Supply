@@ -8,6 +8,10 @@ var PowerLine = Backbone.Model.extend({
     state: PowerLineState.Healthy,
   },
 
+  isHealthy: function() {
+    return this.get("state") === PowerLineState.Healthy;
+  },
+
   getPointA: function() {
     return this.get("buildingA").getCenterPos();
   },
@@ -19,15 +23,15 @@ var PowerLine = Backbone.Model.extend({
   break: function() {
     // Tell buildings they're disconnected so that they cease to generate
     // revenue and start deteriorating.
-    this.get("buildingA").disconnect(this);
-    this.get("buildingB").disconnect(this);
+    //this.get("buildingA").disconnect(this);
+    //this.get("buildingB").disconnect(this);
 
     this.set({state: PowerLineState.Broken});
   },
 
   fix: function() {
-    this.get("buildingA").connectTo(this);
-    this.get("buildingB").connectTo(this);
+    //this.get("buildingA").connectTo(this);
+    //this.get("buildingB").connectTo(this);
 
     this.set({state: PowerLineState.Healthy});
   },
@@ -48,9 +52,9 @@ var PowerLine = Backbone.Model.extend({
     context.lineTo(x1, y1);
     context.stroke();
     if(state === PowerLineState.Healthy &&
-       (a.get("receivePower") && b.get("receivePower") ||
+       ( a.get("receivePower") && b.get("receivePower") ||
        a instanceof Powerplant && b.get("receivePower") ||
-       a.get("receivePower") && b instanceof Powerplant)) {
+       a.get("receivePower") && b instanceof Powerplant) ) {
       context.beginPath();
       context.lineWidth = POWERLINE_WIDTH/2;
       context.strokeStyle="yellow";
