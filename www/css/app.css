@@ -56,6 +56,17 @@ div#game{
     color: white;
 }
 
+canvas#screen {
+    z-index:1;
+}
+
+canvas#timer {
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:2;
+}
+
 div#lowerHud{
     height: 15%;
 }
