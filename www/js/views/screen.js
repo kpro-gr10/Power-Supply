@@ -299,11 +299,11 @@ var Screen = Backbone.View.extend({
     event.preventDefault();
     this.screenMove=true;
     var map = this.model.get("map");
-    var touchObject = event.targetTouches[0];
+    var touchObject = event;
     
     // Calculate change
-    var dx = this.prevTouchStart.screenX - touchObject.screenX;
-    var dy = this.prevTouchStart.screenY - touchObject.screenY;
+    var dx = this.prevTouchStart.pageX - touchObject.pageX;
+    var dy = this.prevTouchStart.pageY - touchObject.pageY;
 
     // Update model
     map.translateView(dx, dy);
