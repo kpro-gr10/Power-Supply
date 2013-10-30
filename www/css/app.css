@@ -136,7 +136,9 @@ div#menu li{
 }
 
 div#menu button{
-    width: 60%; 
+    background-color: lightgray;
+    width: 90%;
+    text-align: center;
     font-size: 2.5em;
     border-radius: 3em;
 }
