@@ -165,11 +165,16 @@ var Level = Backbone.Model.extend({
       x -= x%BUILDING_WIDTH;
       y -= y%BUILDING_WIDTH;
 
- 			powerplant.set("x", x);
- 			powerplant.set("y", y);
+      if(this.get("map").getBuildingAtMap(x, y)) {
+        window.alert("Location occupied")
+      } else {
+   			powerplant.set("x", x);
+   			powerplant.set("y", y);
 
- 			this.get("player").set("money", this.get("player").get("money") - POWERPLANT_COST);
-			map.get("powerplants").add(powerplant);
+   			this.get("player").set("money", this.get("player").get("money") - POWERPLANT_COST);
+  			map.get("powerplants").add(powerplant);
+      }
+
 		}
 	},
 
