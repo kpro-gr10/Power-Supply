@@ -12,12 +12,24 @@ function scrollToTop() {
 	}
 }
 
+function shuffle(list) {
+	for(var i=0; i<list.length; i++) {
+		var r = Math.floor(i+Math.random()*(list.length-i)),
+			temp = list[i];
+		list[i] = list[r];
+		list[r] = temp;
+    }
+}
+
 function calcGoal(levelId) {
 	return 1000+(levelId)*250;
 }
 
 function calcLevelSize(levelId) {
-	return {width: 500*(Math.floor(levelId/5))+1500, height: 500*(Math.floor(levelId/5))+1500};
+	return {
+		width: (2*BUILDING_WIDTH)*(Math.floor(levelId/10)) + (12*BUILDING_WIDTH), 
+		height: (2*BUILDING_WIDTH)*(Math.floor(levelId/10)) + (12*BUILDING_WIDTH)
+	};
 }
 
 // How long until the next time building should spawn
