@@ -91,6 +91,11 @@ var Screen = Backbone.View.extend({
         this.renderBuildMode(context, width, height);
       }
 
+      //Drawing the timer and the level on top of the screen
+      context.fillStyle = "black";
+      context.font = "bold 2em Arial";
+      context.fillText(Math.floor(this.model.get("playtime")), width*0.05, height*0.05);
+      context.fillText("Level: " + (this.model.get("levelId")+1), width*0.65, height*0.05);
     }
   },
 

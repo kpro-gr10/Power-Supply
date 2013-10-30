@@ -71,6 +71,7 @@ var app = {
     this.gameScreen.init();
     this.hudMny.init();
     this.hpBar.init();
+    
   },
 
   startGame: function() {
@@ -99,6 +100,10 @@ var app = {
           //console.log("FPS: " + frameCount);
           frameCount = 0;
         }
+
+      }
+      if(app.gameLevel.get("playtime") >0.5 && app.gameLevel.get("playtime") <=1){
+          alert("You need to collect " + app.gameLevel.get("goal") + " coins to get to the next level");
       }
       if(app.gameLevel.get("state") === GameState.GameOver) {
         app.stopGame();
@@ -112,8 +117,10 @@ var app = {
         $('div#game').css('display', 'none');
         $('div#victory').css('display', 'block');
       }
-    }
+      
 
+    }
+    
     this.gameRunning = true;
     gameLoop();
   },
@@ -162,6 +169,8 @@ var app = {
       $('div#victory').css('display', 'none');
       $('div#game').css('display', 'block');
       app.startGame();
+
+      
     }
 
     function  onBackButton(){
