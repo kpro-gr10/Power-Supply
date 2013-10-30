@@ -166,7 +166,7 @@ var Level = Backbone.Model.extend({
       y -= y%BUILDING_WIDTH;
 
       if(this.get("map").getBuildingAtMap(x, y)) {
-        window.alert("Location occupied")
+        window.alert("Location occupied");
       } else {
    			powerplant.set("x", x);
    			powerplant.set("y", y);
