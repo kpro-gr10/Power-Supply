@@ -194,12 +194,11 @@ var Screen = Backbone.View.extend({
 
     } else if (state === GameState.BuildPP && !this.screenMove) {
       this.model.buildPowerPlantAt(touch.screenX, touch.screenY);
-
     } else if (state === GameState.BuildPL && !this.screenMove) {
       var map = this.model.get("map"),
           building = map.getBuildingAt(touch.screenX, touch.screenY);
 
-      if(building && this.buildingTemp) {
+      if(building && this.buildingTemp && !this.buildingTemp.shouldBeRemoved()) {
         var cost = this.model.costOfPowerLine(building, this.buildingTemp),
             means = this.model.get("player").get("money");
 
@@ -208,7 +207,7 @@ var Screen = Backbone.View.extend({
         } else {
           var wantsToBuild = confirm("Do you want to connect these buildings?" +
                                      "\nPrice: " + cost + " ,-");
-          if (wantsToBuild)
+          if (wantsToBuild && !this.buildingTemp.shouldBeRemoved() && !building.shouldBeRemoved())
             this.model.connectWithPowerLine(building, this.buildingTemp);
         }
 
