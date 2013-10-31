@@ -42,22 +42,27 @@ var Level = Backbone.Model.extend({
       var playtime = this.get("playtime")+(dt/1000),
           last = this.get("timeSinceBuilding") + dt,
           freq = this.get("createBuildingFreq"),
-          lvl = this.get("levelId");
+          level = this.get("levelId");
 
       this.set("playtime", playtime);
 
       if(last>freq){
         this.createBuilding();
         this.set({ timeSinceBuilding: last - freq });
-        this.set({ createBuildingFreq: generateBuildingSpawnTime(lvl, playtime) });
+        this.set({ createBuildingFreq: generateBuildingSpawnTime(level, playtime) });
       } else {
         this.set({ timeSinceBuilding: last });
       }
 
       var timeSinceBreakage = Date.now() - this.get("prevBreakage");
-      if (timeSinceBreakage > this.get("powerLineBreakageFreq")) {
+      // Make power lines break more frequently at higher levels.
+      var threshold = this.get("powerLineBreakageFreq") - level * 1000;
+      // Let's not go overboard, though.
+      threshold = Math.min(threshold, 5000);
+
+      if (timeSinceBreakage > threshold) {
         var magic = 1/3500; // Found through experimentation.
-        if (Math.random() < (this.get("levelId")+1) * magic) {
+        if (Math.random() < magic) {
           var powerLine = this.get("map").get("powerLines").sample();
           if (powerLine) {
             powerLine.break();
