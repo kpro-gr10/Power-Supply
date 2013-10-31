@@ -139,9 +139,32 @@ var Level = Backbone.Model.extend({
         }
       }
     } else if (powerLine) {
-      var answer = window.confirm("Do you wish to destroy this power line?");
-      if (answer) {
-        powerLine.removeFrom(this.get("map"));
+      if (powerLine.get("state") == PowerLineState.Broken) {
+        var text = $("<p>This power line is broken. Do you want to fix it " +
+                     "or destroy it?</p>"),
+            thisLevel = this;
+
+        text.dialog({
+          modal: true,
+          buttons: {
+            "Fix it": function() {
+              powerLine.fix();
+              thisLevel.get("map").set({ redistributePower: true });
+              $(this).dialog("close");
+            },
+            "Destroy it": function() {
+              powerLine.removeFrom(thisLevel.get("map"));
+              $(this).dialog("close");
+            },
+            Cancel: function() {
+              $(this).dialog("close");
+            },
+          }
+        });
+      } else {
+        var answer = window.confirm("Do you wish to destroy this power line?");
+        if (answer)
+          powerLine.removeFrom(this.get("map"));
       }
     }
   },
