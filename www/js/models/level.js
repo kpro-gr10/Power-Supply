@@ -12,6 +12,7 @@ var Level = Backbone.Model.extend({
 
     powerLineBreakageFreq: 10000,
     prevBreakage: Date.now(),
+    goalAlerted: false,
   },
 
   buildingPlacements: null,
@@ -41,22 +42,27 @@ var Level = Backbone.Model.extend({
       var playtime = this.get("playtime")+(dt/1000),
           last = this.get("timeSinceBuilding") + dt,
           freq = this.get("createBuildingFreq"),
-          lvl = this.get("levelId");
+          level = this.get("levelId");
 
       this.set("playtime", playtime);
 
       if(last>freq){
         this.createBuilding();
         this.set({ timeSinceBuilding: last - freq });
-        this.set({ createBuildingFreq: generateBuildingSpawnTime(lvl, playtime) });
+        this.set({ createBuildingFreq: generateBuildingSpawnTime(level, playtime) });
       } else {
         this.set({ timeSinceBuilding: last });
       }
 
       var timeSinceBreakage = Date.now() - this.get("prevBreakage");
-      if (timeSinceBreakage > this.get("powerLineBreakageFreq")) {
+      // Make power lines break more frequently at higher levels.
+      var threshold = this.get("powerLineBreakageFreq") - level * 1000;
+      // Let's not go overboard, though.
+      threshold = Math.min(threshold, 5000);
+
+      if (timeSinceBreakage > threshold) {
         var magic = 1/3500; // Found through experimentation.
-        if (Math.random() < (this.get("levelId")+1) * magic) {
+        if (Math.random() < magic) {
           var powerLine = this.get("map").get("powerLines").sample();
           if (powerLine) {
             powerLine.break();
@@ -133,15 +139,32 @@ var Level = Backbone.Model.extend({
         }
       }
     } else if (powerLine) {
-      var answer = window.confirm("Do you wish to destroy this power line?");
-      if (answer) {
-        var buildingA = powerLine.get("buildingA"),
-            buildingB = powerLine.get("buildingB");
+      if (powerLine.get("state") == PowerLineState.Broken) {
+        var text = $("<p>This power line is broken. Do you want to fix it " +
+                     "or destroy it?</p>"),
+            thisLevel = this;
 
-        buildingA.disconnect(powerLine);
-        buildingB.disconnect(powerLine);
-        this.get("map").get("powerLines").remove(powerLine);
-        this.get("map").set({ redistributePower: true });
+        text.dialog({
+          modal: true,
+          buttons: {
+            "Fix it": function() {
+              powerLine.fix();
+              thisLevel.get("map").set({ redistributePower: true });
+              $(this).dialog("close");
+            },
+            "Destroy it": function() {
+              powerLine.removeFrom(thisLevel.get("map"));
+              $(this).dialog("close");
+            },
+            Cancel: function() {
+              $(this).dialog("close");
+            },
+          }
+        });
+      } else {
+        var answer = window.confirm("Do you wish to destroy this power line?");
+        if (answer)
+          powerLine.removeFrom(this.get("map"));
       }
     }
   },

@@ -19,6 +19,8 @@ var app = {
   // Set by initGame.
   gameLevel: null,
   gameScreen: null,
+  timer: null, //timer in game header (view)
+  level: null, //level in game header (view)
   hudBtns: null,
   hudMny: null,
   hpBar: null,
@@ -43,6 +45,8 @@ var app = {
     this.hudBtns = new HudButtons({el: $('#hudButtons')});
     this.hudMny = new HudMoney({el: $('#money')});
     this.hpBar = new HpBar({el: $('#hpbar')});
+    this.timer = new HeaderTimer({el:$("#timerText")});
+    this.level = new HeaderLevel({el:$("#levelText")});
 
     canvas.addEventListener("touchstart", this.gameScreen, false);
     canvas.addEventListener("touchmove", this.gameScreen, false);
@@ -75,6 +79,10 @@ var app = {
     this.hudBtns.model=this.gameLevel;
     this.hudMny.model=this.gameLevel;
     this.hpBar.model=this.gameLevel;
+    this.level.model=this.gameLevel;
+    this.timer.model=this.gameLevel;
+    this.timer.init();
+    this.level.init();
     this.gameScreen.init();
     this.hudMny.init();
     this.hpBar.init();
@@ -86,6 +94,7 @@ var app = {
     // Game loop
     var prev = Date.now();
     var now = prev;
+    
 
     //Debug
     var frameCount=0;
@@ -109,9 +118,13 @@ var app = {
         }
 
       }
-      if(app.gameLevel.get("playtime") >0.5 && app.gameLevel.get("playtime") <=1){
+      if(app.gameLevel.get("playtime") >0.5 && app.gameLevel.get("goalAlerted")===false){
+          app.pauseGame();
+          app.gameLevel.set("goalAlerted", true);
           alert("You need to collect " + app.gameLevel.get("goal") + " coins to get to the next level");
+          app.startGame();
       }
+
       if(app.gameLevel.get("state") === GameState.GameOver) {
         app.stopGame();
         app.initGame(0);
