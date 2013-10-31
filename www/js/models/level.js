@@ -12,6 +12,7 @@ var Level = Backbone.Model.extend({
 
     powerLineBreakageFreq: 10000,
     prevBreakage: Date.now(),
+    goalAlerted: false,
   },
 
   buildingPlacements: null,

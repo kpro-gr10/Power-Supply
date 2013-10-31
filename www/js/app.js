@@ -79,6 +79,7 @@ var app = {
     // Game loop
     var prev = Date.now();
     var now = prev;
+    
 
     //Debug
     var frameCount=0;
@@ -102,9 +103,13 @@ var app = {
         }
 
       }
-      if(app.gameLevel.get("playtime") >0.5 && app.gameLevel.get("playtime") <=1){
+      if(app.gameLevel.get("playtime") >0.5 && app.gameLevel.get("goalAlerted")===false){
+          app.pauseGame();
+          app.gameLevel.set("goalAlerted", true);
           alert("You need to collect " + app.gameLevel.get("goal") + " coins to get to the next level");
+          app.startGame();
       }
+
       if(app.gameLevel.get("state") === GameState.GameOver) {
         app.stopGame();
         app.initGame(0);
