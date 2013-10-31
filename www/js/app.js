@@ -13,6 +13,9 @@ var app = {
    * Game variables
    */
 
+  highscoreView: null,
+  highscoreList: null,
+
   // Set by initGame.
   gameLevel: null,
   gameScreen: null,
@@ -30,6 +33,10 @@ var app = {
     var canvas = document.getElementById('screen');
     canvas.width = window.screen.availWidth;
     canvas.height = window.screen.availHeight * (1-HUD_HEIGHT/100);
+
+    // Read highscoreList from device
+    this.highscoreList = new HighscoreList();
+    this.highscoreView = new HighscoreView({model: this.highscoreList});
 
     // Initialize game view / controller
     this.gameScreen = new Screen({el: $('#screen')});
@@ -112,6 +119,13 @@ var app = {
         $('div#gameover').css('display', 'block');
       } else if(app.gameLevel.get("state") === GameState.Victory) {
         var id=app.gameLevel.get("levelId");
+        //Save highscoreList to device after updating it
+        app.highscoreList.addScore(id, app.gameLevel.get("playtime"));
+        
+        console.log("Highscores:");
+        for(var i=0; i<app.highscoreList.length; i++) {
+          console.log(i+": "+app.highscoreList.at(i).get("time"));
+        }
         app.stopGame();
         app.initGame(id+1);
         $('div#game').css('display', 'none');

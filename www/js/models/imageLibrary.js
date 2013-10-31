@@ -1,6 +1,4 @@
-/*
- * Look into implementing this object with Backbone model and collections.
- * 
+/* 
  * Singleton object to hold all the images for our game.
  * We should show a loading screen / splashscreen 
  * while this object is being created.
@@ -10,7 +8,7 @@
  */
 
 var imagesLoaded=0;
-var imagesToLoad=0;
+var imagesToLoad=1;
 
 var imgLib = new function() {
 
@@ -27,12 +25,9 @@ var imgLib = new function() {
         imagesToLoad+=1;
         img.onload=function() {
             imagesLoaded+=1;
-            if(DEBUG) {console.log("Image: " + src + " loaded.");}
         }
         return img;
     }
-    
-    imagesToLoad += 1;
     
     // Load background image
     this.background=this.loadImage("res/sprites/background_grass.png");
