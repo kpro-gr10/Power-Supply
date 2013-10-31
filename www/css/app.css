@@ -64,6 +64,12 @@ canvas#timer {
     position:absolute;
     top:0;
     left:0;
+
+    /* Make touch events pass through this element on to canvas#screen.
+       NOTE: This attribute needs to be set after 'position' and before
+       'z-index' in order to work. */
+    pointer-events: none;
+
     z-index:2;
 }
 
