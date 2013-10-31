@@ -91,11 +91,25 @@ var Screen = Backbone.View.extend({
         this.renderBuildMode(context, width, height);
       }
 
+      //Function to format a integer (minutes and seconds) to be 2 gigits
+      function FormatNumberLength(num, length) {
+        var r = "" + num;
+        while (r.length < length) {
+          r = "0" + r;
+        }
+        return r;
+        }
+
       //Drawing the timer and the level on top of the screen
       context.fillStyle = "black";
       context.font = "bold 2em Arial";
-      context.fillText(Math.floor(this.model.get("playtime")), width*0.05, height*0.05);
+
+      var minutes = Math.floor(this.model.get("playtime")/60);
+      var seconds = Math.floor((this.model.get("playtime")/60 - minutes) * 60);
+
+      context.fillText(FormatNumberLength(minutes, 2) + ":" + FormatNumberLength(seconds, 2), width*0.05, height*0.05);
       context.fillText("Level: " + (this.model.get("levelId")+1), width*0.65, height*0.05);
+
     }
   },
 
