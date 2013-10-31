@@ -20,6 +20,13 @@ var PowerLine = Backbone.Model.extend({
     return this.get("buildingB").getCenterPos();
   },
 
+  removeFrom: function(map) {
+    this.get("buildingA").disconnect(this);
+    this.get("buildingB").disconnect(this);
+    map.get("powerLines").remove(this);
+    map.set({ redistributePower: true });
+  },
+
   break: function() {
     this.set({state: PowerLineState.Broken});
   },

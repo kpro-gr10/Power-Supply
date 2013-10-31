@@ -141,13 +141,7 @@ var Level = Backbone.Model.extend({
     } else if (powerLine) {
       var answer = window.confirm("Do you wish to destroy this power line?");
       if (answer) {
-        var buildingA = powerLine.get("buildingA"),
-            buildingB = powerLine.get("buildingB");
-
-        buildingA.disconnect(powerLine);
-        buildingB.disconnect(powerLine);
-        this.get("map").get("powerLines").remove(powerLine);
-        this.get("map").set({ redistributePower: true });
+        powerLine.removeFrom(this.get("map"));
       }
     }
   },
