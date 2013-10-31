@@ -20,19 +20,18 @@ var PowerLine = Backbone.Model.extend({
     return this.get("buildingB").getCenterPos();
   },
 
-  break: function() {
-    // Tell buildings they're disconnected so that they cease to generate
-    // revenue and start deteriorating.
-    //this.get("buildingA").disconnect(this);
-    //this.get("buildingB").disconnect(this);
+  removeFrom: function(map) {
+    this.get("buildingA").disconnect(this);
+    this.get("buildingB").disconnect(this);
+    map.get("powerLines").remove(this);
+    map.set({ redistributePower: true });
+  },
 
+  break: function() {
     this.set({state: PowerLineState.Broken});
   },
 
   fix: function() {
-    //this.get("buildingA").connectTo(this);
-    //this.get("buildingB").connectTo(this);
-
     this.set({state: PowerLineState.Healthy});
   },
 
