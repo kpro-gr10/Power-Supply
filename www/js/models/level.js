@@ -148,9 +148,23 @@ var Level = Backbone.Model.extend({
           modal: true,
           buttons: {
             "Fix it": function() {
-              powerLine.fix();
-              thisLevel.get("map").set({ redistributePower: true });
-              $(this).dialog("close");
+              var means = thisLevel.get("player").get("money"),
+                  cost = thisLevel.costOfFixingPowerLine(powerLine);
+
+              if (means >= cost) {
+                thisLevel.fixPowerLine(powerLine);
+                $(this).dialog("close");
+              } else {
+                $(this).dialog("close");
+
+                // Sorry.
+                var message = $("<p>Sorry, you cannot afford to fix this " +
+                                "power line.<br>You are missing: " +
+                                "<img src='res/sprites/coin.png'" +
+                                "     style='height: 1em;'>" + (cost - means) +
+                                "</p>");
+                message.dialog();
+              }
             },
             "Destroy it": function() {
               powerLine.removeFrom(thisLevel.get("map"));
@@ -215,6 +229,14 @@ var Level = Backbone.Model.extend({
     return cost;
   },
 
+  costOfFixingPowerLine: function(powerLine) {
+    var buildingA = powerLine.get("buildingA"),
+        buildingB = powerLine.get("buildingB"),
+        buildingCost = this.costOfPowerLine(buildingA, buildingB);
+
+    return Math.ceil(buildingCost / 2);
+  },
+
   connectWithPowerLine: function(aBuilding, anotherBuilding) {
     if (!aBuilding || !anotherBuilding)
       throw "Attempted to create a power line with invalid 'building' values.";
@@ -230,6 +252,18 @@ var Level = Backbone.Model.extend({
     anotherBuilding.connectTo(powerLine);
     this.get("map").get("powerLines").add(powerLine);
     this.get("map").set({ redistributePower: true });
-    this.get("player").set({money: means - cost});
+    this.get("player").set({ money: means - cost });
+  },
+
+  fixPowerLine: function(powerLine) {
+    var cost = this.costOfFixingPowerLine(powerLine),
+        means = this.get("player").get("money");
+
+    if (means < cost)
+      throw "Insufficient means.";
+
+    powerLine.fix();
+    this.get("map").set({ redistributePower: true });
+    this.get("player").set({ money: means - cost });
   }
 });
