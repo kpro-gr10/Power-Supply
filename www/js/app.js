@@ -52,6 +52,12 @@ var app = {
     canvas.addEventListener("touchstart", this.gameScreen, false);
     canvas.addEventListener("touchmove", this.gameScreen, false);
     canvas.addEventListener("touchend", this.gameScreen, false);
+
+    // Make our 'back button' links fire the backbutton event.
+    $(".backbutton").on("click", function() {
+      var event = new Event("backbutton");
+      document.dispatchEvent(event);
+    });
   },
 
   bindEvents: function() {
@@ -202,7 +208,7 @@ var app = {
       
     }
 
-    function  onBackButton(){
+    function onBackButton() {
       if ($('div#instructions').css('display') != 'none'){
         $('div#instructions').css('display', 'none');
         $('div#menu').css('display', 'block');
