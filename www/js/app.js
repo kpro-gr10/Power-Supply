@@ -38,6 +38,7 @@ var app = {
 
     // Read highscoreList from device
     this.highscoreList = new HighscoreList();
+    this.highscoreList.loadData();
     this.highscoreView = new HighscoreView({model: this.highscoreList});
 
     // Initialize game view / controller
@@ -113,16 +114,22 @@ var app = {
         frameCount++;
         if(now-lastPrint >= 1000) {
           lastPrint+=1000;
-          //console.log("FPS: " + frameCount);
+          console.log("FPS: " + frameCount);
           frameCount = 0;
         }
 
       }
       if(app.gameLevel.get("playtime") >0.5 && app.gameLevel.get("goalAlerted")===false){
-          app.pauseGame();
-          app.gameLevel.set("goalAlerted", true);
-          alert("You need to collect " + app.gameLevel.get("goal") + " coins to get to the next level");
-          app.startGame();
+        app.gameLevel.set("goalAlerted", true);
+        var text = $("<p>You need to collect " + app.gameLevel.get("goal") + " coins to get to the next level</p>");
+        text.dialog({
+          modal: true,
+          buttons: {
+            "Ok": function() {
+              $(this).dialog("close");
+            }
+          }
+        });
       }
 
       if(app.gameLevel.get("state") === GameState.GameOver) {
@@ -132,13 +139,8 @@ var app = {
         $('div#gameover').css('display', 'block');
       } else if(app.gameLevel.get("state") === GameState.Victory) {
         var id=app.gameLevel.get("levelId");
-        //Save highscoreList to device after updating it
         app.highscoreList.addScore(id, app.gameLevel.get("playtime"));
-        
-        console.log("Highscores:");
-        for(var i=0; i<app.highscoreList.length; i++) {
-          console.log(i+": "+app.highscoreList.at(i).get("time"));
-        }
+        app.highscoreList.saveData();
         app.stopGame();
         app.initGame(id+1);
         $('div#game').css('display', 'none');
