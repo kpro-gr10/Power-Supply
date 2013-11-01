@@ -1,6 +1,6 @@
 var HighscoreView = Backbone.View.extend({
 
-	el:$("div#highscore"),
+	el:$("table#highscoreTable"),
 
 	initialize: function() {
 		this.render();
@@ -10,6 +10,13 @@ var HighscoreView = Backbone.View.extend({
 	},
 
 	render: function() {
-		console.log("render");
+		if(this.model.length > 0) {
+			this.el.innerHTML = "<tr><td>Level</td><td>Playtime</td></tr>\n";
+			for(var i=0; i<this.model.length; i++) {
+				this.el.innerHTML += "<tr><td>" + (i+1) + "</td><td>" + this.model.at(i).toString() + "</td></tr>\n";
+			}
+		} else {
+			this.el.innerHTML = "Hmm… I'm afraid I don't see anything here.\n";
+		}
 	}
 });
