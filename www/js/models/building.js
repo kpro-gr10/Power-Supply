@@ -62,7 +62,7 @@ var Building = Entity.extend({
 
 			// Render a coin if the building has generated revenue
 			if(this.get("revenue") > 0) {
-				context.drawImage(imgLib.coin, x-imgLib.coin.width/2, y+h-imgLib.coin.height/2)
+				context.drawImage(imgLib.coin, x, y+h-imgLib.coin.height);
 			}
 
 			// Draw the buidling's durability bar
