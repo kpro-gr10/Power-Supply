@@ -188,13 +188,15 @@ var Screen = Backbone.View.extend({
       return;
 
     } else if (state === GameState.BuildPP && !this.screenMove &&
-               this.model.get("map").get("zoomed")) {
+               this.model.get("map").get("zoomed") &&
+               !this.model.get("paused")) {
       this.model.buildPowerPlantAt(touch.screenX, touch.screenY);
 
       // We don't want this tap to count towards a double tap.
       this.prevTouchEndTime = -Infinity;
     } else if (state === GameState.BuildPL && !this.screenMove &&
-               this.model.get("map").get("zoomed")) {
+               this.model.get("map").get("zoomed") &&
+               !this.model.get("paused")) {
       var map = this.model.get("map"),
           building = map.getBuildingAt(touch.screenX, touch.screenY);
 
@@ -234,7 +236,7 @@ var Screen = Backbone.View.extend({
 
       // We don't want this tap to count towards a double tap.
       this.prevTouchEndTime = -Infinity;
-    } else if (state === GameState.Normal && !this.screenMove) {
+    } else if (state === GameState.Normal && !this.screenMove && !this.model.get("paused")) {
       this.model.tapMap(touch.screenX, touch.screenY);
     }
     

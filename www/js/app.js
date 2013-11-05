@@ -144,6 +144,7 @@ var app = {
         app.highscoreList.saveData();
         app.stopGame();
         app.initGame(id+1);
+        document.getElementById("timeMessage").innerHTML="Time taken: " + app.highscoreList.at(id).toString();
         $('div#game').css('display', 'none');
         $('div#victory').css('display', 'block');
       }
