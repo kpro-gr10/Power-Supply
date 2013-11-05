@@ -16,7 +16,8 @@ var HudButtons = Backbone.View.extend({
 
 	events: {
 		"click #buildPowerPlant": "buildPowerPlant",
-		"click #buildPowerLine": "buildPowerLine"
+		"click #buildPowerLine": "buildPowerLine",
+		"click #pauseButton": "togglePause"
 	},
 
 	buildPowerPlant: function() {
@@ -45,6 +46,10 @@ var HudButtons = Backbone.View.extend({
       	}
 		scrollToTop();
 		this.model.set("state", GameState.BuildPL);
+	},
+
+	togglePause: function() {
+
 	}
 
 });
