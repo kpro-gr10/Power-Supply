@@ -21,7 +21,7 @@ var HudButtons = Backbone.View.extend({
 	},
 
 	buildPowerPlant: function() {
-		if(this.model.get("state") !== GameState.Normal) {
+		if(this.model.get("state") !== GameState.Normal || this.model.get("paused")) {
 			return;
 		}
 		if(this.model.get("player").get("money")>=POWERPLANT_COST) {
@@ -37,7 +37,7 @@ var HudButtons = Backbone.View.extend({
 	},
 
 	buildPowerLine: function() {
-		if(this.model.get("state") !== GameState.Normal) {
+		if(this.model.get("state") !== GameState.Normal || this.model.get("paused")) {
 			return;
 		}
 		var map = this.model.get("map");
@@ -49,7 +49,12 @@ var HudButtons = Backbone.View.extend({
 	},
 
 	togglePause: function() {
-
+		this.model.set({paused: !this.model.get("paused")});
+		if(this.model.get("paused")) {
+			document.getElementById("pauseImage").src="res/sprites/play.png";
+		} else {
+			document.getElementById("pauseImage").src="res/sprites/pause.png";
+		}
 	}
 
 });

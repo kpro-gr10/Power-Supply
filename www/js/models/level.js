@@ -6,6 +6,7 @@ var Level = Backbone.Model.extend({
     player: null,
     playtime: 0, // In seconds
     state: GameState.Normal,
+    paused: false,
 
     createBuildingFreq: 5000,
     timeSinceBuilding: 0,
@@ -39,6 +40,9 @@ var Level = Backbone.Model.extend({
    */
   update: function (dt){
     if(this.get("state") !== GameState.GameOver) {
+      if(this.get("paused")) {
+        return;
+      }
       var playtime = this.get("playtime")+(dt/1000),
           last = this.get("timeSinceBuilding") + dt,
           freq = this.get("createBuildingFreq"),
