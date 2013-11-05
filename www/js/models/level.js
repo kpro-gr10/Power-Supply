@@ -121,22 +121,33 @@ var Level = Backbone.Model.extend({
 
       } else if(building instanceof Powerplant && 
       			building.canBeUpgraded()) {
-        var level = building.get("level"),
-        confirm = window.confirm("Information about the building!\n" +
-          "Building is at level " + (level+1) + ".\n" +
-          "Upgrade cost: " + UPGRADE_COST + " ,-\n" +
-        "Press 'OK' to upgrade your powerplant.");
+          var thisLevel = this;
+          var text = $("<p>Level: "+ (building.get("level")+1) + "<br>"
+                      + "Upgrade cost: " + UPGRADE_COST + "</p>");
+          
+          text.dialog({
+            draggable: false,
+            buttons: {
+              "Upgrade": function(){
+                var money = player.get("money");
+                
+                if(money >= UPGRADE_COST){
+                  building.upgrade();
+                  thisLevel.get("map").set({ redistributePower: true });
+                  player.set({ money: money - UPGRADE_COST });
+                  $(this).dialog("close");
+                }
+                else{
+                  $(this).dialog("close");
+                  // Sorry.
+                  var message = $("<p>Sorry, you cannot afford to upgarde the powerplant!</p>");
+                  message.dialog();
+                }
 
-        if(confirm) {
-          var money = player.get("money");
-          if(money >= UPGRADE_COST){
-            building.upgrade();
-            this.get("map").set({ redistributePower: true });
-            player.set({ money: money - UPGRADE_COST });
-          } else {
-            alert("You cannot afford the upgrade!");
-          }
-        }
+              },
+            }
+
+        });
       }
     } else if (powerLine) {
       if (powerLine.get("state") == PowerLineState.Broken) {

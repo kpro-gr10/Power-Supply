@@ -31,7 +31,9 @@ var HudButtons = Backbone.View.extend({
 			scrollToTop();
 			this.model.set("state", GameState.BuildPP);
 		} else {
-			window.alert("You cannot afford this!");
+            // Sorry.
+            var message = $("<p>Sorry, you cannot afford to build this powerplant!</p>");
+            message.dialog();
 		}
 	},
 
