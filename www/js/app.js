@@ -127,15 +127,12 @@ var app = {
       }
       if(app.gameLevel.get("playtime") >0.5 && app.gameLevel.get("goalAlerted")===false){
         app.gameLevel.set("goalAlerted", true);
+        app.pauseGame();
         var text = $("<p>You need to collect " + app.gameLevel.get("goal") + " coins to get to the next level</p>");
         text.dialog({
-          modal: true,
-          buttons: {
-            "Ok": function() {
-              $(this).dialog("close");
-            }
-          }
+          draggable:false,
         });
+        app.startGame();
       }
 
       if(app.gameLevel.get("state") === GameState.GameOver) {
@@ -160,9 +157,7 @@ var app = {
     gameLoop();
   },
 
-  pauseGame: function() {
-    this.gameRunning = false;
-  },
+
 
   stopGame: function() {
     this.gameRunning = false;
