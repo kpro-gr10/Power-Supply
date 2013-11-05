@@ -189,6 +189,9 @@ var Screen = Backbone.View.extend({
 
     } else if (state === GameState.BuildPP && !this.screenMove) {
       this.model.buildPowerPlantAt(touch.screenX, touch.screenY);
+
+      // We don't want this tap to count towards a double tap.
+      this.prevTouchEndTime = -Infinity;
     } else if (state === GameState.BuildPL && !this.screenMove) {
       var map = this.model.get("map"),
           building = map.getBuildingAt(touch.screenX, touch.screenY);
@@ -211,6 +214,9 @@ var Screen = Backbone.View.extend({
       } else if (building) {
         this.buildingTemp = building;
       }
+
+      // We don't want this tap to count towards a double tap.
+      this.prevTouchEndTime = -Infinity;
     } else if (state === GameState.Normal && !this.screenMove) {
       this.model.tapMap(touch.screenX, touch.screenY);
     }
