@@ -6,6 +6,18 @@ body {
     background-color: black;
 }
 
+.left {
+    width: 50%;
+    float: left;
+    clear: left;
+}
+
+.right {
+    width: 50%;
+    float: left;
+    clear: right;
+}
+
 p {
     padding: 0;
     margin: 0 auto 1.5em auto;
@@ -18,6 +30,13 @@ p.lead {
 .texthud{
     font-size: 2em;
     display: inline;
+}
+
+/* Prevent the 'money / goal' section from taking up multiple lines on iOS. */
+@media (max-width: 480px) {
+    .texthud {
+        font-size: 1.7em;
+    }
 }
 
 a.backbutton {
@@ -131,9 +150,8 @@ img#coin{
     -webkit-user-select: none;
 }
 
-p#money {
+p#money, p#slash, p#goal {
     float: left;
-
 }
 
 p.texthud{
@@ -143,10 +161,10 @@ p.texthud{
 
 canvas#hpbar{
     border: 1px solid black;
-    width: 50%;
+    width: 90%;
     height: 3em;
-    margin-right: 5%;
-    float: right;
+    padding-left: 5%;
+    padding-right: 5%;
 }
 
 div#hudButtons {

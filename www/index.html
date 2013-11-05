@@ -42,11 +42,15 @@
 
         <div id="lowerHud">
           <div id="upperHud">
-            <img id="coin" src="res/sprites/coin.png">
-            <p class="texthud" id="money">0</p>
-            <p class="texthud" id="slash">/</p>
-            <p class="texthud" id="goal">0</p>
-            <canvas id="hpbar" class="hpbar"></canvas>
+            <div class="left">
+              <img id="coin" src="res/sprites/coin.png">
+              <p class="texthud" id="money">0</p>
+              <p class="texthud" id="slash">/</p>
+              <p class="texthud" id="goal">0</p>
+            </div>
+            <div class="right">
+              <canvas id="hpbar" class="hpbar"></canvas>
+            </div>
           </div>
 
           <div id="hudButtons" align="center">
@@ -126,7 +130,6 @@
           </tr>
         </table>
 
-
         <h2>Buildings</h2>
         <table id="buildings" border="0px">
           <tr>
@@ -175,8 +178,6 @@
         <button id="victoryButton">Next Level</button>
       </div>
     </div>
-
-
 
     <!-- Third party code -->
     <script type="text/javascript" src="phonegap.js"></script>
