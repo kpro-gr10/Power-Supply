@@ -18,205 +18,199 @@
     under the License.
 -->
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        <link rel="stylesheet" type="text/css" href="css/app.css" />
-        <link rel="stylesheet" type="text/css" href="css/vader/jquery-ui-1.10.3.custom.min.css" />
-        <title>Hello World</title>
-    </head>
-    <body>
-        <div id="app">        
-          <div id="game">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+    <link rel="stylesheet" type="text/css" href="css/app.css" />
+    <link rel="stylesheet" type="text/css" href="css/vader/jquery-ui-1.10.3.custom.min.css" />
+    <title>Hello World</title>
+  </head>
+  <body>
+    <div id="app">
+      <div id="game">
+        <canvas id="screen"></canvas>
 
-            <canvas id="screen"></canvas>
-
-            <div id="screenHeader">
-              <div id="level">
-                <p id="levelText">Level</p>
-              </div>
-              <div id="timer">
-                <p id="timerText">00:00</p>
-              </div>
-            </div>
-
-            <div id="lowerHud">
-
-
-                <div id="upperHud">
-                  
-                  <img id="coin" src="res/sprites/coin.png">
-                  <p class="texthud" id="money">0</p>
-                  <p class="texthud" id="slash">/</p>
-                  <p class="texthud" id="goal">0</p>
-
-                  <canvas id="hpbar" class="hpbar"></canvas>
-                  
-                </div>
-
-
-              <div id="hudButtons" align="center">
-                <button class="buildbutton" id="buildPowerPlant">
-                  <img class="buildimg" src="res/sprites/factory_1_128.png"></img><br>Build Powerplant
-                </button>
-                <button class="buildbutton" id="buildPowerLine">
-                  <img class="buildimg" src="res/sprites/pylon.png"></img><br>Build Powerline
-                </button>
-              </div>
-
-            </div>  
+        <div id="screenHeader">
+          <div id="level">
+            <p id="levelText">Level</p>
           </div>
-          <div id="menu">
-            <img id="logo" src="img/logo2.png" alt="logo">
-            <ul id="buttonlist">
-              <li><button id="start_game">Start Game</button></li>
-              <li><button id="instructions">Instructions</button></li>
-              <li><button id="highscore">Highscore</button></li>
-            </ul>
-          </div>
-
-          <div id="instructions">
-              <a class="backbutton" href="#">« Menu</a>
-              <h1>Instructions</h1>
-                <p class="lead">
-                  In the little town of Ohmville, electricity is in high demand.
-                  As director of the sole electric utility, it is your job to
-                  make sure all inhabitants are able to work their electric
-                  coffee machines and play stimulating games on their mobile
-                  phones. You have at your disposal a certain amount of money,
-                  as well as the ability to build power plants and lay cables.
-                  You are the Watcher in the Night, the Bringer of Power and the
-                  Omnipotent Ottoman.
-                </p>
-
-                <p>
-                  During the course of the game, buildings will appear scattered
-                  around the map. In order to keep the locals happy, and to
-                  keep money flowing into your pocket, you need to build power
-                  plants and connect the buildings and power plants through
-                  power lines. If a building is not connected to a power plant
-                  within a certain time frame, its inhabitants will move to
-                  another city and your health bar will take a blow.
-                </p>
-
-                <p>
-                  A powerplant can only serve so many buildings. When a power
-                  plant has reached maximum capacity, you need to build more
-                  power plants or upgrade your existing ones. Tap on a power
-                  plant to see its upgrade options.
-                </p>
-
-                <p>
-                  <strong>Be mindful of your health! If the health bar runs out
-                  of juice, it's Game Over for you!</strong>
-
-                <h2>Game elements </h2>
-                <table id="gameElements" border="0px">
-                  <tr>
-                    <td><img id="powerplantBuilding" src="res/sprites/factory_1_128.png"></td>
-                    <td>Powerplant: is the building that can serve power to buildings.</td>
-                  </tr>
-                  <tr>
-                    <td><img id="powercableIcon" src="res/sprites/pylon.png"></td>
-                    <td>Powerlines: is the connection between houses and powerstations.</td>
-                  </tr>
-                  <tr>
-                    <td><img id="powercableIcon" src="res/sprites/bm.png"></td>
-                    <td>Building mode: when building powerstations or powercables, you will enter building mode.</td>
-                  </tr>
-                  <tr>
-                    <td><img src="res/sprites/coin.png"></td>
-                    <td>Coin: when a building is connected to a powerplant, it starts producing money. If a coin
-                    is showing on a building, you can collect the money.</td>
-                  </tr>
-                </table>
-
-
-                <h2>Buildings</h2>
-                <table id="buildings" border="0px">
-                  <tr>
-                    <td><img src="res/sprites/house_2_128.png"></td>
-                    <td>Small size house: require 1 unit of power</td>
-                  </tr>
-                  <tr>
-                    <td><img src="res/sprites/house_1_128.png"></td>
-                    <td>Medium size house: require 2 units of power</td>
-                  </tr>
-                  <tr>
-                    <td><img src="res/sprites/house_3_128.png"></td>
-                    <td>Big house: require 3 units of power</td>
-                  </tr>
-                  <tr>
-                    <td><img src="res/sprites/house_4_128.png"></td>
-                    <td>Very big house: require 4 units of power</td>
-                  </tr>
-                  <tr>
-                    <td><img id="factoryBuilding" src="res/sprites/factory_2_128.png"></td>
-                    <td>Factory building: require 5 units of power</td>
-                  </tr>
-                  <tr>
-                    <td><img src="res/sprites/company_1_128.png"></td>
-                    <td>Company building: require 6 units of power</td>
-                  </tr>
-                </table>
-              </p>
-          </div>
-
-          <div id="highscore">
-              <a class="backbutton" href="#">« Menu</a>
-              <h1>Highscore</h1>
-              <table id="highscoreTable">
-
-              </table>
-          </div>
-
-          <div id="gameover">
-              <h1>Game Over</h1>
-              <button id="gameoverButton">Ok</button>
-          </div>
-
-          <div id="victory">
-              <h1>Victory!</h1>
-              <button id="victoryButton">Next Level</button>
+          <div id="timer">
+            <p id="timerText">00:00</p>
           </div>
         </div>
 
+        <div id="lowerHud">
+          <div id="upperHud">
+            <img id="coin" src="res/sprites/coin.png">
+            <p class="texthud" id="money">0</p>
+            <p class="texthud" id="slash">/</p>
+            <p class="texthud" id="goal">0</p>
+            <canvas id="hpbar" class="hpbar"></canvas>
+          </div>
+
+          <div id="hudButtons" align="center">
+            <button class="buildbutton" id="buildPowerPlant">
+              <img class="buildimg" src="res/sprites/factory_1_128.png"></img>
+              <br>Build Powerplant
+            </button>
+            <button class="buildbutton" id="buildPowerLine">
+              <img class="buildimg" src="res/sprites/pylon.png"></img>
+              <br>Build Powerline
+            </button>
+          </div>
+        </div>
+      </div>
+      <div id="menu">
+        <img id="logo" src="img/logo2.png" alt="logo">
+        <ul id="buttonlist">
+          <li><button id="start_game">Start Game</button></li>
+          <li><button id="instructions">Instructions</button></li>
+          <li><button id="highscore">Highscore</button></li>
+        </ul>
+      </div>
+
+      <div id="instructions">
+        <a class="backbutton" href="#">« Menu</a>
+        <h1>Instructions</h1>
+        <p class="lead">
+        In the little town of Ohmville, electricity is in high demand.
+        As director of the sole electric utility, it is your job to
+        make sure all inhabitants are able to work their electric
+        coffee machines and play stimulating games on their mobile
+        phones. You have at your disposal a certain amount of money,
+        as well as the ability to build power plants and lay cables.
+        You are the Watcher in the Night, the Bringer of Power and the
+        Omnipotent Ottoman.
+        </p>
+
+        <p>
+        During the course of the game, buildings will appear scattered
+        around the map. In order to keep the locals happy, and to
+        keep money flowing into your pocket, you need to build power
+        plants and connect the buildings and power plants through
+        power lines. If a building is not connected to a power plant
+        within a certain time frame, its inhabitants will move to
+        another city and your health bar will take a blow.
+        </p>
+
+        <p>
+        A powerplant can only serve so many buildings. When a power
+        plant has reached maximum capacity, you need to build more
+        power plants or upgrade your existing ones. Tap on a power
+        plant to see its upgrade options.
+        </p>
+
+        <p>
+        <strong>Be mindful of your health! If the health bar runs out
+          of juice, it's Game Over for you!</strong>
+
+        <h2>Game elements </h2>
+        <table id="gameElements" border="0px">
+          <tr>
+            <td><img id="powerplantBuilding" src="res/sprites/factory_1_128.png"></td>
+            <td>Powerplant: is the building that can serve power to buildings.</td>
+          </tr>
+          <tr>
+            <td><img id="powercableIcon" src="res/sprites/pylon.png"></td>
+            <td>Powerlines: is the connection between houses and powerstations.</td>
+          </tr>
+          <tr>
+            <td><img id="powercableIcon" src="res/sprites/bm.png"></td>
+            <td>Building mode: when building powerstations or powercables, you will enter building mode.</td>
+          </tr>
+          <tr>
+            <td><img src="res/sprites/coin.png"></td>
+            <td>Coin: when a building is connected to a powerplant, it starts producing money. If a coin
+              is showing on a building, you can collect the money.</td>
+          </tr>
+        </table>
 
 
-        <!-- Third party code -->
-        <script type="text/javascript" src="phonegap.js"></script>
-        <script type="text/javascript" src="js/lib/underscore-min.js"></script>
-        <script type="text/javascript" src="js/lib/jquery-1.10.2.js"></script>
-        <script type="text/javascript" src="js/lib/jquery-ui-1.10.3.custom.min.js"></script>
-        <script type="text/javascript" src="js/lib/backbone-min.js"></script>
-        <script type="text/javascript" src="js/lib/Queue.js"></script>
+        <h2>Buildings</h2>
+        <table id="buildings" border="0px">
+          <tr>
+            <td><img src="res/sprites/house_2_128.png"></td>
+            <td>Small size house: require 1 unit of power</td>
+          </tr>
+          <tr>
+            <td><img src="res/sprites/house_1_128.png"></td>
+            <td>Medium size house: require 2 units of power</td>
+          </tr>
+          <tr>
+            <td><img src="res/sprites/house_3_128.png"></td>
+            <td>Big house: require 3 units of power</td>
+          </tr>
+          <tr>
+            <td><img src="res/sprites/house_4_128.png"></td>
+            <td>Very big house: require 4 units of power</td>
+          </tr>
+          <tr>
+            <td><img id="factoryBuilding" src="res/sprites/factory_2_128.png"></td>
+            <td>Factory building: require 5 units of power</td>
+          </tr>
+          <tr>
+            <td><img src="res/sprites/company_1_128.png"></td>
+            <td>Company building: require 6 units of power</td>
+          </tr>
+        </table>
+        </p>
+      </div>
 
-        <!-- Our code -->
-        <script type="text/javascript" src="js/models/imageLibrary.js"></script>
-        <script type="text/javascript" src="js/constants.js"></script>
-        <script type="text/javascript" src="js/utilities.js"></script>
-        <script type="text/javascript" src="js/models/player.js"></script>
-        <script type="text/javascript" src="js/models/entity.js"></script>
-        <script type="text/javascript" src="js/models/building.js"></script>
-        <script type="text/javascript" src="js/collections/buildingList.js"></script>
-        <script type="text/javascript" src="js/models/powerplant.js"></script>
-        <script type="text/javascript" src="js/models/powerline.js"></script>
-        <script type="text/javascript" src="js/collections/powerLineList.js"></script>
-        <script type="text/javascript" src="js/models/map.js"></script>
-        <script type="text/javascript" src="js/models/level.js"></script> 
-        <script type="text/javascript" src="js/views/screenHeader.js"></script>       
-        <script type="text/javascript" src="js/views/screen.js"></script>
-        <script type="text/javascript" src="js/views/hpbar.js"></script>
-        <script type="text/javascript" src="js/views/hud.js"></script>
-        <script type="text/javascript" src="js/views/menu.js"></script>
-        <script type="text/javascript" src="js/models/highscore.js"></script>
-        <script type="text/javascript" src="js/collections/highscoreList.js"></script>
-        <script type="text/javascript" src="js/views/highscoreView.js"></script>
-        <script type="text/javascript" src="js/app.js"></script>
+      <div id="highscore">
+        <a class="backbutton" href="#">« Menu</a>
+        <h1>Highscore</h1>
+        <table id="highscoreTable">
 
-        <script type="text/javascript">
-            app.initialize();
-        </script>
-    </body>
+        </table>
+      </div>
+
+      <div id="gameover">
+        <h1>Game Over</h1>
+        <button id="gameoverButton">Ok</button>
+      </div>
+
+      <div id="victory">
+        <h1>Victory!</h1>
+        <button id="victoryButton">Next Level</button>
+      </div>
+    </div>
+
+
+
+    <!-- Third party code -->
+    <script type="text/javascript" src="phonegap.js"></script>
+    <script type="text/javascript" src="js/lib/underscore-min.js"></script>
+    <script type="text/javascript" src="js/lib/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="js/lib/jquery-ui-1.10.3.custom.min.js"></script>
+    <script type="text/javascript" src="js/lib/backbone-min.js"></script>
+    <script type="text/javascript" src="js/lib/Queue.js"></script>
+
+    <!-- Our code -->
+    <script type="text/javascript" src="js/models/imageLibrary.js"></script>
+    <script type="text/javascript" src="js/constants.js"></script>
+    <script type="text/javascript" src="js/utilities.js"></script>
+    <script type="text/javascript" src="js/models/player.js"></script>
+    <script type="text/javascript" src="js/models/entity.js"></script>
+    <script type="text/javascript" src="js/models/building.js"></script>
+    <script type="text/javascript" src="js/collections/buildingList.js"></script>
+    <script type="text/javascript" src="js/models/powerplant.js"></script>
+    <script type="text/javascript" src="js/models/powerline.js"></script>
+    <script type="text/javascript" src="js/collections/powerLineList.js"></script>
+    <script type="text/javascript" src="js/models/map.js"></script>
+    <script type="text/javascript" src="js/models/level.js"></script>
+    <script type="text/javascript" src="js/views/screenHeader.js"></script>
+    <script type="text/javascript" src="js/views/screen.js"></script>
+    <script type="text/javascript" src="js/views/hpbar.js"></script>
+    <script type="text/javascript" src="js/views/hud.js"></script>
+    <script type="text/javascript" src="js/views/menu.js"></script>
+    <script type="text/javascript" src="js/models/highscore.js"></script>
+    <script type="text/javascript" src="js/collections/highscoreList.js"></script>
+    <script type="text/javascript" src="js/views/highscoreView.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+
+    <script type="text/javascript">
+      app.initialize();
+    </script>
+  </body>
 </html>
