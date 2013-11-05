@@ -13,7 +13,7 @@ var Highscore = Backbone.Model.extend({
 		var minutes = Math.floor(time / 60);
 		var seconds = time % 60;
 		if(minutes === 0) {
-			return seconds;
+			return ""+seconds;
 		} else {
 			return minutes+":"+ ( seconds < 10 ? "0"+seconds : seconds );
 		}
