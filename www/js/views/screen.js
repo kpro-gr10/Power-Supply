@@ -205,16 +205,31 @@ var Screen = Backbone.View.extend({
             means = this.model.get("player").get("money");
 
         if (means < cost) {
-          alert("You cannot afford to build this power line!");
+              // Sorry.
+              var message = $("<p>Sorry, you cannot afford to build this power line!"
+                              + "<br> Cost: "+ cost +"</p>");
+              message.dialog();
         } else {
-          var wantsToBuild = confirm("Do you want to connect these buildings?" +
-                                     "\nPrice: " + cost + " ,-");
-          if (wantsToBuild && !this.buildingTemp.shouldBeRemoved() && !building.shouldBeRemoved())
-            this.model.connectWithPowerLine(building, this.buildingTemp);
+            var thisScreen = this;
+            var text = $("<p>Do you want to connect these buildings?<br>" +
+                                     "Price: " + cost + " ,-</p>");
+            
+            text.dialog({
+            draggable: false,
+            buttons: {
+                "Build": function(){
+                  if (!thisScreen.buildingTemp.shouldBeRemoved() && !building.shouldBeRemoved()){
+                    thisScreen.model.connectWithPowerLine(building, thisScreen.buildingTemp);
+                  }
+                  $(this).dialog("close");
+                  thisScreen.buildingTemp = null;
+                  thisScreen.model.set({state: GameState.Normal});
+              }, 
+            }
+          });
         }
 
-        this.buildingTemp = null;
-        this.model.set({state: GameState.Normal});
+        
       } else if (building) {
         this.buildingTemp = building;
       }
