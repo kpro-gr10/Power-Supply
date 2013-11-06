@@ -9,11 +9,11 @@ var HUD_HEIGHT=parseInt(window.getComputedStyle(document.getElementById("lowerHu
 
 // List of predefined buildings that can be placed on the game map.
 var BuildingTemplates = [
-	{sprite:imgLib.house1, powerRequirement:10, revenueIncr:5},
-	{sprite:imgLib.house2, powerRequirement:15, revenueIncr:10},
-	{sprite:imgLib.house3, powerRequirement:20, revenueIncr:15},
-	{sprite:imgLib.house4, powerRequirement:25, revenueIncr:20},
-	{sprite:imgLib.company1, powerRequirement:45, revenueIncr:40}
+	{sprite:imgLib.house1, powerRequirement:10, revenueIncr:10},
+	{sprite:imgLib.house2, powerRequirement:15, revenueIncr:15},
+	{sprite:imgLib.house3, powerRequirement:20, revenueIncr:20},
+	{sprite:imgLib.house4, powerRequirement:25, revenueIncr:25},
+	{sprite:imgLib.company1, powerRequirement:45, revenueIncr:45},
 ];
 
 var BUILDING_WIDTH=128;
@@ -39,7 +39,7 @@ var POWERPLANT_POWER = [100, 150, 200, 250, 300];
 var UPGRADE_COST = 75;
 
 // Cost per screen unit (pixel) of power line.
-var POWERLINE_COST = 0.1;
+var POWERLINE_COST = 0.08;
 
 // The line width of a power line as drawn.
 var POWERLINE_WIDTH = 18;
