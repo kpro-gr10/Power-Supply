@@ -206,29 +206,43 @@ var Level = Backbone.Model.extend({
 	 */
 	buildPowerPlantAt: function(sx, sy) {
 		this.set({ state: GameState.Normal });
+    var thisLevel = this;
+    var text = $("<p>Do you want to build here?\nPrice: " + POWERPLANT_COST + " ,-</p>");
+		text.dialog({
+      modal: true,
+      draggable: false,
+      open: function(event, ui) { 
+            var dialogBox = $(this);
+            $(".ui-dialog-titlebar").hide();
+            dialogBox.css("font-size", "1.5em");
+            $('.my-dialog .ui-button-text').css("font-size","1em");
+          },
+      buttons: {
+        "Build": function(){
+            var powerplant = new Powerplant();
+            var sprite=powerplant.get("sprite"),
+            map=thisLevel.get("map"),
+            x=map.get("viewXPosition") + sx + window.pageXOffset,
+            y=map.get("viewYPosition") + sy + window.pageYOffset;
 
-		var confirm = window.confirm("Do you want to build here?\nPrice: " + POWERPLANT_COST + " ,-");
-		if(confirm) {
-			var powerplant = new Powerplant(); // TODO Replace this with grabbing a building from the object pool
-			var sprite=powerplant.get("sprite"),
-				  map=this.get("map"),
-          x=map.get("viewXPosition") + sx + window.pageXOffset,
-          y=map.get("viewYPosition") + sy + window.pageYOffset;
+            x -= x%BUILDING_WIDTH;
+            y -= y%BUILDING_WIDTH;
+            if(thisLevel.get("map").getBuildingAtMap(x, y)) {
+              window.alert("Location occupied");
+            } else {
+              powerplant.set("x", x);
+              powerplant.set("y", y);
 
-      x -= x%BUILDING_WIDTH;
-      y -= y%BUILDING_WIDTH;
-
-      if(this.get("map").getBuildingAtMap(x, y)) {
-        window.alert("Location occupied");
-      } else {
-   			powerplant.set("x", x);
-   			powerplant.set("y", y);
-
-   			this.get("player").set("money", this.get("player").get("money") - POWERPLANT_COST);
-  			map.get("powerplants").add(powerplant);
+              thisLevel.get("player").set("money", thisLevel.get("player").get("money") - POWERPLANT_COST);
+              map.get("powerplants").add(powerplant);
+            }
+            $(this).dialog("close");
+        },
+        "Cancel": function(){
+          $(this).dialog("close");
+        },
       }
-
-		}
+    });
 	},
 
   costOfPowerLine: function(aBuilding, anotherBuilding) {
