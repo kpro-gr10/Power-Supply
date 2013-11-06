@@ -1,7 +1,4 @@
 var HighscoreView = Backbone.View.extend({
-
-	el:$("table#highscoreTable"),
-
 	initialize: function() {
 		this.render();
 		this.listenTo(this.model, "all", function() {
