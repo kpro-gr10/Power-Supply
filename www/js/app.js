@@ -103,11 +103,27 @@ var app = {
         requestAnimFrame(gameLoop);
       }
       if(app.gameLevel.get("playtime") >0.5 && app.gameLevel.get("goalAlerted")===false){
+        app.gameLevel.set({paused: true});
         app.gameLevel.set("goalAlerted", true);
-        var text = $("<p>You need to collect " + app.gameLevel.get("goal") + " coins to get to the next level</p>");
+        var text = $("<p>You need to collect " + app.gameLevel.get("goal") + " coins to get to the next level!</p>");
+        
+        //The dialog will be removed after 3.5 seconds. 
         text.dialog({
           draggable:false,
+          open: function(event, ui) { 
+            var dialogBox = $(this);
+            $(".ui-dialog-titlebar").hide();
+            dialogBox.css("font-size", "1.5em");
+            
+            setTimeout(function() {
+               dialogBox.dialog('close');
+            }, 3500);
+          },
+          close: function(){
+            app.gameLevel.set({paused: false});
+          }
         });
+        
       }
 
       if(app.gameLevel.get("state") === GameState.GameOver) {
