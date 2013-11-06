@@ -31,10 +31,16 @@ var HeaderLevel = Backbone.View.extend({
 	init: function() {
 		this.render();
 		this.listenTo(this.model, "change:levelId", this.render);
+		this.listenTo(this.model, "change:paused", this.render);
 	    
 	},
 
 	render: function() {
-		this.el.innerHTML = "Level " + (this.model.get("levelId") + 1);
+		if(this.model.get("paused")) {
+			this.el.innerHTML = "Level " + (this.model.get("levelId") + 1) + 
+								"</br>Pause";
+		} else {
+			this.el.innerHTML = "Level " + (this.model.get("levelId") + 1);
+		}
 	}
 });
