@@ -1,18 +1,19 @@
 var Menu = Backbone.View.extend({
-	el:$("div#menu"),
-
 	events: {
-    	"click button#start_game" : "startGame",
+    	"click button#start_game": "startGame",
     	"click button#instructions": "instructions",
-    	"click button#highscore": "highscore", 
+    	"click button#highscore": "highscore",
     },
 
-    initialize: function(){     
-        
-    },
-	startGame: function(){
-		$('div#game').css('display', 'block');
-		$('div#menu').css('display', 'none');
+    startGame: function() {
+        if(app.gameRunning) {
+            app.gameLevel.set({paused: false});
+        } else {
+            app.initGame(0);
+            app.startGame();
+        }
+        $('div#menu').css('display', 'none');
+        $('div#game').css('display', 'block');
     },
 
     instructions: function(){

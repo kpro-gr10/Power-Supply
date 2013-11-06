@@ -31,8 +31,6 @@ var Powerplant = Entity.extend({
       }
     }
     var power=this.getMaxPower();
-    console.log("max power: " + power);
-    var num=0;
 
     while(queue.getLength() > 0) {
       var powerline = queue.dequeue(),
