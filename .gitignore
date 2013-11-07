@@ -2,5 +2,10 @@
 *.swp
 *.swo
 
+platforms/android
+!platforms/android/AndroidManifest.xml
+!platforms/android/src
+!platforms/android/res
+!platforms/android/assets
 www/phonegap.js
 www/cordova_plugins.js
