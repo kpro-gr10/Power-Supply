@@ -280,7 +280,20 @@ var Level = Backbone.Model.extend({
             x -= x%BUILDING_WIDTH;
             y -= y%BUILDING_WIDTH;
             if(thisLevel.get("map").getBuildingAtMap(x, y)) {
-              window.alert("Location occupied");
+              var text = $("<p>Location occupied</p>");
+              text.dialog({
+                open: function(event, ui) { 
+                  var dialogBox = $(this);
+                  $(".ui-dialog-titlebar").hide();
+                  dialogBox.css("font-size", "1.5em");
+                  $('.my-dialog .ui-button-text').css("font-size","1em");
+                },
+                buttons: {
+                  "Ok": function(){
+                     $(this).dialog("close"); 
+                  },
+                },
+              });
             } else {
               powerplant.set("x", x);
               powerplant.set("y", y);
