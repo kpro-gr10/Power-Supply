@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>F7AF4A2C-CB74-41BA-B431-4F7567C6282B</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Power Supply</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>B4FBEFEE-96F7-48DD-B458-FF4F13B18B48</key>
+		<string>ssh://github.com/kpro-gr10/Power-Supply.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>platforms/ios/Power Supply.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>B4FBEFEE-96F7-48DD-B458-FF4F13B18B48</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/kpro-gr10/Power-Supply.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>B4FBEFEE-96F7-48DD-B458-FF4F13B18B48</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>B4FBEFEE-96F7-48DD-B458-FF4F13B18B48</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Power-Supply</string>
+		</dict>
+	</array>
+</dict>
+</plist>

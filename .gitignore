@@ -2,6 +2,5 @@
 *.swp
 *.swo
 
-platforms/
 www/phonegap.js
 www/cordova_plugins.js
