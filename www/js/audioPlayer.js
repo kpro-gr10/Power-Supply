@@ -83,5 +83,6 @@ var audioPlayer = new function() {
 			this.money[i].stop();
 		}
 		this.buildPP.stop();
+		this.buildPL.stop();
 	}
 };
