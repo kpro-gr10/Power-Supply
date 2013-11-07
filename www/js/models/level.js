@@ -119,7 +119,7 @@ var Level = Backbone.Model.extend({
 
     if(building) {
       if(building instanceof Building) {
-        // TODO Play money sound
+        audioPlayer.playRandMoney();
         player.set("money", building.get("revenue")+player.get("money"));
         building.set("revenue", 0);
 
@@ -137,6 +137,7 @@ var Level = Backbone.Model.extend({
                 
                 if(money >= UPGRADE_COST){
                   building.upgrade();
+                  audioPlayer.buildPP.play();
                   thisLevel.get("map").set({ redistributePower: true });
                   player.set({ money: money - UPGRADE_COST });
                   $(this).dialog("close");
@@ -226,6 +227,7 @@ var Level = Backbone.Model.extend({
 
    			this.get("player").set("money", this.get("player").get("money") - POWERPLANT_COST);
   			map.get("powerplants").add(powerplant);
+        audioPlayer.buildPP.play();
       }
 
 		}
@@ -268,6 +270,7 @@ var Level = Backbone.Model.extend({
     this.get("map").get("powerLines").add(powerLine);
     this.get("map").set({ redistributePower: true });
     this.get("player").set({ money: means - cost });
+    audioPlayer.buildPL.play();
   },
 
   fixPowerLine: function(powerLine) {
