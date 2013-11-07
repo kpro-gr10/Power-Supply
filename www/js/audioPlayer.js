@@ -45,7 +45,7 @@ var audioPlayer = new function() {
 	this.gameover = null;
 
 	this.init = function() {
-		this.loadBGM("house_a_square.mp3");
+		this.loadBGM("house_a_square.ogg");
 		this.money = [this.loadSfx("money1.mp3"), this.loadSfx("money2.mp3"), this.loadSfx("money3.mp3")];
 		this.buildPP = this.loadSfx("build_powerplant.mp3");
 		this.buildPL = this.loadSfx("build_powerline.mp3");
