@@ -50,7 +50,7 @@ a.backbutton {
     font-variant: small-caps;
     font-family: sans-serif;
     color: black;
-    background-color: lightgray;
+    background-color: darkgray;
     border-radius: 3em;
 }
 
@@ -71,7 +71,6 @@ div#gameover{
 
 div#victory{
     display: none;
-    width: 50%;
     margin: auto;
     color: white;
     text-align: center;
@@ -81,8 +80,21 @@ button#gameoverButton{
     font-size: 4em;
 }
 
+p#victoryText{
+    margin-top: 10%;
+    font-size: 3em;
+}
+
+p#timeMessage{
+    font-size: 2em;
+}
+
 button#victoryButton{
-    font-size: 4em;
+    width: 60%;
+    font-size: 3em;
+    bottom: 5%;
+    position: absolute;
+    margin-left: 20%; 
 }
 
 div#game{
@@ -208,7 +220,7 @@ div#menu li{
 }
 
 div#menu button{
-    background-color: lightgray;
+    background-color: darkgray;
     width: 90%;
     text-align: center;
     font-size: 2.5em;

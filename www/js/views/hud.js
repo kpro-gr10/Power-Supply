@@ -34,7 +34,18 @@ var HudButtons = Backbone.View.extend({
 		} else {
             // Sorry.
             var message = $("<p>Sorry, you cannot afford to build this powerplant!</p>");
-            message.dialog();
+            message.dialog({
+            	open: function(event, ui) { 
+            		var dialogBox = $(this);
+            		$(".ui-dialog-titlebar").hide();
+            		dialogBox.css("font-size", "1.5em");
+          		},
+          		buttons: {
+          			"Ok": function(){
+          				$(this).dialog("close");
+          			}
+          		},
+            });
 		}
 	},
 
@@ -51,9 +62,26 @@ var HudButtons = Backbone.View.extend({
 	},
 
 	togglePause: function() {
+		var thisHud = this;
 		this.model.set({paused: !this.model.get("paused")});
+		document.getElementById("pauseImage").src="res/sprites/play.png";
 		if(this.model.get("paused")) {
-			document.getElementById("pauseImage").src="res/sprites/play.png";
+			var text = $("<p>Game Paused</p>");
+			text.dialog({
+				modal: true,
+				draggable: false,
+				open: function(event, ui) { 
+                    var dialogBox = $(this);
+                    $(".ui-dialog-titlebar").hide();
+                    dialogBox.css("font-size", "1.5em");
+                 }, 
+				buttons: {
+					"Start": function(){
+						thisHud.model.set({paused: !thisHud.model.get("paused")});
+						$(this).dialog("close");
+					}
+				},
+			});
 		} else {
 			document.getElementById("pauseImage").src="res/sprites/pause.png";
 		}
