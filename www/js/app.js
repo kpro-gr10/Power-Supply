@@ -54,7 +54,7 @@ var app = {
 
     $(".backbutton").on("click", onBackButton);
     document.addEventListener("backbutton", onBackButton, false);
-
+    document.addEventListener("pause", function() {audioPlayer.stopAll();}, false);
     document.addEventListener('deviceready', this.onDeviceReady);
   },
 
@@ -159,6 +159,6 @@ var app = {
   },
 
   onDeviceReady: function() {
-    
+    audioPlayer.init();
   }
 };

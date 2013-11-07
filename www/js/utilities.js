@@ -10,6 +10,14 @@ window.requestAnimFrame = (function(){
           };
 })();
 
+function getPhoneGapPath() {
+
+    var path = window.location.pathname;
+    path = path.substr( path, path.length - 10 );
+    return 'file://' + path;
+
+};
+
 function timeToString(time) {
     time = Math.floor(time);
     var minutes = Math.floor(time / 60);
