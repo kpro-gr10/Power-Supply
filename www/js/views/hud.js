@@ -34,7 +34,18 @@ var HudButtons = Backbone.View.extend({
 		} else {
             // Sorry.
             var message = $("<p>Sorry, you cannot afford to build this powerplant!</p>");
-            message.dialog();
+            message.dialog({
+            	open: function(event, ui) { 
+            		var dialogBox = $(this);
+            		$(".ui-dialog-titlebar").hide();
+            		dialogBox.css("font-size", "1.5em");
+          		},
+          		buttons: {
+          			"Ok": function(){
+          				$(this).dialog("close");
+          			}
+          		},
+            });
 		}
 	},
 

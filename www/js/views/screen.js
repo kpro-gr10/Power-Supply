@@ -206,9 +206,25 @@ var Screen = Backbone.View.extend({
 
         if (means < cost) {
               // Sorry.
+
+              var thisScreen = this;
               var message = $("<p>Sorry, you cannot afford to build this power line!"
                               + "<br> Cost: "+ cost +"</p>");
-              message.dialog();
+              message.dialog({
+                  open: function(event, ui) { 
+                    var dialogBox = $(this);
+                    $(".ui-dialog-titlebar").hide();
+                    dialogBox.css("font-size", "1.5em");
+                  }, 
+                  buttons: {
+                    "Ok": function(){
+                      $(this).dialog("close");
+                      thisScreen.buildingTemp = null;
+                      thisScreen.model.set({state: GameState.Normal});
+
+                    }
+                  },
+              });
         } else {
             var thisScreen = this;
             var text = $("<p>Do you want to connect these buildings?<br>" +
@@ -216,6 +232,11 @@ var Screen = Backbone.View.extend({
             
             text.dialog({
             draggable: false,
+            open: function(event, ui) { 
+                var dialogBox = $(this);
+                $(".ui-dialog-titlebar").hide();
+                dialogBox.css("font-size", "1.5em");
+            }, 
             buttons: {
                 "Build": function(){
                   if (!thisScreen.buildingTemp.shouldBeRemoved() && !building.shouldBeRemoved()){

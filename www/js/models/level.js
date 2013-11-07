@@ -131,8 +131,13 @@ var Level = Backbone.Model.extend({
           
           text.dialog({
             draggable: false,
+            open: function(event, ui) { 
+                var dialogBox = $(this);
+                $(".ui-dialog-titlebar").hide();
+                dialogBox.css("font-size", "1.5em");
+            },
             buttons: {
-              "Upgrade": function(){
+              " Upgrade": function(){
                 var money = player.get("money");
                 
                 if(money >= UPGRADE_COST){
@@ -145,9 +150,24 @@ var Level = Backbone.Model.extend({
                   $(this).dialog("close");
                   // Sorry.
                   var message = $("<p>Sorry, you cannot afford to upgarde the powerplant!</p>");
-                  message.dialog();
+
+                  message.dialog({
+                    open: function(event, ui) { 
+                        var dialogBox = $(this);
+                        $(".ui-dialog-titlebar").hide();
+                        dialogBox.css("font-size", "1.5em");
+                    },
+                    buttons:{
+                        "Ok": function(){
+                          $(this).dialog("close");
+                        },
+                    },
+                  });
                 }
 
+              },
+              "Cancel": function(){
+                  $(this).dialog("close");
               },
             }
 
@@ -161,8 +181,13 @@ var Level = Backbone.Model.extend({
 
         text.dialog({
           modal: true,
+          open: function(event, ui) { 
+            var dialogBox = $(this);
+            $(".ui-dialog-titlebar").hide();
+            dialogBox.css("font-size", "1.5em");
+          }, 
           buttons: {
-            "Fix it": function() {
+            "Fix": function() {
               var means = thisLevel.get("player").get("money"),
                   cost = thisLevel.costOfFixingPowerLine(powerLine);
 
@@ -178,10 +203,21 @@ var Level = Backbone.Model.extend({
                                 "<img src='res/sprites/coin.png'" +
                                 "     style='height: 1em;'>" + (cost - means) +
                                 "</p>");
-                message.dialog();
+                message.dialog({
+                   open: function(event, ui) { 
+                      var dialogBox = $(this);
+                      $(".ui-dialog-titlebar").hide();
+                      dialogBox.css("font-size", "1.5em");
+                    }, 
+                    buttons: {
+                      "Ok": function(){
+                        $(this).dialog("close");
+                      }
+                    },
+                });
               }
             },
-            "Destroy it": function() {
+            "Destroy": function() {
               powerLine.removeFrom(thisLevel.get("map"));
               $(this).dialog("close");
             },
@@ -191,9 +227,25 @@ var Level = Backbone.Model.extend({
           }
         });
       } else {
-        var answer = window.confirm("Do you wish to destroy this power line?");
-        if (answer)
-          powerLine.removeFrom(this.get("map"));
+        var thisLevel = this;
+        var text =  $("<p>Do you wish to destroy this power line?</p>")
+        text.dialog({
+          draggable: false,
+          open: function(event, ui) { 
+            var dialogBox = $(this);
+            $(".ui-dialog-titlebar").hide();
+            dialogBox.css("font-size", "1.5em");
+          },
+          buttons: {
+            "Destroy": function(){
+              powerLine.removeFrom(thisLevel.get("map"));
+              $(this).dialog("close");
+            },
+            "Cancel": function(){
+              $(this).dialog("close");
+            }
+          },
+        });
       }
     }
   },
