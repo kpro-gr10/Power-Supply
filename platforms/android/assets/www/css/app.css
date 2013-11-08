@@ -177,6 +177,7 @@ canvas#hpbar{
     height: 3em;
     padding-left: 5%;
     padding-right: 5%;
+    float:right;
 }
 
 div#hudButtons {
@@ -188,6 +189,7 @@ button.buildbutton {
     height: 70%;
     margin: 0;
     padding: 0;
+    font-size: 1em;
 }
 
 img.buildimg {

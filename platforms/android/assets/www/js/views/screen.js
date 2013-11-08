@@ -10,6 +10,12 @@ var Screen = Backbone.View.extend({
     this.listenTo(this.model.get("map").get("buildings"), "all", function() {
       this.needsRepaint = true;
     });
+    this.listenTo(this.model.get("map").get("powerplants"), "all", function() {
+      this.needsRepaint = true;
+    });
+    this.listenTo(this.model.get("map").get("powerLines"), "all", function() {
+      this.needsRepaint = true;
+    });
   },
 
   // PhoneGap's platform detection is not working properly,

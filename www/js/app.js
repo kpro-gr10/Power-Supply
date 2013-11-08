@@ -22,7 +22,8 @@ var app = {
     // initialize the game canvas
     var canvas = document.getElementById('screen');
     canvas.width = window.screen.availWidth;
-    canvas.height = window.screen.availHeight * (1-HUD_HEIGHT/100);
+    var computedFontSize = parseInt(window.getComputedStyle(document.getElementById("buildPowerLine")).fontSize, 10);
+    canvas.height = (window.screen.availHeight * (1-HUD_HEIGHT/100)) - document.getElementById("buildPowerLine").style.fontSize - computedFontSize;
 
     // Initialize game views / controllers
     this.gameScreen = new Screen({el: $('#screen')});
