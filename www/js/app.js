@@ -55,8 +55,8 @@ var app = {
 
     $(".backbutton").on("click", onBackButton);
     document.addEventListener("backbutton", onBackButton, false);
-    document.addEventListener("pause", function() {app.gameLevel.set({paused: true});}, false);
-    document.addEventListener("resume", function() {app.gameLevel.set({paused: false});}, false);
+    document.addEventListener("pause", function() {if(app.gameLevel) app.gameLevel.set({paused: true});}, false);
+    document.addEventListener("resume", function() {if(app.gameLevel) app.gameLevel.set({paused: false});}, false);
     document.addEventListener('deviceready', this.onDeviceReady);
   },
 
