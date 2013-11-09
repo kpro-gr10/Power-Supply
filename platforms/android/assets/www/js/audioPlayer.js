@@ -45,6 +45,8 @@ var audioPlayer = new function() {
 	this.gameover = null;
 
 	this.init = function() {
+		document.addEventListener("pause", function() {audioPlayer.stopAll();}, false);
+
 		this.loadBGM("house_a_square.ogg");
 		this.money = [this.loadSfx("money1.mp3"), this.loadSfx("money2.mp3"), this.loadSfx("money3.mp3")];
 		this.buildPP = this.loadSfx("build_powerplant.mp3");
@@ -84,5 +86,20 @@ var audioPlayer = new function() {
 		}
 		this.buildPP.stop();
 		this.buildPL.stop();
+
+		// Background music
+		this.bgm = null;
+
+		// Sound effects
+		this.money = null;
+		this.buildPP = null;
+		this.buildPL = null;
+		this.breakPL = null;
+		this.fixPL = null;
+		this.removePL = null;
+		this.newBuilding = null;
+		this.abandoned = null;
+		this.victory = null;
+		this.gameover = null;
 	}
 };
