@@ -252,6 +252,9 @@ var Screen = Backbone.View.extend({
                   thisScreen.buildingTemp = null;
                   thisScreen.model.set({state: GameState.Normal});
               }, 
+              "Cancel": function(){
+                $(this).dialog("close");
+              },
             }
           });
         }
