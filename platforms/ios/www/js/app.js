@@ -124,6 +124,8 @@ var app = {
           close: function(){
             app.gameLevel.set({paused: false});
           }
+        }).on("click", function() {
+          $(this).dialog("close")
         });
         
       }
