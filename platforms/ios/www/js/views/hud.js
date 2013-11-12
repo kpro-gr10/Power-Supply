@@ -76,8 +76,9 @@ var HudButtons = Backbone.View.extend({
                     dialogBox.css("font-size", "1.5em");
                  }, 
 				buttons: {
-					"Start": function(){
+					"Resume": function(){
 						thisHud.model.set({paused: !thisHud.model.get("paused")});
+						document.getElementById("pauseImage").src="res/sprites/pause.png";
 						$(this).dialog("close");
 					}
 				},
