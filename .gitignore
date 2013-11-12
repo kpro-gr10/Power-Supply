@@ -9,3 +9,5 @@ platforms/android
 !platforms/android/assets
 www/phonegap.js
 www/cordova_plugins.js
+
+console.log
