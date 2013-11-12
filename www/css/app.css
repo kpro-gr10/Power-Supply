@@ -90,11 +90,9 @@ p#timeMessage{
 }
 
 button#victoryButton{
-    width: 60%;
-    font-size: 3em;
-    bottom: 5%;
-    position: absolute;
-    margin-left: 20%; 
+    width: 90%;
+    font-size: 2em;
+    margin: 1em auto;
 }
 
 div#game{
